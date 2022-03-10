@@ -5,21 +5,6 @@ class State:
     def __init__(self, board):
         self.board = board
 
-    def next_moves(self):
-        childs = []
-        for i in range(3):
-            for j in range(3):
-                if self.board.table[i][j] == 0:
-                    if i < 2:
-                        childs.append(State(self.board.swap(i, j, 1, 0)))
-                    if j < 2:
-                        childs.append(State(self.board.swap(i, j, 0, 1)))
-                    if j > 0:
-                        childs.append(State(self.board.swap(i, j, 0, -1)))
-                    if i > 0:
-                        childs.append(State(self.board.swap(i, j, -1, 0)))
-        return childs
-
     def print(self):
         self.board.print()
 

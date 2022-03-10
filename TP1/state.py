@@ -32,13 +32,15 @@ class State:
             print(" ")
 
     def compare_to(self, state):
-        return np.array_equal(self.table[0], state.table[0]) & np.array_equal(self.table[1], state.table[1]) & np.array_equal(self.table[2], state.table[2])
+        return np.array_equal(self.table, state.table)
 
 
-# state = State([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
-# state.print()
-# print("-------------")
-# childs = state.next_moves()
-#
-# for i in range(len(childs)):
-#     print(childs[i].print())
+state = State(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]]))
+state.print()
+print("-------------")
+childs = state.next_moves()
+
+for i in range(len(childs)):
+    print(childs[i].compare_to(state))
+
+print(state.compare_to(state))

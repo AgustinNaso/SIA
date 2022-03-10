@@ -1,3 +1,5 @@
+from board import Board
+import random
 import numpy as np
 from node import Node
 from state import State
@@ -7,6 +9,12 @@ def is_solution(curr_node):
     solution = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
     return np.array_equal(curr_node.state.table, solution)
 
+def shuffle():
+    new_table = Board(Board.final_table)
+    iterations = random.randint(50, 100)
+    for i in range(iterations):
+        new_table = random.choice(new_table.next_moves())
+    return new_table
 
 def dfs(starting_node):  # function for dfs
     visited = set()  # Set to keep track of visited nodes of graph.
@@ -37,3 +45,4 @@ dfs(node)
 #     print('\n')
 
 print('Hello world!')
+shuffle().print()

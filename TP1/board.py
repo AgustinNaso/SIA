@@ -17,8 +17,20 @@ class Board:
                 print(self.table[i][j], end="")
             print("")
 
-    # def move_piece(board):
-    #     swap many times
+    def next_moves(self):
+        children = []
+        for i in range(3):
+            for j in range(3):
+                if self.table[i][j] == 0:
+                    if i < 2:
+                        children.append(self.swap(i, j, 1, 0))
+                    if j < 2:
+                        children.append(self.swap(i, j, 0, 1))
+                    if j > 0:
+                        children.append(self.swap(i, j, 0, -1))
+                    if i > 0:
+                        children.append(self.swap(i, j, -1, 0))
+        return children
 
     def compare_to(self, board):
         return np.array_equal(board.table, self.table)

@@ -31,6 +31,9 @@ class State:
                 print(self.table[i][j], end="")
             print(" ")
 
+    def __eq__(self, other):
+        return np.array_equal(self.table, state.table)
+
     def compare_to(self, state):
         return np.array_equal(self.table, state.table)
 

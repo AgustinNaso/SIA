@@ -1,3 +1,4 @@
+from algorithms.non_informed import dfs, bfs
 from board import Board
 import random
 import numpy as np
@@ -15,26 +16,7 @@ def shuffle():
     return new_table
 
 
-def dfs(starting_node):  # function for dfs
-    visited = set()  # Set to keep track of visited nodes of graph.
-    stack = [starting_node]
-    while stack:
-        curr_node = stack.pop()
-        curr_node.print_state()
-        print('\n')
-        if curr_node not in visited:
-            visited.add(curr_node)
-            print("Aceptado")
-            node.print_state()
-            if curr_node.state.board.is_solved():
-                return curr_node
-        for child in curr_node.get_children():
-            stack.append(child)
-    return
-
-
-# Driver Code
-
+# Setup for DFS
 table = np.array([[1, 2, 3], [4, 5, 6], [7, 0, 8]])
 board = Board(table)
 state = State(board)

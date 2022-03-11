@@ -1,11 +1,18 @@
-from algorithms.non_informed import dfs, bfs
+from TP1.algorithms.non_informed import dfs
 from board import Board
 import random
-import numpy as np
 from node import Node
 from state import State
 
 
+def show_steps(solution_node):
+    stack = []
+    while solution_node.parent:
+        stack.append(solution_node)
+        solution_node = solution_node.parent
+    while stack:
+        stack.pop().print_state()
+        print('\n')
 
 
 def shuffle():
@@ -17,13 +24,16 @@ def shuffle():
 
 
 # Setup for DFS
-table = np.array([[1, 2, 3], [4, 5, 6], [7, 0, 8]])
-board = Board(table)
+board = shuffle()
 state = State(board)
-node = Node(state, 0)
+node = Node(state, None)
+print('initial state: ')
 node.print_state()
-
 print('dfs!')
-dfs(node)
+ans = dfs(node)
+
+print('solution:')
+show_steps(ans)
+
 
 

@@ -1,3 +1,7 @@
+from .. import node
+from ..node import Node
+
+
 def bfs(node):
     visited = set()
     queue = [node]
@@ -31,14 +35,10 @@ def dfs(starting_node):  # function for dfs
     stack = [starting_node]
     while stack:
         curr_node = stack.pop()
-        curr_node.print_state()
-        print('\n')
         if curr_node not in visited:
             visited.add(curr_node)
-            print("Aceptado")
-            node.print_state()
             if curr_node.state.board.is_solved():
                 return curr_node
-        for child in curr_node.get_children():
-            stack.append(child)
+            for child in curr_node.get_children():
+                stack.append(child)
     return

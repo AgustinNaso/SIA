@@ -5,6 +5,7 @@ from TP1.state import State
 
 class Node:
     state = None
+    parent = None
 
     def __init__(self, state, parent):
         self.state = state

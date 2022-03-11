@@ -7,3 +7,9 @@ def local_search_heuristic(node):
 
         curr = queue.pop(0)
         #check if curr is solution
+
+
+def a_star(node, heuristic):
+    visited = set()
+    queue = [node]
+    visited.add(node)

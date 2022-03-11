@@ -14,14 +14,21 @@ class Board:
     def print(self):
         for i in range(3):
             for j in range(3):
-                print(self.table[i][j], end="")
+                print(self.table[i, j], end="")
             print("")
+
+    def to_string(self):
+        string = ""
+        for i in range(3):
+            for j in range(3):
+                string += str(self.table[i, j])
+        return string
 
     def next_moves(self):
         children = []
         for i in range(3):
             for j in range(3):
-                if self.table[i][j] == 0:
+                if self.table[i, j] == 0:
                     if i < 2:
                         children.append(self.swap(i, j, 1, 0))
                     if j < 2:
@@ -35,7 +42,17 @@ class Board:
     def compare_to(self, board):
         return np.array_equal(board.table, self.table)
 
+    def __eq__(self, other):
+        return self.to_string().__eq__(other.to_string())
+
+    def __hash__(self):
+        return self.to_string().__hash__()
+
     def swap(self, i, j, x, y):
         table = self.table.copy()
-        table[i][j], table[i + x][j + y] = table[i + x][j + y], table[i][j]
+        table[i][j], table[i + x, j + y] = table[i + x, j + y], table[i, j]
         return Board(table)
+
+
+b = Board(np.array([[1, 2, 3], [4, 5, 6], [8, 7, 0]]))
+print(b.to_string())

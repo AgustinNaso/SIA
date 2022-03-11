@@ -5,9 +5,7 @@ from node import Node
 from state import State
 
 
-def is_solution(curr_node):
-    solution = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 0]])
-    return np.array_equal(curr_node.state.table, solution)
+
 
 def shuffle():
     new_table = Board(Board.final_table)
@@ -16,33 +14,34 @@ def shuffle():
         new_table = random.choice(new_table.next_moves())
     return new_table
 
+
 def dfs(starting_node):  # function for dfs
     visited = set()  # Set to keep track of visited nodes of graph.
     stack = [starting_node]
     while stack:
-        print(visited)
         curr_node = stack.pop()
+        curr_node.print_state()
+        print('\n')
         if curr_node not in visited:
-            visited.append(curr_node)
-            node.state.print()
-            print('\n')
-            if is_solution(curr_node):
-                return
+            visited.add(curr_node)
+            print("Aceptado")
+            node.print_state()
+            if curr_node.state.board.is_solved():
+                return curr_node
         for child in curr_node.get_children():
             stack.append(child)
     return
 
 
 # Driver Code
-print("Following is the Depth-First Search")
 
-table = np.array([[1, 2, 4], [3, 5, 7], [6, 8, 0]])
-state = State(table)
+table = np.array([[1, 2, 3], [4, 5, 6], [7, 0, 8]])
+board = Board(table)
+state = State(board)
 node = Node(state, 0)
-dfs(node)
-# for n in node.get_children():
-#     n.state.print()
-#     print('\n')
+node.print_state()
 
-print('Hello world!')
-shuffle().print()
+print('dfs!')
+dfs(node)
+
+

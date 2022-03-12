@@ -15,6 +15,7 @@ def show_solution(ans_node):
         stack.pop().print_state()
         print('\n')
 
+
 def show_steps(solution_node):
     stack = []
     while solution_node.parent:
@@ -49,4 +50,3 @@ metrics.set_cost(ans.depth)
 metrics.print()
 print("Solution: ")
 show_solution(ans)
-

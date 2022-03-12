@@ -1,9 +1,19 @@
-from TP1.algorithms.non_informed import dfs
+from TP1.algorithms.non_informed import dfs, bfs
+from TP1.metrics import Metrics
 from board import Board
 import random
 from node import Node
 from state import State
 
+
+def show_solution(ans_node):
+    stack = []
+    while ans_node:
+        stack.append(ans_node)
+        ans_node = ans_node.parent
+    while stack:
+        stack.pop().print_state()
+        print('\n')
 
 def show_steps(solution_node):
     stack = []
@@ -26,14 +36,17 @@ def shuffle():
 # Setup for DFS
 board = shuffle()
 state = State(board)
-node = Node(state, None)
+node = Node(state, None, 0)
+metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
 print('initial state: ')
 node.print_state()
-print('dfs!')
-ans = dfs(node)
+print('bfs!')
+ans = bfs(node, metrics)
 
-print('solution:')
-show_steps(ans)
-
-
+metrics.set_depth(ans.depth)
+# El costo por cada movimiento es 1
+metrics.set_cost(ans.depth)
+metrics.print()
+print("Solution: ")
+show_solution(ans)
 

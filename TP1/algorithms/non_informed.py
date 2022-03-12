@@ -1,7 +1,11 @@
+import time
+
+
 # BFS
 # in: node
 # out: node with solution
 def bfs(starting_node, metrics):
+    start_time = time.time()
     visited = set()  # Set to keep track of visited nodes of graph.
     stack = [starting_node]
 
@@ -13,6 +17,7 @@ def bfs(starting_node, metrics):
             if curr_node.state.board.is_solved():
                 metrics.result = 1
                 metrics.frontier_nodes = len(stack)
+                metrics.time = time.time() - start_time
                 return curr_node
             children = curr_node.get_children()
             if children:
@@ -26,6 +31,7 @@ def bfs(starting_node, metrics):
 # out: node with solution
 
 def dfs(starting_node, metrics):  # function for dfs
+    start_time = time.time()
     visited = set()  # Set to keep track of visited nodes of graph.
     stack = [starting_node]
     while stack:
@@ -35,6 +41,7 @@ def dfs(starting_node, metrics):  # function for dfs
             if curr_node.state.board.is_solved():
                 metrics.result = 1
                 metrics.frontier_nodes = len(stack)
+                metrics.time = time.time() - start_time
                 return curr_node
             children = curr_node.get_children()
             if children:

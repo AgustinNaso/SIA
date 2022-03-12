@@ -1,7 +1,5 @@
 import time
 
-from TP1.heuristic import misplaced_numbers
-
 
 def local_search_heuristic(node):
     visited = set()

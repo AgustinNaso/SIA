@@ -13,8 +13,10 @@ class Heuristic:
 
     def __init__(self, heuristic, board):
         self.board = board
-        self.heuristics = np.array([self.misplaced_numbers()])  # make json
-        self.heuristic = self.heuristics.__getitem__(heuristic)
+        self.heuristics = {"misplaced numbers": self.misplaced_numbers(),
+                           "manhattan": self.manhattan_distance(),
+                           "nilsson": self.nilsson_sequence()}  # make json
+        self.heuristic = self.heuristics[heuristic]
 
     # Heuristic 1: sum of misplaced numbers (admissible)
     def misplaced_numbers(self):
@@ -65,6 +67,7 @@ class Heuristic:
         return manhattan
 
 
-print(Heuristic(0, Board(np.array([[2, 1, 5],
+h = Heuristic("nilsson", Board(np.array([[2, 1, 5],
                                    [3, 4, 6],
-                                   [7, 0, 8]]))).nilsson_sequence())
+                                   [7, 0, 8]])))
+print(h.heuristic)

@@ -1,4 +1,4 @@
-from TP1.algorithms.non_informed import dfs, bfs
+from TP1.algorithms.non_informed import dfs, bfs, iddfs
 from TP1.metrics import Metrics
 from board import Board
 import random
@@ -41,7 +41,7 @@ metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
 print('initial state: ')
 node.print_state()
 print('bfs!')
-ans = bfs(node, metrics)
+ans = iddfs(node, metrics, 80)
 
 metrics.set_depth(ans.depth)
 # El costo por cada movimiento es 1

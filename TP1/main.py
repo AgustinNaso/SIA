@@ -1,4 +1,6 @@
-from TP1.algorithms.non_informed import dfs, bfs
+from TP1.algorithms.informed import a_star
+from TP1.algorithms.non_informed import dfs, bfs, iddfs
+from TP1.heuristic import misplaced_numbers
 from TP1.metrics import Metrics
 from board import Board
 import random
@@ -37,12 +39,12 @@ def shuffle():
 # Setup for DFS
 board = shuffle()
 state = State(board)
-node = Node(state, None, 0)
+node = Node(state, None, 0, misplaced_numbers)
 metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
 print('initial state: ')
 node.print_state()
 print('bfs!')
-ans = bfs(node, metrics)
+ans = a_star(node, metrics)
 
 metrics.set_depth(ans.depth)
 # El costo por cada movimiento es 1

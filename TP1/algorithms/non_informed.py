@@ -50,7 +50,6 @@ def dfs(starting_node, metrics):  # function for dfs
                 stack.append(child)
 
 
-
 # IDDFS
 # in: node
 # out: node with solution
@@ -74,6 +73,3 @@ def iddfs(starting_node, metrics, max_depth):
             for child in children:
                 stack.append(child)
     return None
-
-
-

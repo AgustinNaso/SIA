@@ -1,16 +1,5 @@
 import time
-
 from TP1.heuristic import misplaced_numbers
-
-
-def local_search_heuristic(node):
-    visited = set()
-    queue = [node]
-    visited.add(node)  # save already visited nodes
-
-    while queue:
-        curr = queue.pop(0)
-        # check if curr is solution
 
 
 # function used to reorder a_star list
@@ -22,7 +11,7 @@ def f(n):
 # out: solution node if exists, or None if not
 
 
-def a_star(node, metrics):
+def a_star(node, metrics, heuristic):
     start_time = time.time()
     visited = set()
     sorted_list = [node]
@@ -40,5 +29,5 @@ def a_star(node, metrics):
         for child_node in children:
             if child_node not in visited:
                 sorted_list.append(child_node)
-        sorted_list.sort(key=f)
+        sorted_list.sort(key=heuristic)
     return None

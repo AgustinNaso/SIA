@@ -1,11 +1,12 @@
 from TP1.algorithms.informed import a_star
 from TP1.algorithms.non_informed import dfs, bfs, iddfs
-from TP1.heuristic import misplaced_numbers
+from TP1.heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence, sequence_sum
 from TP1.metrics import Metrics
 from board import Board
 import random
 from node import Node
 from state import State
+import numpy as np
 
 
 def show_solution(ans_node):
@@ -37,18 +38,19 @@ def shuffle():
 
 
 # Setup for DFS
-board = shuffle()
+# board = shuffle()
+board = Board(np.array([[2, 3, 1], [4, 0, 8], [7, 6, 5]]))
 state = State(board)
-node = Node(state, None, 0, misplaced_numbers)
+node = Node(state, None, 0)
 metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
 print('initial state: ')
 node.print_state()
 print('bfs!')
-ans = a_star(node, metrics)
+ans = a_star(node, metrics, sequence_sum)
 
 metrics.set_depth(ans.depth)
 # El costo por cada movimiento es 1
 metrics.set_cost(ans.depth)
 metrics.print()
-print("Solution: ")
-show_solution(ans)
+# print("Solution: ")
+# show_solution(ans)

@@ -2,17 +2,16 @@ from TP1.state import State
 
 
 class Node:
-    def __init__(self, state, parent, depth, heuristic):
+    def __init__(self, state, parent, depth):
         self.state = state
         self.parent = parent
         self.depth = depth
-        self.heuristic = heuristic
 
     def get_children(self):
         children = []
         for child_board in self.state.board.next_moves():
             new_state = State(child_board)
-            new_node = Node(new_state, self, self.depth + 1, self.heuristic)
+            new_node = Node(new_state, self, self.depth + 1)
             children.append(new_node)
         return children
 

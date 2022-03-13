@@ -1,7 +1,6 @@
 import time
 from TP1.heuristic import misplaced_numbers
 
-
 # function used to reorder a_star list
 def f(n):
     return n.depth + n.heuristic(n.state.board)

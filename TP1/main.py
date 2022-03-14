@@ -69,7 +69,6 @@ background = pygame.Surface(window)
 height = screen.get_height()
 width = screen.get_width()
 
-
 # Constants
 SOLVE_BUTTON_WIDTH = 120
 SOLVE_BUTTON_HEIGHT = 50
@@ -186,10 +185,11 @@ while running:
             # button the game is terminated
             if SHUFFLE_BUTTON_X <= mouse[0] <= SHUFFLE_BUTTON_X + SHUFFLE_BUTTON_WIDTH \
                     and SHUFFLE_BUTTON_Y <= mouse[1] <= SHUFFLE_BUTTON_Y + SHUFFLE_BUTTON_HEIGHT:
-               solving = 1
+                board = shuffle()
             if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
                 print("Solving")
+                solving = 1
 
     draw_board()
     if (solving):

@@ -1,3 +1,4 @@
+import time
 from TP1.algorithms.informed import a_star, local_search
 from TP1.algorithms.non_informed import dfs, bfs, iddfs
 from TP1.heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence, sequence_sum
@@ -68,6 +69,7 @@ background = pygame.Surface(window)
 height = screen.get_height()
 width = screen.get_width()
 
+
 # Constants
 SOLVE_BUTTON_WIDTH = 120
 SOLVE_BUTTON_HEIGHT = 50
@@ -121,26 +123,83 @@ def draw_board():
     screen.blit(background, (0, 0))
 
 
+def detect_square(x, y):
+    i = np.ceil((x - 20) / (RECT_WIDTH + 10))
+    j = np.ceil((y - 20) / (RECT_WIDTH + 10))
+    return {"i": int(i - 1), "j": int(j - 1)}
+
+
+def find_zero(board):
+    for i in range(3):
+        for j in range(3):
+            if board.table[j][i] == 0:
+                return {"i": int(i), "j": int(j)}
+
+
+def inside_board(i):
+    return 2 >= i >= 0
+
+
+def valid_swap(i, j, m, n):
+    if inside_board(i) and inside_board(j) and inside_board(m) and inside_board(n):
+        return (np.abs(i - m) + np.abs(j - n)) == 1
+    return 0
+
+
+def solve(board):
+    metrics = Metrics('bfs', 0, 0, 0, 0, 0, 0)
+    answer = bfs(Node(State(board), None, 0), metrics)
+    stack = []
+    while answer:
+        stack.append(answer)
+        answer = answer.parent
+    return stack
+
+
+#### Populate the surface with objects to be displayed ####
+#### Blit the surface onto the canvas ####
+
+
+height = screen.get_height()
+width = screen.get_width()
+draw_board()
 running = True
 
+pygame.display.flip()
+stack = []
+solved = 0
+
 while running:
+    solving = 0
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
 
+            index = detect_square(mouse[0], mouse[1])
+            zero_index = find_zero(board)
+            if valid_swap(index['i'], index['j'], zero_index['i'], zero_index['j']):
+                board = board.swap_with_post(index['j'], index['i'], zero_index['j'], zero_index['i'])
+
             # if the mouse is clicked on the
             # button the game is terminated
             if SHUFFLE_BUTTON_X <= mouse[0] <= SHUFFLE_BUTTON_X + SHUFFLE_BUTTON_WIDTH \
                     and SHUFFLE_BUTTON_Y <= mouse[1] <= SHUFFLE_BUTTON_Y + SHUFFLE_BUTTON_HEIGHT:
-                board = shuffle()
-                board.print()
+               solving = 1
             if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
                 print("Solving")
 
     draw_board()
+    if (solving):
+        stack = solve(board)
+        solved = 1
+    if solved:
+        board = stack.pop().state.board
+        time.sleep(0.3)
+        if len(stack) == 0:
+            solved = 0
 
     # stores the (x,y) coordinates into
     # the variable as a tuple

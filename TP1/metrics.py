@@ -17,6 +17,11 @@ class Metrics:
         print("Frontier nodes: ", self.frontier_nodes)
         print("Time: ", self.time)
 
+    def to_string(self):
+        return f"Algorithm: {self.algorithm} \nResult: {self.result}\nDepth: {self.depth}\nExpanded nodes: {self.expanded_nodes}\n" \
+               f"Frontier nodes: {self.frontier_nodes}\nTime: {self.time}"
+
+
     def set_depth(self, depth):
         self.depth = depth
 

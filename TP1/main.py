@@ -1,8 +1,9 @@
 import time
 from TP1.algorithms.informed import a_star, local_search
 from TP1.algorithms.non_informed import dfs, bfs, iddfs
-from TP1.heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence, sequence_sum
+from TP1.heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence, sequence_sum, get_heuristic
 from TP1.metrics import Metrics
+from TP1.option_box import OptionBox
 from board import Board
 import random
 from node import Node
@@ -45,12 +46,10 @@ def shuffle():
 board = shuffle()
 state = State(board)
 node = Node(state, None, 0)
-metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
-non_informed = [dfs, bfs, iddfs]
-non_i_names = ['dfs', 'bfs', 'iddfs']
-i_names = ['local', 'global', 'a_star']
-informed = [local_search, a_star, a_star]
-heuristic = None
+# aa
+algorithm_list = [bfs, dfs, iddfs, local_search, a_star, a_star]
+algorithm_names_list = ['bfs', 'dfs', 'iddfs', 'local', 'global', 'a_star']
+heuristic = get_heuristic(0)
 
 
 def f(n):
@@ -65,7 +64,7 @@ pygame.init()
 pygame.display.set_caption("8 Puzzle")
 icon = pygame.image.load("puzzle_icon.png")
 pygame.display.set_icon(icon)
-window = (1000, 700)
+window = (1100, 700)
 screen = pygame.display.set_mode(window)
 background = pygame.Surface(window)
 height = screen.get_height()
@@ -95,7 +94,9 @@ title_font = pygame.font.Font(None, 64)
 title_text = title_font.render('8 Puzzle', True, COLOR)
 
 dropdown_font = pygame.font.Font(None, 50)
-algorithm_dropdown_text = dropdown_font.render('Algorithm: ', True, COLOR)
+algorithm_dropdown_text = dropdown_font.render('Algorithm:', True, COLOR)
+heuristic_dropdown_text = dropdown_font.render('Heuristic:', True, COLOR)
+
 
 number_font = pygame.font.SysFont(None, 64)  # default font, size 16
 
@@ -151,88 +152,52 @@ def valid_swap(i, j, m, n):
     return 0
 
 
+selected_algorithm = 0
+selected_heuristic = 0
+algorithm_number = 0
+heuristic_number = 0
+algorithm_name = 'bfs'
+metrics_str = ''
+
+
 def solve(board):
-    metrics = Metrics('bfs', 0, 0, 0, 0, 0, 0)
-    answer = bfs(Node(State(board), None, 0), metrics)
+    algorithm = algorithm_list[algorithm_number]
+    heuristic = get_heuristic(heuristic_number)
+    metrics = Metrics(algorithm_name, 0, 0, 0, 0, 0, 0)
     stack = []
+    print(algorithm_number)
+    if algorithm_number < 3:
+        answer = algorithm(Node(State(board), None, 0), metrics)
+    else:
+        if algorithm_number == 5:
+            answer = algorithm(Node(State(board), None, 0), metrics, f)
+        else:
+            answer = algorithm(Node(State(board), None, 0), metrics, heuristic)
     while answer:
         stack.append(answer)
         answer = answer.parent
+    global metrics_str
+    metrics_str = metrics.to_string()
     return stack
 
 
 #### Populate the surface with objects to be displayed ####
 #### Blit the surface onto the canvas ####
 
-class OptionBox:
-
-    def __init__(self, x, y, w, h, color, highlight_color, font, option_list, selected=0):
-        self.color = color
-        self.highlight_color = highlight_color
-        self.rect = pygame.Rect(x, y, w, h)
-        self.font = font
-        self.option_list = option_list
-        self.selected = selected
-        self.draw_menu = False
-        self.menu_active = False
-        self.active_option = -1
-
-    def draw(self, surf):
-        pygame.draw.rect(surf, self.highlight_color if self.menu_active else self.color, self.rect)
-        pygame.draw.rect(surf, (0, 0, 0), self.rect, 2)
-        msg = self.font.render(self.option_list[self.selected], 1, (0, 0, 0))
-        surf.blit(msg, msg.get_rect(center=self.rect.center))
-
-        if self.draw_menu:
-            for i, text in enumerate(self.option_list):
-                rect = self.rect.copy()
-                rect.y += (i + 1) * self.rect.height
-                pygame.draw.rect(surf, self.highlight_color if i == self.active_option else self.color, rect)
-                msg = self.font.render(text, 1, (0, 0, 0))
-                surf.blit(msg, msg.get_rect(center=rect.center))
-            outer_rect = (
-            self.rect.x, self.rect.y + self.rect.height, self.rect.width, self.rect.height * len(self.option_list))
-            pygame.draw.rect(surf, (0, 0, 0), outer_rect, 2)
-
-    def update(self, event_list):
-        mpos = pygame.mouse.get_pos()
-        self.menu_active = self.rect.collidepoint(mpos)
-
-        self.active_option = -1
-        for i in range(len(self.option_list)):
-            rect = self.rect.copy()
-            rect.y += (i + 1) * self.rect.height
-            if rect.collidepoint(mpos):
-                self.active_option = i
-                break
-
-        if not self.menu_active and self.active_option == -1:
-            self.draw_menu = False
-
-        for event in event_list:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if self.menu_active:
-                    self.draw_menu = not self.draw_menu
-                elif self.draw_menu and self.active_option >= 0:
-                    self.selected = self.active_option
-                    self.draw_menu = False
-                    return self.active_option
-        return -1
-
-
 height = screen.get_height()
 width = screen.get_width()
 algo_dropdown = OptionBox(
-    650, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, 30),
+    600, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, 30),
     ["BFS", "DFS", "IDDFS", "LOCAL SEARCH", "GLOBAL SEARCH", "A STAR"])
 heuristic_dropdown = OptionBox(
-    650, 150 + 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, 30),
+    600 + 250, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, 30),
     ["MANHATTAN", "MISPLACED", "NILSSON"])
 running = True
 
 pygame.display.flip()
 stack = []
 solved = 0
+print_ans = 0
 
 while running:
     solving = 0
@@ -257,9 +222,15 @@ while running:
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
                 print("Solving")
                 solving = 1
-        selected_option = algo_dropdown.update(event_list)
-        if selected_option >= 0:
-            print(selected_option)
+        selected_algorithm = algo_dropdown.update(event_list)
+        if selected_algorithm >= 0:
+            algorithm_number = selected_algorithm
+            algorithm_name = algorithm_names_list[selected_algorithm]
+            print(selected_algorithm)
+        selected_heuristic = heuristic_dropdown.update(event_list)
+        if selected_heuristic >= 0:
+            heuristic_number = selected_heuristic
+            print(selected_heuristic)
 
     if solving:
         stack = solve(board)
@@ -270,8 +241,8 @@ while running:
         time.sleep(0.3)
         if not stack:
             solved = 0
+            print_ans = 1
     draw_board()
-
 
     # stores the (x,y) coordinates into
     # the variable as a tuple
@@ -306,10 +277,15 @@ while running:
     screen.blit(shuffle_text, shuffle_text_rect)
     screen.blit(solve_text, solve_text_rect)
     screen.blit(title_text, ((width - title_text.get_width()) / 2, 20))
-    screen.blit(algorithm_dropdown_text, (width/2 + 160, 90))
+    screen.blit(algorithm_dropdown_text, (width / 2 + 65, 90))
+    screen.blit(heuristic_dropdown_text, (600 + 270, 90))
     algo_dropdown.draw(screen)
+    heuristic_dropdown.draw(screen)
     pygame.display.flip()
-
 
     # updates the frames of the game
     pygame.display.update()
+    if print_ans == 1:
+        Tk().wm_withdraw()  # to hide the main window
+        messagebox.showinfo('Results', message=metrics_str)
+        print_ans = 0

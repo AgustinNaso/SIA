@@ -7,12 +7,12 @@ manhattan_coordinates: Final = np.array([[0, 0], [0, 1], [0, 2], [1, 0], [1, 1],
 sequence_coordinates: Final = np.array([[[0, 1], [0, 2], [1, 0]], [[1, 1], [1, 2], [2, 0]], [[2, 1], [2, 2], [2, 1]]])
 
 
-# def __init__(self, heuristic, board):
-#     self.board = board
-#     self.heuristics = {"misplaced numbers": self.misplaced_numbers(),
-#                        "manhattan": self.manhattan_distance(),
-#                        "nilsson": self.nilsson_sequence()}  # make json
-#     self.heuristic = self.heuristics[heuristic]
+def get_heuristic(heuristic):
+    heuristics = [misplaced_numbers,
+                  manhattan_distance,
+                  nilsson_sequence]
+    return heuristics[heuristic]
+
 
 # Heuristic 1: sum of misplaced numbers (admissible)
 def misplaced_numbers(node):

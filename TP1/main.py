@@ -8,7 +8,6 @@ from node import Node
 from state import State
 import numpy as np
 import pygame
-import matplotlib.pyplot as plt
 
 
 def show_solution(ans_node):
@@ -60,33 +59,47 @@ node.print_state()
 
 pygame.init()
 
-# Constants
+pygame.display.set_caption("8 Puzzle")
+icon = pygame.image.load("puzzle_icon.png")
+pygame.display.set_icon(icon)
+window = (1000, 700)
+screen = pygame.display.set_mode(window)
+background = pygame.Surface(window)
+height = screen.get_height()
+width = screen.get_width()
 
+# Constants
+SOLVE_BUTTON_WIDTH = 120
+SOLVE_BUTTON_HEIGHT = 50
+SOLVE_BUTTON_X = 140
+SOLVE_BUTTON_Y = height - 100
+SHUFFLE_BUTTON_WIDTH = 120
+SHUFFLE_BUTTON_HEIGHT = 50
+SHUFFLE_BUTTON_X = SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH + 20
+SHUFFLE_BUTTON_Y = SOLVE_BUTTON_Y
+BOARD_MARGIN_TOP = 80
 RECT_WIDTH = 150
 RECT_HEIGHT = 150
 COLOR = (10, 255, 255)
 WHITE_COLOR = (255, 255, 255)
 BLACK_COLOR = (0, 0, 0)
 
-pygame.display.set_caption("8 Puzzle")
-icon = pygame.image.load("puzzle_icon.png")
-smallfont = pygame.font.SysFont('Corbel', 35)
-text = smallfont.render('shuffle', True, BLACK_COLOR)
-pygame.display.set_icon(icon)
-window = (1000, 700)
-screen = pygame.display.set_mode(window)
-background = pygame.Surface(window)
+button_font = pygame.font.Font(None, 35)
+shuffle_text = button_font.render('Shuffle', True, BLACK_COLOR)
+solve_text = button_font.render('Solve', True, BLACK_COLOR)
+title_font = pygame.font.Font(None, 64)
 
+title_text = title_font.render('8 Puzzle', True, COLOR)
 number_font = pygame.font.SysFont(None, 64)  # default font, size 16
 
-# Constants
 
 def draw_board():
     for i in range(3):
         for j in range(3):
             if board.table[j][i] != 0:
                 pygame.draw.rect(background, COLOR,
-                                 (20 + (RECT_WIDTH + 10) * i, 20 + (RECT_HEIGHT + 10) * j, RECT_WIDTH, RECT_HEIGHT))
+                                 (30 + (RECT_WIDTH + 10) * i, BOARD_MARGIN_TOP + (RECT_HEIGHT + 10) * j, RECT_WIDTH,
+                                  RECT_HEIGHT))
 
                 # make the number from grid[row][col] into an image
                 number_text = str(board.table[j][i])
@@ -98,24 +111,17 @@ def draw_board():
 
                 # Draw the number image
                 background.blit(number_image,
-                                (20 + (RECT_WIDTH + 10) * i + 2 + margin_x, 20 + (RECT_HEIGHT + 10) * j + 2 + margin_y))
+                                (30 + (RECT_WIDTH + 10) * i + 2 + margin_x,
+                                 BOARD_MARGIN_TOP + (RECT_HEIGHT + 10) * j + 2 + margin_y))
             else:
                 pygame.draw.rect(background, BLACK_COLOR,
-                                 (20 + (RECT_WIDTH + 10) * i, 20 + (RECT_HEIGHT + 10) * j, RECT_WIDTH, RECT_HEIGHT))
+                                 (30 + (RECT_WIDTH + 10) * i, BOARD_MARGIN_TOP + (RECT_HEIGHT + 10) * j, RECT_WIDTH,
+                                  RECT_HEIGHT))
 
     screen.blit(background, (0, 0))
 
 
-#### Populate the surface with objects to be displayed ####
-#### Blit the surface onto the canvas ####
-
-
-height = screen.get_height()
-width = screen.get_width()
-draw_board()
 running = True
-
-pygame.display.flip()
 
 while running:
     for event in pygame.event.get():
@@ -126,13 +132,13 @@ while running:
 
             # if the mouse is clicked on the
             # button the game is terminated
-            if width / 2 <= mouse[0] <= width / 2 + 140 and height / 2 <= mouse[1] <= height / 2 + 40:
+            if SHUFFLE_BUTTON_X <= mouse[0] <= SHUFFLE_BUTTON_X + SHUFFLE_BUTTON_WIDTH \
+                    and SHUFFLE_BUTTON_Y <= mouse[1] <= SHUFFLE_BUTTON_Y + SHUFFLE_BUTTON_HEIGHT:
                 board = shuffle()
                 board.print()
-        if event.type == pygame.KEYDOWN:
-            board = board.swap(2, 1, -1, 0)
-            board.print()
-            print("\n")
+            if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
+                    and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
+                print("Solving")
 
     draw_board()
 
@@ -142,14 +148,33 @@ while running:
 
     # if mouse is hovered on a button it
     # changes to lighter shade
-    if width / 2 <= mouse[0] <= width / 2 + 140 and height / 2 <= mouse[1] <= height / 2 + 40:
-        pygame.draw.rect(screen, COLOR, [width / 2, height / 2, 140, 40])
+    if SHUFFLE_BUTTON_X <= mouse[0] <= SHUFFLE_BUTTON_X + SHUFFLE_BUTTON_WIDTH \
+            and SHUFFLE_BUTTON_Y <= mouse[1] <= SHUFFLE_BUTTON_Y + SHUFFLE_BUTTON_HEIGHT:
+        shuffle_button_rect = pygame.draw.rect(screen, COLOR, [SHUFFLE_BUTTON_X, SHUFFLE_BUTTON_Y, SHUFFLE_BUTTON_WIDTH,
+                                                               SHUFFLE_BUTTON_HEIGHT])
 
     else:
-        pygame.draw.rect(screen, WHITE_COLOR, [width / 2, height / 2, 140, 40])
+        shuffle_button_rect = pygame.draw.rect(screen, WHITE_COLOR,
+                                               [SHUFFLE_BUTTON_X, SHUFFLE_BUTTON_Y, SHUFFLE_BUTTON_WIDTH,
+                                                SHUFFLE_BUTTON_HEIGHT])
+
+    if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
+            and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
+        solve_button_rect = pygame.draw.rect(screen, COLOR,
+                                             [SOLVE_BUTTON_X, SOLVE_BUTTON_Y, SOLVE_BUTTON_WIDTH, SOLVE_BUTTON_HEIGHT])
+
+    else:
+        solve_button_rect = pygame.draw.rect(screen, WHITE_COLOR,
+                                             [SOLVE_BUTTON_X, SOLVE_BUTTON_Y, SOLVE_BUTTON_WIDTH, SOLVE_BUTTON_HEIGHT])
 
     # superimposing the text onto our button
+    shuffle_text_rect = shuffle_text.get_rect()
+    shuffle_text_rect.center = shuffle_button_rect.center
+    solve_text_rect = solve_text.get_rect()
+    solve_text_rect.center = solve_button_rect.center
+    screen.blit(shuffle_text, shuffle_text_rect)
+    screen.blit(solve_text, solve_text_rect)
+    screen.blit(title_text, ((width - title_text.get_width()) / 2, 20))
 
-    screen.blit(text, (width / 2 + 50, height / 2))
     # updates the frames of the game
     pygame.display.update()

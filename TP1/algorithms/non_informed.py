@@ -50,12 +50,11 @@ def dfs(starting_node, metrics):  # function for dfs
                 stack.append(child)
 
 
-# IDDFS
-# in: node
-# out: node with solution
-#
-def iddfs(starting_node, metrics, max_depth):
-    start_time = time.time()
+# DLS
+# in: starting node, metrics, max node depth
+# out: solution node or None if cannot find one
+
+def dls(starting_node, metrics, max_depth):
     visited = set()
     stack = [starting_node]
     while stack:
@@ -64,8 +63,7 @@ def iddfs(starting_node, metrics, max_depth):
             visited.add(curr_node)
             if curr_node.state.board.is_solved():
                 metrics.result = 1
-                metrics.frontier_nodes = len(stack)
-                metrics.time = time.time() - start_time
+                metrics.frontier_nodes += len(stack)
                 return curr_node
             children = curr_node.get_children()
             if children:
@@ -73,3 +71,28 @@ def iddfs(starting_node, metrics, max_depth):
             for child in children:
                 stack.append(child)
     return None
+
+
+# IDDFS
+# in: node
+# out: node with solution
+#
+def iddfs(starting_node, metrics, max_depth):
+    start_time = time.time()
+    visited = set()
+    stack = [starting_node]
+    ans = None
+    while ans is not None:
+        ans = dls(starting_node, metrics, max_depth)
+        max_depth *= 2
+        if max_depth > 1000000:
+            return None
+    second_ans = None
+    max_depth /= 3
+    second_ans = dls(starting_node, metrics, max_depth)
+    if second_ans is not None:
+        return second_ans
+    return ans
+
+
+

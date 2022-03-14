@@ -52,7 +52,3 @@ class Board:
         table = self.table.copy()
         table[i][j], table[i + x, j + y] = table[i + x, j + y], table[i, j]
         return Board(table)
-
-
-# b = Board(np.array([[1, 2, 3], [4, 5, 6], [8, 7, 0]]))
-# print(b.to_string())

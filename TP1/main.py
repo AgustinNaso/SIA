@@ -8,13 +8,7 @@ from node import Node
 from state import State
 import numpy as np
 import pygame
-
-
-class Rectangle:
-    def __init__(self, x, y, value):
-        self.x = x
-        self.y = y
-        self.value = value
+import matplotlib.pyplot as plt
 
 
 def show_solution(ans_node):

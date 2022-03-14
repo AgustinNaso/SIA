@@ -1,14 +1,6 @@
 import time
 
 
-# from TP1.heuristic import misplaced_numbers
-
-# function used to reorder a_star list
-# def f(n):
-# return n.depth + n.heuristic.he(n.state.board)
-
-# def h(n):
-#     return heurictic
 def local_search(node, metrics, heuristic):
     start_time = time.time()
     visited = set()

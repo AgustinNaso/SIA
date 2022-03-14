@@ -23,6 +23,3 @@ class Node:
 
     def print_state(self):
         self.state.print()
-
-# for i in range(len(aux)):
-# aux[i].print()

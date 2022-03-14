@@ -79,17 +79,15 @@ def dls(starting_node, metrics, max_depth):
 #
 def iddfs(starting_node, metrics, max_depth):
     start_time = time.time()
-    visited = set()
-    stack = [starting_node]
     ans = None
     while ans is not None:
         ans = dls(starting_node, metrics, max_depth)
         max_depth *= 2
         if max_depth > 1000000:
             return None
-    second_ans = None
     max_depth /= 3
     second_ans = dls(starting_node, metrics, max_depth)
+    metrics.time = time.time() - start_time
     if second_ans is not None:
         return second_ans
     return ans

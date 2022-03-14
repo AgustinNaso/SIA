@@ -33,7 +33,7 @@ def local_search(node, metrics, heuristic):
 
 
 # A_star
-# in: starting node, metrics
+# in: starting node, metrics, h(n)
 # out: solution node if exists, or None if not
 
 def a_star(node, metrics, heuristic):

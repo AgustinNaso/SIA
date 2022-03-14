@@ -43,14 +43,36 @@ board = Board(np.array([[2, 3, 1], [4, 0, 8], [7, 6, 5]]))
 state = State(board)
 node = Node(state, None, 0)
 metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
-print('initial state: ')
-node.print_state()
-print('bfs!')
-ans = local_search(node, metrics, sequence_sum)
+non_informed = [dfs, bfs, iddfs]
+non_i_names = ['dfs', 'bfs', 'iddfs']
+i_names = ['local', 'global', 'a_star']
+informed = [local_search, a_star, a_star]
+heuristic = misplaced_numbers
 
-metrics.set_depth(ans.depth)
-# El costo por cada movimiento es 1
-metrics.set_cost(ans.depth)
+
+def f(n):
+    n.depth + heuristic(n)
+
+
+print('initial state')
+node.print_state()
+ans = a_star(node, metrics, manhattan_distance)
 metrics.print()
-# print("Solution: ")
-# show_solution(ans)
+# for i in range(0, 3):
+#     metrics = Metrics(non_i_names[i], 0, 0, 0, 0, 0, 0)
+#     if i == 2:
+#         ans = non_informed[i](node, metrics, 10000)
+#     else:
+#         ans = non_informed[i](node, metrics)
+#     metrics.set_depth(ans.depth)
+#     metrics.set_cost(ans.depth)
+#     metrics.print()
+#     metrics = Metrics(i_names[i], 0, 0, 0, 0, 0, 0)
+#     if i == 2:
+#         ans = informed[i](node, metrics, f)
+#     else:
+#         ans = informed[i](node, metrics, heuristic)
+#     metrics.set_depth(ans.depth)
+#     # El costo por cada movimiento es 1
+#     metrics.set_cost(ans.depth)
+#     metrics.print()

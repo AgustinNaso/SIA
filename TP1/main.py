@@ -8,7 +8,7 @@ from node import Node
 from state import State
 import numpy as np
 import pygame
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
 def show_solution(ans_node):
@@ -105,6 +105,19 @@ def draw_board():
 
     screen.blit(background, (0, 0))
 
+def detect_square(x, y):
+    i = np.ceil((x - 20) / (RECT_WIDTH + 10))
+    j = np.ceil((y - 20) / (RECT_WIDTH + 10))
+    return {"i": int(i-1), "j": int(j-1)}
+
+def find_zero(board):
+    for i in range(3):
+        for j in range(3):
+            if board.table[j][i] == 0:
+                return {"i": int(i), "j": int(j)}
+
+def valid_swap( i, j, m, n):
+    return (np.abs(i-m) + np.abs(j-n)) == 1
 
 #### Populate the surface with objects to be displayed ####
 #### Blit the surface onto the canvas ####
@@ -124,15 +137,18 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
 
+            index = detect_square(mouse[0], mouse[1])
+            zero_index = find_zero(board)
+            if valid_swap(index['i'], index['j'], zero_index['i'], zero_index['j']):
+                board = board.swap_with_post(index['j'], index['i'], zero_index['j'], zero_index['i'])
+
             # if the mouse is clicked on the
             # button the game is terminated
             if width / 2 <= mouse[0] <= width / 2 + 140 and height / 2 <= mouse[1] <= height / 2 + 40:
                 board = shuffle()
                 board.print()
         if event.type == pygame.KEYDOWN:
-            board = board.swap(2, 1, -1, 0)
-            board.print()
-            print("\n")
+            None
 
     draw_board()
 

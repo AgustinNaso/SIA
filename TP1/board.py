@@ -48,6 +48,10 @@ class Board:
     def __hash__(self):
         return self.to_string().__hash__()
 
+    def swap_with_post(self, i, j, x, y):
+        self.table[i][j], self.table[x, y] = self.table[x, y], self.table[i, j]
+        return self
+
     def swap(self, i, j, x, y):
         table = self.table.copy()
         table[i][j], table[i + x, j + y] = table[i + x, j + y], table[i, j]

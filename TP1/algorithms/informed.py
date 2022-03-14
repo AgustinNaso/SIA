@@ -14,7 +14,7 @@ def local_search(node, metrics, heuristic):
     visited = set()
     sorted_list = [node]
     while sorted_list:
-        curr_node = sorted_list.pop(0)
+        curr_node = sorted_list.pop()
         visited.add(curr_node)
         if curr_node.state.board.is_solved():
             metrics.result = 1
@@ -24,10 +24,11 @@ def local_search(node, metrics, heuristic):
         children = curr_node.get_children()
         if children:
             metrics.expanded_nodes += 1
+        children.sort(key=heuristic)
+        children.reverse()
         for child_node in children:
             if child_node not in visited:
                 sorted_list.append(child_node)
-        sorted_list.sort(key=heuristic)
     return None
 
 

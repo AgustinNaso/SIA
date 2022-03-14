@@ -1,4 +1,4 @@
-from TP1.algorithms.informed import a_star
+from TP1.algorithms.informed import a_star, local_search
 from TP1.algorithms.non_informed import dfs, bfs, iddfs
 from TP1.heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence, sequence_sum
 from TP1.metrics import Metrics
@@ -46,7 +46,7 @@ metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
 print('initial state: ')
 node.print_state()
 print('bfs!')
-ans = a_star(node, metrics, sequence_sum)
+ans = local_search(node, metrics, sequence_sum)
 
 metrics.set_depth(ans.depth)
 # El costo por cada movimiento es 1

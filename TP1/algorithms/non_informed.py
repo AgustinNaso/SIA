@@ -24,6 +24,7 @@ def bfs(starting_node, metrics):
                 metrics.expanded_nodes += 1
             for child in children:
                 stack.append(child)
+    return None
 
 
 # DFS

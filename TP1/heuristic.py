@@ -56,9 +56,3 @@ def sequence_sum(node):
                         if node.state.board.table[x][y] != 0:
                             ans += 2
     return ans
-
-#
-# h = Heuristic("nilsson", Board(np.array([[2, 1, 5],
-#                                    [3, 4, 6],
-#                                    [7, 0, 8]])))
-# print(h.heuristic)

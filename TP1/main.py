@@ -7,6 +7,8 @@ from board import Board
 import random
 from node import Node
 from state import State
+from tkinter import *
+from tkinter import messagebox
 import numpy as np
 import pygame
 
@@ -190,16 +192,17 @@ while running:
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
                 print("Solving")
                 solving = 1
-
-    draw_board()
-    if (solving):
+    if solving:
         stack = solve(board)
         solved = 1
+
     if solved:
         board = stack.pop().state.board
         time.sleep(0.3)
-        if len(stack) == 0:
+        if not stack:
             solved = 0
+    draw_board()
+
 
     # stores the (x,y) coordinates into
     # the variable as a tuple

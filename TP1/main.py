@@ -73,29 +73,36 @@ width = screen.get_width()
 # Constants
 SOLVE_BUTTON_WIDTH = 120
 SOLVE_BUTTON_HEIGHT = 50
-SOLVE_BUTTON_X = 140
+SOLVE_BUTTON_X = 60
 SOLVE_BUTTON_Y = height - 100
 SHUFFLE_BUTTON_WIDTH = 120
 SHUFFLE_BUTTON_HEIGHT = 50
 SHUFFLE_BUTTON_X = SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH + 20
 SHUFFLE_BUTTON_Y = SOLVE_BUTTON_Y
+RESET_BUTTON_WIDTH = 120
+RESET_BUTTON_HEIGHT = 50
+RESET_BUTTON_X = SHUFFLE_BUTTON_X + SHUFFLE_BUTTON_WIDTH + 20
+RESET_BUTTON_Y = SOLVE_BUTTON_Y
 BOARD_MARGIN_TOP = 80
 RECT_WIDTH = 150
 RECT_HEIGHT = 150
-COLOR = (10, 255, 255)
+COLOR = (255, 192, 203)#(10, 255, 255)
 WHITE_COLOR = (255, 255, 255)
 BLACK_COLOR = (0, 0, 0)
 
 button_font = pygame.font.Font(None, 35)
 shuffle_text = button_font.render('Shuffle', True, BLACK_COLOR)
 solve_text = button_font.render('Solve', True, BLACK_COLOR)
+reset_text = button_font.render('Reset', True, BLACK_COLOR)
 
 title_font = pygame.font.Font(None, 64)
-title_text = title_font.render('8 Puzzle', True, COLOR)
+title_text = title_font.render('8 Puzzle', True, COLOR, BLACK_COLOR)
 
 dropdown_font = pygame.font.Font(None, 50)
-algorithm_dropdown_text = dropdown_font.render('Algorithm:', True, COLOR)
-heuristic_dropdown_text = dropdown_font.render('Heuristic:', True, COLOR)
+algorithm_dropdown_text = dropdown_font.render('Algorithm:', True, COLOR, BLACK_COLOR)
+heuristic_dropdown_text = dropdown_font.render('Heuristic:', True, COLOR, BLACK_COLOR)
+
+stats_font = pygame.font.Font(None, 30)
 
 
 number_font = pygame.font.SysFont(None, 64)  # default font, size 16
@@ -158,16 +165,23 @@ algorithm_number = 0
 heuristic_number = 0
 algorithm_name = 'bfs'
 metrics_str = ''
+last_metrics = ''
+table_before_solve = Board(Board.final_table)
 
 
 def solve(board):
+    global table_before_solve
+    table_before_solve = Board(board.table)
     algorithm = algorithm_list[algorithm_number]
     heuristic = get_heuristic(heuristic_number)
     metrics = Metrics(algorithm_name, 0, 0, 0, 0, 0, 0)
     stack = []
     print(algorithm_number)
     if algorithm_number < 3:
-        answer = algorithm(Node(State(board), None, 0), metrics)
+        if algorithm_number == 2:
+            answer = algorithm(Node(State(board), None, 0), metrics, 1000)
+        else:
+            answer = algorithm(Node(State(board), None, 0), metrics)
     else:
         if algorithm_number == 5:
             answer = algorithm(Node(State(board), None, 0), metrics, f)
@@ -177,7 +191,14 @@ def solve(board):
         stack.append(answer)
         answer = answer.parent
     global metrics_str
+    global last_metrics
+    print("profundidad:" ,end="")
+    print(len(stack))
+    metrics.set_depth(len(stack))
+    if len(metrics_str) > 1:
+        last_metrics = str(metrics_str)
     metrics_str = metrics.to_string()
+
     return stack
 
 
@@ -198,6 +219,7 @@ pygame.display.flip()
 stack = []
 solved = 0
 print_ans = 0
+auxLoca = 0
 
 while running:
     solving = 0
@@ -218,6 +240,10 @@ while running:
             if SHUFFLE_BUTTON_X <= mouse[0] <= SHUFFLE_BUTTON_X + SHUFFLE_BUTTON_WIDTH \
                     and SHUFFLE_BUTTON_Y <= mouse[1] <= SHUFFLE_BUTTON_Y + SHUFFLE_BUTTON_HEIGHT:
                 board = shuffle()
+            if RESET_BUTTON_X <= mouse[0] <= RESET_BUTTON_X + RESET_BUTTON_WIDTH \
+                    and RESET_BUTTON_Y <= mouse[1] <= RESET_BUTTON_Y + RESET_BUTTON_HEIGHT:
+                board = table_before_solve
+
             if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
                 print("Solving")
@@ -260,6 +286,15 @@ while running:
                                                [SHUFFLE_BUTTON_X, SHUFFLE_BUTTON_Y, SHUFFLE_BUTTON_WIDTH,
                                                 SHUFFLE_BUTTON_HEIGHT])
 
+    if RESET_BUTTON_X <= mouse[0] <= RESET_BUTTON_X + RESET_BUTTON_WIDTH \
+            and RESET_BUTTON_Y <= mouse[1] <= RESET_BUTTON_Y + RESET_BUTTON_HEIGHT:
+        reset_button_rect = pygame.draw.rect(screen, COLOR,
+                                             [RESET_BUTTON_X, RESET_BUTTON_Y, RESET_BUTTON_WIDTH, RESET_BUTTON_HEIGHT])
+
+    else:
+        reset_button_rect = pygame.draw.rect(screen, WHITE_COLOR,
+                                             [RESET_BUTTON_X, RESET_BUTTON_Y, RESET_BUTTON_WIDTH, RESET_BUTTON_HEIGHT])
+
     if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
             and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
         solve_button_rect = pygame.draw.rect(screen, COLOR,
@@ -274,18 +309,39 @@ while running:
     shuffle_text_rect.center = shuffle_button_rect.center
     solve_text_rect = solve_text.get_rect()
     solve_text_rect.center = solve_button_rect.center
+    reset_text_rect = reset_text.get_rect()
+    reset_text_rect.center = reset_button_rect.center
     screen.blit(shuffle_text, shuffle_text_rect)
     screen.blit(solve_text, solve_text_rect)
+    screen.blit(reset_text, reset_text_rect)
     screen.blit(title_text, ((width - title_text.get_width()) / 2, 20))
     screen.blit(algorithm_dropdown_text, (width / 2 + 65, 90))
     screen.blit(heuristic_dropdown_text, (600 + 270, 90))
     algo_dropdown.draw(screen)
     heuristic_dropdown.draw(screen)
+
+    if print_ans == 1:
+        aux = metrics_str.split('\n')
+        for i in range(len(aux)):
+            stats = stats_font.render(aux[i], True, COLOR, BLACK_COLOR)
+            screen.blit(stats, (600, 250+ i*30))
+        move_y = len(aux) * 30
+        aux = last_metrics.split('\n')
+        if len(aux) > 1:
+            stats = stats_font.render("Previous solve: ", True, WHITE_COLOR, BLACK_COLOR)
+            screen.blit(stats, (600, 250 + move_y))
+            for i in range(len(aux)):
+                stats = stats_font.render(aux[i], True, COLOR, BLACK_COLOR)
+                screen.blit(stats, (600, 250+ move_y + 30+i*30))
+
+
+
+        # Tk().wm_withdraw()  # to hide the main window
+        # messagebox.showinfo('Results', message=metrics_str)
+        # print_ans = 0
+
     pygame.display.flip()
 
     # updates the frames of the game
     pygame.display.update()
-    if print_ans == 1:
-        Tk().wm_withdraw()  # to hide the main window
-        messagebox.showinfo('Results', message=metrics_str)
-        print_ans = 0
+

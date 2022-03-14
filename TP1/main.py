@@ -7,6 +7,14 @@ import random
 from node import Node
 from state import State
 import numpy as np
+import pygame
+
+
+class Rectangle:
+    def __init__(self, x, y, value):
+        self.x = x
+        self.y = y
+        self.value = value
 
 
 def show_solution(ans_node):
@@ -38,8 +46,7 @@ def shuffle():
 
 
 # Setup for DFS
-# board = shuffle()
-board = Board(np.array([[2, 3, 1], [4, 0, 8], [7, 6, 5]]))
+board = shuffle()
 state = State(board)
 node = Node(state, None, 0)
 metrics = Metrics("BFS", 0, 0, 0, 0, 0, 0)
@@ -47,32 +54,108 @@ non_informed = [dfs, bfs, iddfs]
 non_i_names = ['dfs', 'bfs', 'iddfs']
 i_names = ['local', 'global', 'a_star']
 informed = [local_search, a_star, a_star]
-heuristic = misplaced_numbers
+heuristic = None
 
 
 def f(n):
-    n.depth + heuristic(n)
+    return n.depth + heuristic(n)
 
 
 print('initial state')
 node.print_state()
-ans = a_star(node, metrics, manhattan_distance)
-metrics.print()
-# for i in range(0, 3):
-#     metrics = Metrics(non_i_names[i], 0, 0, 0, 0, 0, 0)
-#     if i == 2:
-#         ans = non_informed[i](node, metrics, 10000)
-#     else:
-#         ans = non_informed[i](node, metrics)
-#     metrics.set_depth(ans.depth)
-#     metrics.set_cost(ans.depth)
-#     metrics.print()
-#     metrics = Metrics(i_names[i], 0, 0, 0, 0, 0, 0)
-#     if i == 2:
-#         ans = informed[i](node, metrics, f)
-#     else:
-#         ans = informed[i](node, metrics, heuristic)
-#     metrics.set_depth(ans.depth)
-#     # El costo por cada movimiento es 1
-#     metrics.set_cost(ans.depth)
-#     metrics.print()
+
+pygame.init()
+
+# Constants
+
+RECT_WIDTH = 150
+RECT_HEIGHT = 150
+COLOR = (10, 255, 255)
+WHITE_COLOR = (255, 255, 255)
+BLACK_COLOR = (0, 0, 0)
+
+pygame.display.set_caption("8 Puzzle")
+icon = pygame.image.load("puzzle_icon.png")
+smallfont = pygame.font.SysFont('Corbel', 35)
+text = smallfont.render('shuffle', True, BLACK_COLOR)
+pygame.display.set_icon(icon)
+window = (1000, 700)
+screen = pygame.display.set_mode(window)
+background = pygame.Surface(window)
+
+number_font = pygame.font.SysFont(None, 64)  # default font, size 16
+
+# Constants
+
+def draw_board():
+    for i in range(3):
+        for j in range(3):
+            if board.table[j][i] != 0:
+                pygame.draw.rect(background, COLOR,
+                                 (20 + (RECT_WIDTH + 10) * i, 20 + (RECT_HEIGHT + 10) * j, RECT_WIDTH, RECT_HEIGHT))
+
+                # make the number from grid[row][col] into an image
+                number_text = str(board.table[j][i])
+                number_image = number_font.render(number_text, True, BLACK_COLOR, None)
+
+                # centre the image in the cell by calculating the margin-distance
+                margin_x = (RECT_WIDTH - 1 - number_image.get_width()) // 2
+                margin_y = (RECT_WIDTH - 1 - number_image.get_height()) // 2
+
+                # Draw the number image
+                background.blit(number_image,
+                                (20 + (RECT_WIDTH + 10) * i + 2 + margin_x, 20 + (RECT_HEIGHT + 10) * j + 2 + margin_y))
+            else:
+                pygame.draw.rect(background, BLACK_COLOR,
+                                 (20 + (RECT_WIDTH + 10) * i, 20 + (RECT_HEIGHT + 10) * j, RECT_WIDTH, RECT_HEIGHT))
+
+    screen.blit(background, (0, 0))
+
+
+#### Populate the surface with objects to be displayed ####
+#### Blit the surface onto the canvas ####
+
+
+height = screen.get_height()
+width = screen.get_width()
+draw_board()
+running = True
+
+pygame.display.flip()
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            # if the mouse is clicked on the
+            # button the game is terminated
+            if width / 2 <= mouse[0] <= width / 2 + 140 and height / 2 <= mouse[1] <= height / 2 + 40:
+                board = shuffle()
+                board.print()
+        if event.type == pygame.KEYDOWN:
+            board = board.swap(2, 1, -1, 0)
+            board.print()
+            print("\n")
+
+    draw_board()
+
+    # stores the (x,y) coordinates into
+    # the variable as a tuple
+    mouse = pygame.mouse.get_pos()
+
+    # if mouse is hovered on a button it
+    # changes to lighter shade
+    if width / 2 <= mouse[0] <= width / 2 + 140 and height / 2 <= mouse[1] <= height / 2 + 40:
+        pygame.draw.rect(screen, COLOR, [width / 2, height / 2, 140, 40])
+
+    else:
+        pygame.draw.rect(screen, WHITE_COLOR, [width / 2, height / 2, 140, 40])
+
+    # superimposing the text onto our button
+
+    screen.blit(text, (width / 2 + 50, height / 2))
+    # updates the frames of the game
+    pygame.display.update()

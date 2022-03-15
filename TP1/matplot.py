@@ -1,7 +1,7 @@
-from TP1.algorithms.informed import a_star, local_search
-from TP1.algorithms.non_informed import dfs, bfs, iddfs
-from TP1.heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence
-from TP1.metrics import Metrics
+from algorithms.informed import a_star, local_search
+from algorithms.non_informed import dfs, bfs, iddfs
+from heuristic import misplaced_numbers, manhattan_distance, nilsson_sequence
+from metrics import Metrics
 from board import Board
 import random
 from node import Node

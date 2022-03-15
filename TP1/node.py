@@ -1,4 +1,4 @@
-from TP1.state import State
+from state import State
 
 
 class Node:

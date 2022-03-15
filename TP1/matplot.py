@@ -24,7 +24,7 @@ with open("settings.json") as jsonFile:
     jsonObject = json.load(jsonFile)
     jsonFile.close()
 
-informed = bool(jsonObject['mathplot']['informed'])
+informed = bool(jsonObject['matplot']['informed'])
 depth = int(jsonObject['max_depth'])
 
 axis = np.array(["Costo", "Profundidad", "Nodos Expandidos", "Nodos Frontera", "Tiempo (ms)"])

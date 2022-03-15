@@ -22,17 +22,6 @@ def show_solution(ans_node):
         stack.pop().print_state()
         print('\n')
 
-
-def show_steps(solution_node):
-    stack = []
-    while solution_node.parent:
-        stack.append(solution_node)
-        solution_node = solution_node.parent
-    while stack:
-        stack.pop().print_state()
-        print('\n')
-
-
 def shuffle():
     new_table = Board(Board.final_table)
     iterations = random.randint(50, 100)
@@ -65,6 +54,8 @@ with open("settings.json") as jsonFile:
     jsonFile.close()
 
 depth = int(jsonObject['max_depth'])
+show_steps_log = bool(jsonObject['show_steps'])
+
 
 # game UI initialization
 pygame.init()
@@ -214,7 +205,6 @@ def solve(board):
     algorithm_name = algorithm_names_list[algorithm_number]
     metrics = Metrics(algorithm_name, 0, 0, 0, 0, 0, 0)
     stack = []
-    print(algorithm_number)
     if algorithm_number < 3:
         if algorithm_number == 2:
             answer = algorithm(Node(State(board), None, 0), metrics, depth)
@@ -230,8 +220,6 @@ def solve(board):
         answer = answer.parent
     global metrics_str
     global last_metrics
-    print("profundidad:", end="")
-    print(len(stack))
     metrics.set_depth(len(stack))
 
     if len(metrics_str) > 1:
@@ -274,7 +262,6 @@ while running:
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
                 # to switch between solve and stop button
                 if solved == 0:
-                    print("Solving")
                     solving = 1
                 else:
                     solved = 0
@@ -282,11 +269,9 @@ while running:
         if selected_algorithm >= 0:
             algorithm_number = selected_algorithm
             algorithm_name = algorithm_names_list[selected_algorithm]
-            print(selected_algorithm)
         selected_heuristic = heuristic_dropdown.update(event_list)
         if selected_heuristic >= 0:
             heuristic_number = selected_heuristic
-            print(selected_heuristic)
 
     if solving:
         solution_stack = solve(board)
@@ -296,6 +281,9 @@ while running:
 
     if solved:
         board = solution_stack.pop().state.board
+        if show_steps_log:
+            print("---")
+            board.print()
         time.sleep(0.3)
         if not solution_stack:
             solved = 0

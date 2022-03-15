@@ -32,7 +32,10 @@ Logrado esto, para correr la interfaz grafica del programa, ejecutar
 ```shell
 \TP1> python game.py 
 ```
-
+En caso de que se quiera correr el test generador de graficos para comparar los algoritmos, ejecutar
+```shell
+\TP1> python matplot.py 
+```
 ## Informacion adicional
 Para configurar que algoritmo y/o heuristica se corre, se logra directamente 
 utilizando los dropdowns que se disponen en la interfaz.
@@ -41,14 +44,20 @@ un tablero aleatorio y uno para devolver el tablero a la posicion antes de
 resolverlo (en caso de que se quiera partir de un mismo tablero para comparar 
 algoritmos).
 Por ultimo, se dispone un archivo de configuracion *settings.json* para elegir la
-profundidad maxima inicial del algoritmo IDDFS
+profundidad maxima inicial del algoritmo IDDFS, el atributo informed para elegir 
+si se grafican los algoritmos informados o no informados en el test de matplot y
+show_steps permite habilitar la impresion de un loggeo de la solución
 
-![interfaz grafica](/GUI.png)
+![interfaz grafica](https://github.com/AgustinNaso/SIA/blob/main/TP1/GUI.png?raw=true)
 
 
 
 ```json
 {
-  "max_depth": "10000"
+  "max_depth": "10",
+  "matplot": {
+    "informed": false
+  },
+  "show_steps": true
 }
 ```

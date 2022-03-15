@@ -1,6 +1,7 @@
 {
   "max_depth": "10",
-  "mathplot": {
+  "matplot": {
     "informed": false
-  }
+  },
+  "show_steps": true
 }

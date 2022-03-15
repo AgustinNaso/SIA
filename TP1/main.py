@@ -78,6 +78,12 @@ height = screen.get_height()
 width = screen.get_width()
 
 # Constants
+TITLE_Y = 20
+DROPDOWN_TITLE_Y = 90
+STATS_Y = 250
+STATS_X = 600
+STATS_Y_SEPARATOR = 30
+STATS_GROUP_Y_SEPARATOR = 30
 SOLVE_BUTTON_WIDTH = 120
 SOLVE_BUTTON_HEIGHT = 50
 SOLVE_BUTTON_X = 60
@@ -101,6 +107,7 @@ BLACK_COLOR = (0, 0, 0)
 button_font = pygame.font.Font(None, 35)
 shuffle_text = button_font.render('Shuffle', True, BLACK_COLOR)
 solve_text = button_font.render('Solve', True, BLACK_COLOR)
+stop_text = button_font.render('Stop', True, BLACK_COLOR)
 reset_text = button_font.render('Reset', True, BLACK_COLOR)
 
 title_font = pygame.font.Font(None, 64)
@@ -200,7 +207,7 @@ def check_button_hover(x, y, button_width, button_height):
 
 
 def solve(board):
-    global table_before_solve
+    global table_before_solve, heuristic, algorithm_name
     table_before_solve = Board(board.table)
     algorithm = algorithm_list[algorithm_number]
     heuristic = get_heuristic(heuristic_number)
@@ -265,8 +272,12 @@ while running:
 
             if SOLVE_BUTTON_X <= mouse[0] <= SOLVE_BUTTON_X + SOLVE_BUTTON_WIDTH \
                     and SOLVE_BUTTON_Y <= mouse[1] <= SOLVE_BUTTON_Y + SOLVE_BUTTON_HEIGHT:
-                print("Solving")
-                solving = 1
+                # to switch between solve and stop button
+                if solved == 0:
+                    print("Solving")
+                    solving = 1
+                else:
+                    solved = 0
         selected_algorithm = algo_dropdown.update(event_list)
         if selected_algorithm >= 0:
             algorithm_number = selected_algorithm
@@ -303,29 +314,34 @@ while running:
     shuffle_text_rect = shuffle_text.get_rect()
     shuffle_text_rect.center = shuffle_button_rect.center
     solve_text_rect = solve_text.get_rect()
+    stop_text_rect = stop_text.get_rect()
+    stop_text_rect.center = solve_button_rect.center
     solve_text_rect.center = solve_button_rect.center
     reset_text_rect = reset_text.get_rect()
     reset_text_rect.center = reset_button_rect.center
     screen.blit(shuffle_text, shuffle_text_rect)
-    screen.blit(solve_text, solve_text_rect)
+    if solved == 1:
+        screen.blit(stop_text, solve_text_rect)
+    else:
+        screen.blit(solve_text, solve_text_rect)
     screen.blit(reset_text, reset_text_rect)
-    screen.blit(title_text, ((width - title_text.get_width()) / 2, 20))
-    screen.blit(algorithm_dropdown_text, (width / 2 + 65, 90))
-    screen.blit(heuristic_dropdown_text, (600 + 270, 90))
+    screen.blit(title_text, ((width - title_text.get_width()) / 2, TITLE_Y))
+    screen.blit(algorithm_dropdown_text, (width / 2 + 65, DROPDOWN_TITLE_Y))
+    screen.blit(heuristic_dropdown_text, (600 + 270, DROPDOWN_TITLE_Y))
 
     if print_ans == 1:
         aux = metrics_str.split('\n')
         for i in range(len(aux)):
             stats = stats_font.render(aux[i], True, COLOR, BLACK_COLOR)
-            screen.blit(stats, (600, 250 + i * 30))
+            screen.blit(stats, (STATS_X, STATS_Y + i * STATS_Y_SEPARATOR))
         move_y = len(aux) * 30
         aux = last_metrics.split('\n')
         if len(aux) > 1:
             stats = stats_font.render("Previous solve: ", True, WHITE_COLOR, BLACK_COLOR)
-            screen.blit(stats, (600, 250 + move_y))
+            screen.blit(stats, (STATS_X, STATS_Y + move_y))
             for i in range(len(aux)):
                 stats = stats_font.render(aux[i], True, COLOR, BLACK_COLOR)
-                screen.blit(stats, (600, 250 + move_y + 30 + i * 30))
+                screen.blit(stats, (STATS_X, STATS_Y + move_y + STATS_GROUP_Y_SEPARATOR + i * STATS_Y_SEPARATOR))
 
     algo_dropdown.draw(screen)
     heuristic_dropdown.draw(screen)

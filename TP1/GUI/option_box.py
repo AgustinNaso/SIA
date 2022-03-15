@@ -1,5 +1,6 @@
 import pygame
 
+
 class OptionBox:
 
     def __init__(self, x, y, w, h, color, highlight_color, font, option_list, selected=0):

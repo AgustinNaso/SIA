@@ -292,13 +292,13 @@ while running:
         solution_stack = solve(board)
         if solution_stack:
             solved = 1
+            print_ans = 1
 
     if solved:
         board = solution_stack.pop().state.board
         time.sleep(0.3)
         if not solution_stack:
             solved = 0
-            print_ans = 1
     draw_board()
 
     # stores the (x,y) coordinates into

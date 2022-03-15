@@ -71,6 +71,7 @@ width = screen.get_width()
 # Constants
 TITLE_Y = 20
 DROPDOWN_TITLE_Y = 90
+DROPDOWN_TITLE_X = 615
 STATS_Y = 250
 STATS_X = 600
 STATS_Y_SEPARATOR = 30
@@ -93,24 +94,30 @@ RECT_HEIGHT = 150
 COLOR = (255, 192, 203)  # (10, 255, 255)
 WHITE_COLOR = (255, 255, 255)
 BLACK_COLOR = (0, 0, 0)
+A_STAR_IDX = 5
+IDDFS_IDX = 2
+LAST_NON_INFORMED_IDX = 2
+BIG_FONT_SIZE = 64
+MEDIUM_FONT_SIZE = 50
+SMALL_FONT_SIZE = 33
 
 # UI fonts
-button_font = pygame.font.Font(None, 35)
+button_font = pygame.font.Font(None, SMALL_FONT_SIZE)
 shuffle_text = button_font.render('Shuffle', True, BLACK_COLOR)
 solve_text = button_font.render('Solve', True, BLACK_COLOR)
 stop_text = button_font.render('Stop', True, BLACK_COLOR)
 reset_text = button_font.render('Reset', True, BLACK_COLOR)
 
-title_font = pygame.font.Font(None, 64)
+title_font = pygame.font.Font(None, BIG_FONT_SIZE)
 title_text = title_font.render('8 Puzzle', True, COLOR, BLACK_COLOR)
 
-dropdown_font = pygame.font.Font(None, 50)
+dropdown_font = pygame.font.Font(None, MEDIUM_FONT_SIZE)
 algorithm_dropdown_text = dropdown_font.render('Algorithm:', True, COLOR, BLACK_COLOR)
 heuristic_dropdown_text = dropdown_font.render('Heuristic:', True, COLOR, BLACK_COLOR)
 
-stats_font = pygame.font.Font(None, 30)
+stats_font = pygame.font.Font(None, SMALL_FONT_SIZE)
 
-number_font = pygame.font.SysFont(None, 64)  # default font, size 16
+number_font = pygame.font.SysFont(None, BIG_FONT_SIZE)
 
 # Game state variables
 selected_algorithm = 0
@@ -205,13 +212,13 @@ def solve(board):
     algorithm_name = algorithm_names_list[algorithm_number]
     metrics = Metrics(algorithm_name, 0, 0, 0, 0, 0, 0)
     stack = []
-    if algorithm_number < 3:
-        if algorithm_number == 2:
+    if algorithm_number <= LAST_NON_INFORMED_IDX:
+        if algorithm_number == IDDFS_IDX:
             answer = algorithm(Node(State(board), None, 0), metrics, depth)
         else:
             answer = algorithm(Node(State(board), None, 0), metrics)
     else:
-        if algorithm_number == 5:
+        if algorithm_number == A_STAR_IDX:
             answer = algorithm(Node(State(board), None, 0), metrics, f)
         else:
             answer = algorithm(Node(State(board), None, 0), metrics, heuristic)
@@ -314,15 +321,15 @@ while running:
         screen.blit(solve_text, solve_text_rect)
     screen.blit(reset_text, reset_text_rect)
     screen.blit(title_text, ((width - title_text.get_width()) / 2, TITLE_Y))
-    screen.blit(algorithm_dropdown_text, (width / 2 + 65, DROPDOWN_TITLE_Y))
-    screen.blit(heuristic_dropdown_text, (600 + 270, DROPDOWN_TITLE_Y))
+    screen.blit(algorithm_dropdown_text, (DROPDOWN_TITLE_X, DROPDOWN_TITLE_Y))
+    screen.blit(heuristic_dropdown_text, (DROPDOWN_TITLE_X + 255, DROPDOWN_TITLE_Y))
 
     if print_ans == 1:
         aux = metrics_str.split('\n')
         for i in range(len(aux)):
             stats = stats_font.render(aux[i], True, COLOR, BLACK_COLOR)
             screen.blit(stats, (STATS_X, STATS_Y + i * STATS_Y_SEPARATOR))
-        move_y = len(aux) * 30
+        move_y = len(aux) * STATS_Y_SEPARATOR
         aux = last_metrics.split('\n')
         if len(aux) > 1:
             stats = stats_font.render("Previous solve: ", True, WHITE_COLOR, BLACK_COLOR)

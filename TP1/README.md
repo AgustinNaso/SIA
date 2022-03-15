@@ -24,9 +24,8 @@ dos admisibles y una no admisible.
 El programa se desarrollo con python 3.10
 Para instalar las dependencias para poder ejecutar el programa correr
 ```shell
-pip install requirements.txt
+\TP1> pip install requirements.txt
 ```
-en la carpeta del correspondiente programa. 
 
 Logrado esto, para correr la interfaz grafica del programa, ejecutar 
 

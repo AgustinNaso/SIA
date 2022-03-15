@@ -1,3 +1,4 @@
+import json
 import time
 from algorithms.informed import a_star, local_search
 from algorithms.non_informed import dfs, bfs, iddfs
@@ -57,6 +58,13 @@ def f(n):
 
 print('initial state')
 node.print_state()
+
+# game settings
+with open("settings.json") as jsonFile:
+    jsonObject = json.load(jsonFile)
+    jsonFile.close()
+
+depth = int(jsonObject['max_depth'])
 
 # game UI initialization
 pygame.init()
@@ -202,7 +210,7 @@ def solve(board):
     print(algorithm_number)
     if algorithm_number < 3:
         if algorithm_number == 2:
-            answer = algorithm(Node(State(board), None, 0), metrics, 1000)
+            answer = algorithm(Node(State(board), None, 0), metrics, depth)
         else:
             answer = algorithm(Node(State(board), None, 0), metrics)
     else:
@@ -271,7 +279,8 @@ while running:
 
     if solving:
         solution_stack = solve(board)
-        solved = 1
+        if solution_stack:
+            solved = 1
 
     if solved:
         board = solution_stack.pop().state.board

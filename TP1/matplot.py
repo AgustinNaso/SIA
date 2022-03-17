@@ -108,13 +108,11 @@ else:
     a_metrics = np.array([[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]])
     heuristics = np.array([misplaced_numbers, manhattan_distance, nilsson_sequence])
 
-
-
-
+    board = shuffle()
 
     for j in range(3):
         heuristic = heuristics[j]
-        board = shuffle()
+        # board = shuffle()
         state = State(board)
         node = Node(state, None, 0)
         metrics1 = Metrics("Local", 0, 0, 0, 0, 0, 0)

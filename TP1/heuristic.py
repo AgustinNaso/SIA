@@ -28,8 +28,8 @@ def manhattan_distance(node):
                 x = manhattan_coordinates[node.state.board.table[i][j] - 1][0]
                 y = manhattan_coordinates[node.state.board.table[i][j] - 1][1]
                 manhattan += abs(i - x) + abs(j - y)
-            else:
-                manhattan += abs(i - 2) + abs(j - 2)
+            # else:
+            #     manhattan += abs(i - 2) + abs(j - 2)
     return manhattan
 
 

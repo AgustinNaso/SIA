@@ -131,10 +131,10 @@ table_before_solve = Board(Board.final_table)
 
 # Game UI components
 algo_dropdown = OptionBox(
-    600, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, 30),
+    600, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, SMALL_FONT_SIZE),
     algorithm_names_list)
 heuristic_dropdown = OptionBox(
-    600 + 250, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, 30),
+    600 + 250, 150, 200, 50, (255, 255, 255), COLOR, pygame.font.SysFont(None, SMALL_FONT_SIZE),
     ["MANHATTAN", "MISPLACED", "NILSSON"])
 
 

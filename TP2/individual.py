@@ -10,13 +10,14 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
 
     def __init__(self, gen):
         self.gen = gen
-        self.fitnessValue = self.fitness()
+        self.fitness = self.get_fitness()
+        self.roulette_probability = 0
 
-    def fitness(self):
-        sum = 0
+    def get_fitness(self):
+        fitness = 0
         for i in range(3):
-            sum += np.float_power((self.zeta[i] - self.f(self.xi[i])), 2)
-        return sum
+            fitness += np.float_power((self.zeta[i] - self.f(self.xi[i])), 2)
+        return fitness
 
     def f(self, xi):
         sum1 = 0
@@ -28,6 +29,10 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
             sum1 += self.gen[i + 1] * g(sum2)
             sum2 = 0
         return g(sum1 - self.gen[0])
+
+    def set_roulette_probability(self, probability):
+        self.roulette_probability = probability
+        return
 
 
 def g(x):

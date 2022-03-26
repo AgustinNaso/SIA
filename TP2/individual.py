@@ -32,5 +32,3 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
 
 def g(x):
     return np.float_power(np.e, x) / (1 + np.float_power(np.e, x))
-
-

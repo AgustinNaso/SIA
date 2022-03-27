@@ -2,10 +2,8 @@ from individual import Individual
 from typing import Final
 import numpy as np
 
-X = Individual()
-X.gen = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-Y = Individual()
-Y.gen = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
+X = Individual(np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
+Y = Individual(np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
 GENES_QTY: Final = 11
 
 
@@ -18,7 +16,7 @@ GENES_QTY: Final = 11
 # In: a pair of individuals
 # Out: an array of 2 individuals resulting from simple crossbreeding the input pair of individuals
 def simple_crossbreed(x1, x2):
-    children = np.array([Individual(), Individual()])
+    children = np.array([Individual(np.zeros(11)), Individual(np.zeros(11))])
     chosen_locus = np.random.randint(low=0, high=GENES_QTY)
     children[0].gen = np.append(x1.gen[0:chosen_locus].copy(), x2.gen[chosen_locus: GENES_QTY].copy())
     children[1].gen = np.append(x2.gen[0:chosen_locus].copy(), x1.gen[chosen_locus: GENES_QTY].copy())
@@ -35,7 +33,7 @@ def simple_crossbreed(x1, x2):
 # In: a pair of individuals
 # Out: an array of 2 individuals resulting from multiple crossbreeding the input pair of individuals
 def multiple_crossbreed(x1, x2):
-    children = np.array([Individual(), Individual()])
+    children = np.array([Individual(np.zeros(11, dtype=int)), Individual(np.zeros(11, dtype=int))])
     first_chosen_locus = np.random.randint(low=0, high=GENES_QTY - 1)
     second_chosen_locus = np.random.randint(low=first_chosen_locus, high=GENES_QTY)
     children[0].gen = np.concatenate((x1.gen[0:first_chosen_locus].copy(),
@@ -52,17 +50,10 @@ def multiple_crossbreed(x1, x2):
 # In: a pair of individuals
 # Out: an array of 2 individuals resulting from uniform crossbreeding the input pair of individuals
 def uniform_crossbreed(x1, x2):
-    children = np.array([Individual(), Individual()])
+    children = np.array([Individual(np.zeros(11, dtype=int)), Individual(np.zeros(11, dtype=int))])
     for i in range(2):
         for idx in range(GENES_QTY):
             p = np.random.randint(2)
             children[i].gen[idx] = x1.gen[idx] if p == 1 else x2.gen[idx]
     return children
 
-
-ans = simple_crossbreed(X, Y)
-print(f'Simple: H1: {ans[0].gen} H2: {ans[1].gen} ')
-ans = multiple_crossbreed(X, Y)
-print(f'multiple: H1: {ans[0].gen} H2: {ans[1].gen} ')
-ans = uniform_crossbreed(X, Y)
-print(f'uniform: H1: {ans[0].gen} H2: {ans[1].gen} ')

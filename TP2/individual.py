@@ -12,13 +12,36 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
 
     def __init__(self, gen):
         self.gen = gen
-        self.fitnessValue = self.fitness()
+        # converting minimization problem into maximization problem to handle selection
+        self.fitness = 1/(1 + self.get_fitness())
 
-    def fitness(self):
-        sum = 0
+    def to_string(self):
+        string = ""
+        for i in range(11):
+            string += str(self.gen[i])
+        return string
+
+    def __eq__(self, other):
+        return self.to_string().__eq__(other.to_string())
+
+    def __hash__(self):
+        return self.to_string().__hash__()
+
+    def get_max_fitness(self, other):
+        if self.fitness > other.fitness:
+            return self
+        return other
+
+    def get_min_fitness(self, other):
+        if self.fitness < other.fitness:
+            return self
+        return other
+
+    def get_fitness(self):
+        fitness = 0
         for i in range(3):
-            sum += np.float_power((self.zeta[i] - self.f(self.xi[i])), 2)
-        return sum
+            fitness += np.float_power((self.zeta[i] - self.f(self.xi[i])), 2)
+        return fitness
 
     def f(self, xi):
         sum1 = 0.0

@@ -10,7 +10,8 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
 
     def __init__(self, gen):
         self.gen = gen
-        self.fitness = self.get_fitness()
+        # converting minimization problem into maximization problem to handle selection
+        self.fitness = 1/(1 + self.get_fitness())
 
     def to_string(self):
         string = ""

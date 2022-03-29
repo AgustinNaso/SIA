@@ -31,10 +31,9 @@ crossbreed_methods = np.array([simple_crossbreed, multiple_crossbreed, uniform_c
 def main_algorithm():
     population = Population(population_size)
     for i in range(population_size):
-        population.add_individual(Individual(np.random.randn(11)))
+        population.population.append(Individual(np.random.randn(11)))
     min_fitness = population.min_fitness()
     count = stop_criteria
-
     for i in range(generations):
         total = population_size
         while total < 2 * population_size:
@@ -49,9 +48,8 @@ def main_algorithm():
         if selection == BOLTZMANN:
             population.set_new_population(selections[selection](population, i, t0, tc, k, population_size))
         else:
-            population.set_new_population(selections[selection](population, population_size))
+            population.population = selections[selection](population, population_size)
         new_min_fitness = population.min_fitness()
-        print(population.population)
         if new_min_fitness == min_fitness:
             count -= 1
             if count < 0:
@@ -59,6 +57,8 @@ def main_algorithm():
         elif new_min_fitness < min_fitness:
             min_fitness = new_min_fitness
             count = stop_criteria
+            print(min_fitness)
     return min_fitness
 
 
+main_algorithm()

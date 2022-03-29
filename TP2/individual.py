@@ -5,7 +5,7 @@ class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
 
     xi1 = np.array([4.4793, -4.0765, -4.0765], dtype=float)
     xi2 = np.array([-4.1793, -4.9218, 1.7664], dtype=float)
-    xi3 = np.array([-3.9429, -0, 7689, 4.8830], dtype=float)
+    xi3 = np.array([-3.9429, -0.7689, 4.8830], dtype=float)
     xi = np.array([xi1, xi2, xi3], dtype=object)
     zeta = np.array([0.0, 1.0, 1.0])
 
@@ -56,6 +56,8 @@ class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
 
 def g(x):
     if -700 < x < 700:
-        return np.exp(x) / (np.exp(x) + 1)
+        return np.exp(x) / (1+ np.exp(x))
     return 0 if x < 0 else 1
 
+# indi = Individual(np.array([25.084564438628963,21.07264808441084,-2.2473183732099207, 3.9287463466944668, 4.120681521021508,8.562151396734558, 4.312570549827299, -0.7834652204451199,9.272549183066142, -8.618161125975142,1.571171583972295]))
+# print(indi.real_fitness)

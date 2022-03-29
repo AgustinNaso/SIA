@@ -1,3 +1,6 @@
+from operator import attrgetter
+
+
 class Population:
     def __init__(self, size):
         self.size = size
@@ -6,6 +9,13 @@ class Population:
 
     def add_individual(self, individual):
         self.population.append(individual)
+        return
+
+    def min_fitness(self):
+        return min(self.population, key=attrgetter('real_fitness')).real_fitness
+
+    def set_new_population(self, new_population):
+        self.population = new_population
         return
 
     def fitness_sum(self):

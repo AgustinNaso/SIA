@@ -14,18 +14,22 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
         self.gen = gen
         # converting minimization problem into maximization problem to handle selection
         self.fitness = 1/(1 + self.get_fitness())
+        self.real_fitness = self.get_fitness()
 
-    def to_string(self):
+    def __str__(self):
         string = ""
         for i in range(11):
-            string += str(self.gen[i])
+            string += str(self.gen[i]) + " "
         return string
 
+    def __repr__(self):
+        return self.__str__()
+
     def __eq__(self, other):
-        return self.to_string().__eq__(other.to_string())
+        return self.__str__().__eq__(other.to_string())
 
     def __hash__(self):
-        return self.to_string().__hash__()
+        return self.__str__().__hash__()
 
     def get_max_fitness(self, other):
         if self.fitness > other.fitness:

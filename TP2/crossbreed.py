@@ -2,8 +2,8 @@ from individual import Individual
 from typing import Final
 import numpy as np
 
-X = Individual(np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
-Y = Individual(np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
+# X = Individual(np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
+# Y = Individual(np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
 GENES_QTY: Final = 11
 
 
@@ -51,9 +51,13 @@ def multiple_crossbreed(x1, x2):
 # Out: an array of 2 individuals resulting from uniform crossbreeding the input pair of individuals
 def uniform_crossbreed(x1, x2):
     children = np.array([Individual(np.zeros(11, dtype=int)), Individual(np.zeros(11, dtype=int))])
-    for i in range(2):
-        for idx in range(GENES_QTY):
-            p = np.random.randint(2)
-            children[i].gen[idx] = x1.gen[idx] if p == 1 else x2.gen[idx]
+    for idx in range(GENES_QTY):
+        p = np.random.randint(2)
+        if p == 1:
+            children[0].gen[idx] = x1.gen[idx]
+            children[1].gen[idx] = x2.gen[idx]
+        else:
+            children[0].gen[idx] = x2.gen[idx]
+            children[1].gen[idx] = x1.gen[idx]
     return children
 

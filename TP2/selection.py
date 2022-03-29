@@ -10,8 +10,9 @@ BOLTZMANN = "boltzmann"
 
 def elite_selection(population, size):
     # sort list of individuals by fitness
-    population.sort_desc()
-    return population.population[0:size]
+    new_population = population.population.copy()
+    new_population.sort(key=lambda x: x.fitness, reverse=True)
+    return new_population[0:size]
 
 
 # based upon fitness proportional selection but made fairer

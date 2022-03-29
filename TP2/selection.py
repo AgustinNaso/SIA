@@ -10,21 +10,21 @@ BOLTZMANN = "boltzmann"
 
 def elite_selection(population, size):
     # sort list of individuals by fitness
-    population.sort(key=lambda x: x.fitness, reverse=True)
-    return population[0:size]
+    population.sort_desc()
+    return population.population[0:size]
 
 
 # based upon fitness proportional selection but made fairer
 def stochastic_selection(population, size):
     fitness = []
-    for individual in population:
+    for individual in population.population:
         fitness.append(individual.fitness)
     return select_population(STOCHASTIC, population, fitness, size)
 
 
 def truncate_selection(population, size):
-    population.sort(key=lambda x: x.fitness, reverse=True)
-    truncated = population[0:population.size * 0.9]
+    population.sort_desc()
+    truncated = population[0:size * 0.9]
     return random.sample(truncated, size)
 
 
@@ -37,7 +37,7 @@ def roulette_wheel_selection(population, size):
 
 
 def rank_selection(population, size):
-    population.sort(key=lambda x: x.fitness, reverse=True)
+    population.sort_desc()
     probabilities = []
     for i in range(population.size):
         probabilities.append((i + 1 + population.size) / population.size)
@@ -82,7 +82,7 @@ def boltzmann_selection(population, t, t0, tc, k, size):
     probabilities = []
     temp = get_temperature(t, t0, tc, k)
     total = boltzmann_get_sum(population, temp)
-    for individual in population:
+    for individual in population.population:
         probabilities.append(math.exp(individual.fitness/temp)/total)
     return select_population(BOLTZMANN, population, probabilities, size)
 

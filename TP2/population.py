@@ -24,3 +24,6 @@ class Population:
     def new_generation(self):
         self.generation += 1
         return
+
+    def sort_desc(self):
+        self.population.sort(key=lambda x: x.fitness, reverse=True)

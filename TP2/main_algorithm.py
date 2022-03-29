@@ -36,27 +36,25 @@ def main_algorithm():
         total = population_size
         while total < 2 * population_size:
             if selection == 6:
-                parents = selections[selection](population.population, i, t0, tc, k, 2)
+                parents = selections[selection](population, i, t0, tc, k, 2)
             else:
-                parents = selections[selection](population.population, 2)
+                parents = selections[selection](population, 2)
             children = crossbreed_methods[crossbreed](parents[0], parents[1])
             for individual in children:
                 population.population.append(mutation(individual))
             total += 2
         if selection == 6:
-            population.set_new_population(selections[selection](population.population, i, t0, tc, k, population_size))
+            population.set_new_population(selections[selection](population, i, t0, tc, k, population_size))
         else:
-            population.set_new_population(selections[selection](population.population, population_size))
+            population.set_new_population(selections[selection](population, population_size))
         new_min_fitness = population.min_fitness()
         if new_min_fitness == min_fitness:
-            # print(new_min_fitness)
             count -= 1
             if count < 0:
                 return new_min_fitness
         elif new_min_fitness < min_fitness:
             min_fitness = new_min_fitness
             count = stop_criteria
-            # print(new_min_fitness)
     return min_fitness
 
 

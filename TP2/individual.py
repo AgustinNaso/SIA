@@ -32,14 +32,10 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
         return self.__str__().__hash__()
 
     def get_max_fitness(self, other):
-        if self.fitness > other.fitness:
-            return self
-        return other
+        return self if self.fitness > other.fitness else other
 
     def get_min_fitness(self, other):
-        if self.fitness < other.fitness:
-            return self
-        return other
+        return self if self.fitness < other.fitness else other
 
     def get_fitness(self):
         fitness = 0

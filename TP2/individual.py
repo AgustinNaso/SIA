@@ -1,8 +1,7 @@
 import numpy as np
 
 
-class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
-    gen = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
 
     xi1 = np.array([4.4793, -4.0765, -4.0765], dtype=float)
     xi2 = np.array([-4.1793, -4.9218, 1.7664], dtype=float)
@@ -57,6 +56,6 @@ class Individual:  # W0 W1 W2 w11 w12  w13  w21 w22  w23  w01  w02
 
 def g(x):
     if -700 < x < 700:
-        return 1 - (1 / (np.exp(x) + 1))
+        return np.exp(x) / (np.exp(x) + 1)
     return 0 if x < 0 else 1
 

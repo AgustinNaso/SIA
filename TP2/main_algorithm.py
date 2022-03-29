@@ -1,4 +1,6 @@
 import json
+from typing import Final
+
 import numpy as np
 from individual import Individual
 from population import Population
@@ -7,6 +9,7 @@ from selection import elite_selection, stochastic_selection, truncate_selection,
 from crossbreed import simple_crossbreed, multiple_crossbreed, uniform_crossbreed
 from mutation import mutation
 
+BOLTZMANN: Final = 6
 with open("settings.json") as jsonFile:
     jsonObject = json.load(jsonFile)
     jsonFile.close()
@@ -26,16 +29,16 @@ crossbreed_methods = np.array([simple_crossbreed, multiple_crossbreed, uniform_c
 
 
 def main_algorithm():
-    # print("entre")
     population = Population(population_size)
     for i in range(population_size):
         population.add_individual(Individual(np.random.randn(11)))
     min_fitness = population.min_fitness()
     count = stop_criteria
+
     for i in range(generations):
         total = population_size
         while total < 2 * population_size:
-            if selection == 6:
+            if selection == BOLTZMANN:
                 parents = selections[selection](population, i, t0, tc, k, 2)
             else:
                 parents = selections[selection](population, 2)
@@ -43,11 +46,12 @@ def main_algorithm():
             for individual in children:
                 population.population.append(mutation(individual))
             total += 2
-        if selection == 6:
+        if selection == BOLTZMANN:
             population.set_new_population(selections[selection](population, i, t0, tc, k, population_size))
         else:
             population.set_new_population(selections[selection](population, population_size))
         new_min_fitness = population.min_fitness()
+        print(population.population)
         if new_min_fitness == min_fitness:
             count -= 1
             if count < 0:
@@ -58,4 +62,3 @@ def main_algorithm():
     return min_fitness
 
 
-main_algorithm()

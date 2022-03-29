@@ -2,8 +2,8 @@ from individual import Individual
 from typing import Final
 import numpy as np
 
-# X = Individual(np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
-# Y = Individual(np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
+X = Individual(np.random.randn(11))
+Y = Individual(np.random.randn(11))
 GENES_QTY: Final = 11
 
 
@@ -16,7 +16,7 @@ GENES_QTY: Final = 11
 # In: a pair of individuals
 # Out: an array of 2 individuals resulting from simple crossbreeding the input pair of individuals
 def simple_crossbreed(x1, x2):
-    children = np.array([Individual(np.zeros(11)), Individual(np.zeros(11))])
+    children = np.array([Individual(np.random.rand(11)), Individual(np.random.rand(11))])
     chosen_locus = np.random.randint(low=0, high=GENES_QTY)
     children[0].gen = np.append(x1.gen[0:chosen_locus].copy(), x2.gen[chosen_locus: GENES_QTY].copy())
     children[1].gen = np.append(x2.gen[0:chosen_locus].copy(), x1.gen[chosen_locus: GENES_QTY].copy())
@@ -33,7 +33,7 @@ def simple_crossbreed(x1, x2):
 # In: a pair of individuals
 # Out: an array of 2 individuals resulting from multiple crossbreeding the input pair of individuals
 def multiple_crossbreed(x1, x2):
-    children = np.array([Individual(np.zeros(11, dtype=int)), Individual(np.zeros(11, dtype=int))])
+    children = np.array([Individual(np.zeros(11, dtype=float)), Individual(np.zeros(11, dtype=float))])
     first_chosen_locus = np.random.randint(low=0, high=GENES_QTY - 1)
     second_chosen_locus = np.random.randint(low=first_chosen_locus, high=GENES_QTY)
     children[0].gen = np.concatenate((x1.gen[0:first_chosen_locus].copy(),
@@ -61,3 +61,7 @@ def uniform_crossbreed(x1, x2):
             children[1].gen[idx] = x1.gen[idx]
     return children
 
+
+for i in simple_crossbreed(X, Y):
+    print(i)
+    print('\n')

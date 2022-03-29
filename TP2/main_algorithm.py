@@ -29,10 +29,11 @@ def main_algorithm():
     population = Population(population_size)
     for i in range(population_size):
         population.population.append(Individual(np.random.randn(11)))
-    min_fitness = population.min_fitness()
+    max_fitness = 0
     count = stop_criteria
     for i in range(generations):
         total = population_size
+        print(population.population[0])
         while total < 2 * population_size:
             if selection == 6:
                 parents = selections[selection](population, i, t0, tc, k, 2)
@@ -46,16 +47,17 @@ def main_algorithm():
             population.population = selections[selection](population, i, t0, tc, k, population_size)
         else:
             population.population = selections[selection](population, population_size)
-        new_min_fitness = population.min_fitness()
-        if new_min_fitness == min_fitness:
+        new_min_fitness = population.max_fitness()
+        if new_min_fitness == max_fitness:
             count -= 1
             if count < 0:
                 return new_min_fitness
-        elif new_min_fitness < min_fitness:
-            min_fitness = new_min_fitness
+        elif new_min_fitness > max_fitness:
+            max_fitness = new_min_fitness
             count = stop_criteria
-            print(min_fitness)
-    return min_fitness
+
+    return max_fitness
 
 
-main_algorithm()
+aux = main_algorithm()
+print(aux)

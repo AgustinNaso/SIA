@@ -7,8 +7,8 @@ class Population:
         self.population = []
         self.generation = 0
 
-    def min_fitness(self):
-        return min(self.population, key=attrgetter('real_fitness')).real_fitness
+    def max_fitness(self):
+        return max(self.population, key=attrgetter('fitness')).fitness
 
     def fitness_sum(self):
         return float(sum(individual.fitness for individual in self.population))

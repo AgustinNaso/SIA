@@ -61,7 +61,3 @@ def uniform_crossbreed(x1, x2):
             children[1].gen[idx] = x1.gen[idx]
     return children
 
-
-for i in simple_crossbreed(X, Y):
-    print(i)
-    print('\n')

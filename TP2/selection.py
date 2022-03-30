@@ -41,18 +41,11 @@ def roulette_wheel_selection(population, size):
 
 def rank_selection(population, size):
     population.sort_desc()
-    probabilities = []
     sums = [0]
     total = 0
-    fitness = []
     for i in range(population.size):
-        fitness.append(population.population[i].fitness)
         total += (i + 1 + population.size) / population.size
         sums.append(total)
-        probabilities.append((i + 1 + population.size) / population.size)
-    print(fitness)
-    print(probabilities)
-    print(sums)
     return select_population(population, sums, size)
 
 
@@ -61,13 +54,8 @@ def select_population(population, sums, size):
     while len(selected) < size:
         p = random.uniform(0, sums[population.size])
         for i in range(population.size):
-            if i != population.size - 1:
-                if sums[i] < p <= sums[i + 1]:
-                    selected.add(population.population[i])
-                    print("Added")
-                    print(p)
-                    print(i)
-                    print(population.population[i].fitness)
+            if sums[i] < p <= sums[i + 1]:
+                selected.add(population.population[i])
     return list(selected)
 
 

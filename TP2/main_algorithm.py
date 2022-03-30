@@ -35,8 +35,8 @@ def main_algorithm():
     max_fitness = 0
     count = stop_criteria
     for i in range(generations):
-        total = population_size
-        print(population.population[0])
+        # total = population_size
+        # print(population.population[0])
         children = []
         while len(children) < population_size:
             if selection == BOLTZMANN:
@@ -46,22 +46,23 @@ def main_algorithm():
             local_children = crossbreed_methods[crossbreed](parents[0], parents[1])
             for child in local_children:
                 children.append(child)
-            total += 2
+            # total += 2
         for child in children:
             population.population.append(child)
         if selection == BOLTZMANN:
             population.population = selections[selection](population, i, t0, tc, k, population_size)
         else:
-            print(f'Esta es la pop: {population}')
+            # print(f'Esta es la pop: {population}')
             population.population = selections[selection](population, population_size)
-        new_min_fitness = population.max_fitness()
-        if new_min_fitness == max_fitness:
+        new_max_fitness = population.max_fitness()
+        if new_max_fitness == max_fitness:
             count -= 1
             if count < 0:
-                return new_min_fitness
-        elif new_min_fitness > max_fitness:
-            max_fitness = new_min_fitness
+                return new_max_fitness
+        elif new_max_fitness > max_fitness:
+            max_fitness = new_max_fitness
             count = stop_criteria
+        print(max_fitness)
     return max_fitness
 
 

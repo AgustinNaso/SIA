@@ -27,7 +27,7 @@ class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
         return self.__str__()
 
     def __eq__(self, other):
-        return self.__str__().__eq__(other.to_string())
+        return self.gen.__eq__(other.gen)
 
     def __hash__(self):
         return self.__str__().__hash__()

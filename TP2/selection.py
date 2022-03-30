@@ -24,9 +24,10 @@ def stochastic_selection(population, size):
 
 
 def truncate_selection(population, size):
-    population.sort_desc()
-    truncated = population[0:size * 0.9]
-    return random.sample(truncated, size)
+    new_population = population.population.copy()
+    new_population.sort(key=lambda x: x.fitness, reverse=True)
+    truncated = new_population[0:math.ceil(len(new_population) * 0.9)]
+    return random.choices(truncated, k=size)
 
 
 def roulette_wheel_selection(population, size):

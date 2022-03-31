@@ -59,9 +59,10 @@ def main_algorithm():
             count -= 1
             if count < 0:
                 return new_max_fitness
-        elif new_max_fitness > max_fitness:
-            max_fitness = new_max_fitness
-            count = stop_criteria
+        max_fitness = population.max_fitness()
+        # elif new_max_fitness > max_fitness:
+        #     max_fitness = new_max_fitness
+        #     count = stop_criteria
         print(max_fitness)
     return max_fitness
 

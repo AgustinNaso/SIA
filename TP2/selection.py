@@ -8,8 +8,7 @@ from population import Population
 
 def elite_selection(population, size):
     # sort list of individuals by fitness
-    new_population = population.population.copy()
-    new_population.sort(key=lambda x: x.fitness, reverse=True)
+    new_population = population.sort_desc()
     return new_population[0:size]
 
 
@@ -24,8 +23,7 @@ def stochastic_selection(population, size):
 
 
 def truncate_selection(population, size):
-    new_population = population.population.copy()
-    new_population.sort(key=lambda x: x.fitness, reverse=True)
+    new_population = population.sort_desc()
     truncated = new_population[0:math.ceil(len(new_population) * 0.9)]
     return random.choices(truncated, k=size)
 
@@ -41,11 +39,17 @@ def roulette_wheel_selection(population, size):
 
 
 def rank_selection(population, size):
-    population.sort_desc()
+    new_population = population.sort_desc()
     sums = [0]
+    f1 = []
+    total_f1 = 0
+    for i in range(len(new_population)):
+        f1i = (population.size - (i + 1)) / population.size
+        total_f1 += f1i
+        f1.append(f1i)
     total = 0
-    for i in range(population.size):
-        total += (i + 1 + population.size) / population.size
+    for i in range(len(f1)):
+        total += f1[i]/total_f1
         sums.append(total)
     return select_population(population, sums, size)
 
@@ -61,7 +65,7 @@ def select_population(population, sums, size):
 
 
 def tournament_selection(population, size):
-    selected = set()
+    selected = []
     while len(selected) < size:
         u = random.uniform(0.5, 1)
         r = random.uniform(0, 1)
@@ -69,12 +73,12 @@ def tournament_selection(population, size):
         if r < u:
             first_winner = couples[0].get_max_fitness(couples[1])
             second_winner = couples[2].get_max_fitness(couples[3])
-            selected.add(first_winner.get_max_fitness(second_winner))
+            selected.append(first_winner.get_max_fitness(second_winner))
         else:
             first_winner = couples[0].get_min_fitness(couples[1])
             second_winner = couples[2].get_min_fitness(couples[3])
-            selected.add(first_winner.get_min_fitness(second_winner))
-    return list(selected)
+            selected.append(first_winner.get_min_fitness(second_winner))
+    return selected
 
 
 def boltzmann_selection(population, t, t0, tc, k, size):

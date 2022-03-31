@@ -14,7 +14,9 @@ class Population:
         return float(sum(individual.fitness for individual in self.population))
 
     def sort_desc(self):
-        self.population.sort(key=lambda x: x.fitness, reverse=True)
+        new_population = self.population.copy()
+        new_population.sort(key=lambda x: x.fitness, reverse=True)
+        return new_population
 
     def print_fitness(self):
         string = ""

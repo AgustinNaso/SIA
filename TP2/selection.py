@@ -1,11 +1,9 @@
 import random
 import math
-from population import Population
+import numpy as np
 
-STOCHASTIC = "stochastic"
-ROULETTE = "roulette"
-RANK = "rank"
-BOLTZMANN = "boltzmann"
+from TP2.individual import Individual
+from population import Population
 
 
 def elite_selection(population, size):
@@ -17,48 +15,48 @@ def elite_selection(population, size):
 
 # based upon fitness proportional selection but made fairer
 def stochastic_selection(population, size):
-    fitness = []
+    sums = [0]
+    total = 0
     for individual in population.population:
-        fitness.append(individual.fitness)
-    return select_population(STOCHASTIC, population, fitness, size)
+        total += individual.fitness
+        sums.append(total)
+    return select_population(population, sums, size)
 
 
 def truncate_selection(population, size):
-    population.sort_desc()
-    truncated = population[0:size * 0.9]
-    return random.sample(truncated, size)
+    new_population = population.population.copy()
+    new_population.sort(key=lambda x: x.fitness, reverse=True)
+    truncated = new_population[0:math.ceil(len(new_population) * 0.9)]
+    return random.choices(truncated, k=size)
 
 
 def roulette_wheel_selection(population, size):
     fitness_sum = population.fitness_sum()
-    probabilities = []
+    sums = [0]
+    total = 0
     for individual in population.population:
-        probabilities.append(individual.fitness / fitness_sum)
-    return select_population(ROULETTE, population, probabilities, size)
+        total += individual.fitness / fitness_sum
+        sums.append(total)
+    return select_population(population, sums, size)
 
 
 def rank_selection(population, size):
     population.sort_desc()
-    probabilities = []
+    sums = [0]
+    total = 0
     for i in range(population.size):
-        probabilities.append((i + 1 + population.size) / population.size)
-    return select_population(RANK, population, probabilities, size)
+        total += (i + 1 + population.size) / population.size
+        sums.append(total)
+    return select_population(population, sums, size)
 
 
-def select_population(method, population, probabilities, size):
+def select_population(population, sums, size):
     selected = set()
     while len(selected) < size:
-        i = 0
-        if method == (ROULETTE or RANK or BOLTZMANN):
-            p = random.uniform(0, 1)
-        else:
-            p = random.uniform(0, population.fitness_sum)
-        current = probabilities[i]
-        while p > current:
-            p -= current
-            i += 1
-            current = probabilities[i]
-        selected.add(population.population[i])
+        p = random.uniform(0, sums[population.size])
+        for i in range(population.size):
+            if sums[i] < p <= sums[i + 1]:
+                selected.add(population.population[i])
     return list(selected)
 
 
@@ -67,7 +65,7 @@ def tournament_selection(population, size):
     while len(selected) < size:
         u = random.uniform(0.5, 1)
         r = random.uniform(0, 1)
-        couples = random.sample(population, 4)
+        couples = random.sample(population.population, 4)
         if r < u:
             first_winner = couples[0].get_max_fitness(couples[1])
             second_winner = couples[2].get_max_fitness(couples[3])
@@ -80,12 +78,14 @@ def tournament_selection(population, size):
 
 
 def boltzmann_selection(population, t, t0, tc, k, size):
-    probabilities = []
+    sums = [0]
+    total = 0
     temp = get_temperature(t, t0, tc, k)
-    total = boltzmann_get_sum(population, temp)
+    boltzmann_sum = boltzmann_get_sum(population, temp)
     for individual in population.population:
-        probabilities.append(math.exp(individual.fitness/temp)/total)
-    return select_population(BOLTZMANN, population, probabilities, size)
+        total += math.exp(individual.fitness/temp)/boltzmann_sum
+        sums.append(total)
+    return select_population(population, sums, size)
 
 
 def get_temperature(t, t0, tc, k):
@@ -94,6 +94,17 @@ def get_temperature(t, t0, tc, k):
 
 def boltzmann_get_sum(population, temp):
     total = 0
-    for individual in population:
+    for individual in population.population:
         total += math.exp(individual.fitness/temp)
     return total
+
+
+# test_population = Population(10)
+# for i in range(test_population.size):
+#     individual = Individual(np.random.randn(11))
+#     test_population.population.append(individual)
+# test_population.print_fitness()
+# new_population = tournament_selection(test_population, 5)
+# print("----------")
+# for individual in new_population:
+#     print(individual.fitness)

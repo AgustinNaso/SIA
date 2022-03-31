@@ -50,7 +50,7 @@ def multiple_crossbreed(x1, x2):
 # In: a pair of individuals
 # Out: an array of 2 individuals resulting from uniform crossbreeding the input pair of individuals
 def uniform_crossbreed(x1, x2):
-    children = np.array([Individual(np.zeros(11, dtype=int)), Individual(np.zeros(11, dtype=int))])
+    children = np.array([Individual(np.zeros(11, dtype=float)), Individual(np.zeros(11, dtype=float))])
     for idx in range(GENES_QTY):
         p = np.random.randint(2)
         if p == 1:

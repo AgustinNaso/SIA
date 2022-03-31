@@ -47,19 +47,15 @@ class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
         return math.pow(total, 2)
 
     def f(self, xi):
-        # sum1 = 0.0
-        # sum2 = 0.0
-        # for i in range(2):
-        #     for j in range(3):
-        #         sum2 += self.gen[3 + i * 2 + j] * xi[j]
-        #     sum2 -= self.gen[9 + i]
-        #     sum1 += self.gen[i + 1] * g(sum2)
-        #     sum2 = 0
-        # return g(sum1 - self.gen[0])
-        return g(self.gen[1] * g(self.gen[3] * xi[0] + self.gen[4] * xi[1] + self.gen[5] * xi[2] - self.gen[9])
-                 + self.gen[2] * g(self.gen[6] * xi[0] + self.gen[7] * xi[1] + self.gen[8] * xi[2] - self.gen[10])
-                 - self.gen[0])
-
+        sum1 = 0.0
+        sum2 = 0.0
+        for i in range(2):
+            for j in range(3):
+                sum2 += self.gen[3 + i * 2 + j] * xi[j]
+            sum2 -= self.gen[9 + i]
+            sum1 += self.gen[i + 1] * g(sum2)
+            sum2 = 0
+        return g(sum1 - self.gen[0])
 
 def g(x):
     if -700 < x < 700:

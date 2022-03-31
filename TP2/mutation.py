@@ -1,9 +1,14 @@
+import json
 from typing import Final
 from crossbreed import GENES_QTY
 import random
 
-INTERVAL_BOUND: Final = 10
-MUTATION_PROBABILITY: Final = 0.01
+with open("settings.json") as jsonFile:
+    jsonObject = json.load(jsonFile)
+    jsonFile.close()
+
+INTERVAL_BOUND: Final = jsonObject['mutation_bound']
+MUTATION_PROBABILITY: Final = jsonObject['mutation_rate']
 
 
 # mutation: given an individual, each gen of his chromosome has a probability p of getting his allele modified with

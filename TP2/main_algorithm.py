@@ -52,7 +52,6 @@ def main_algorithm():
         if selection == BOLTZMANN:
             population.population = selections[selection](population, i, t0, tc, k, population_size)
         else:
-            # print(f'Esta es la pop: {population}')
             population.population = selections[selection](population, population_size)
         new_max_fitness = population.max_fitness()
         if new_max_fitness == max_fitness:

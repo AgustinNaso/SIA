@@ -1,9 +1,5 @@
 import random
 import math
-import numpy as np
-
-from TP2.individual import Individual
-from population import Population
 
 
 def elite_selection(population, size):

@@ -7,15 +7,15 @@ class Population:
         self.population = []
         self.generation = 0
 
-    def max_fitness(self):
-        return max(self.population, key=attrgetter('fitness')).fitness
+    def min_fitness(self):
+        return min(self.population, key=attrgetter('fitness')).fitness
 
     def fitness_sum(self):
         return float(sum(individual.fitness for individual in self.population))
 
-    def sort_desc(self):
+    def sort(self):
         new_population = self.population.copy()
-        new_population.sort(key=lambda x: x.fitness, reverse=True)
+        new_population.sort(key=lambda x: x.fitness)
         return new_population
 
     def print_fitness(self):

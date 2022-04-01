@@ -14,8 +14,8 @@ class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
     def __init__(self, gen):
         self.gen = gen
         # converting minimization problem into maximization problem to handle selection
-        self.fitness = 1/(1 + self.get_fitness())
-        self.real_fitness = self.get_fitness()
+        # self.fitness = 1/(1 + self.get_fitness())
+        self.fitness = self.get_fitness()
 
     def __str__(self):
         string = ""
@@ -37,6 +37,10 @@ class Individual:  # W0 W1 W2 w11 w12 w13 w21 w22 w23 w01 w02
 
     def get_min_fitness(self, other):
         return self if self.fitness < other.fitness else other
+
+    def reset_fitness(self):
+        self.fitness = self.get_fitness()
+        return
 
     def get_fitness(self):
         fitness = 0

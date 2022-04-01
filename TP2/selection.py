@@ -4,25 +4,23 @@ import math
 
 def elite_selection(population, size):
     # sort list of individuals by fitness
-    new_population = population.population.copy()
-    new_population.sort(key=lambda x: x.fitness, reverse=True)
+    new_population = population.sort()
     return new_population[0:size]
 
 
 # based upon fitness proportional selection but made fairer
-def stochastic_selection(population, size):
-    sums = [0]
-    total = 0
-    for individual in population.population:
-        total += individual.fitness
-        sums.append(total)
-    return select_population(population, sums, size)
+# def stochastic_selection(population, size):
+#     sums = [0]
+#     total = 0
+#     for individual in population.population:
+#         total += individual.fitness
+#         sums.append(total)
+#     return select_population(population.population, sums, size)
 
 
 def truncate_selection(population, size):
-    new_population = population.population.copy()
-    new_population.sort(key=lambda x: x.fitness, reverse=True)
-    truncated = new_population[0:math.ceil(len(new_population) * 0.9)]
+    new_population = population.sort()
+    truncated = new_population[0:math.ceil(population.size * 0.9)]
     return random.choices(truncated, k=size)
 
 
@@ -31,33 +29,39 @@ def roulette_wheel_selection(population, size):
     sums = [0]
     total = 0
     for individual in population.population:
-        total += individual.fitness / fitness_sum
+        total += (1 - individual.fitness / fitness_sum)
         sums.append(total)
-    return select_population(population, sums, size)
+    return select_population(population.population, sums, size)
 
 
 def rank_selection(population, size):
-    population.sort_desc()
+    new_population = population.sort()
     sums = [0]
-    total = 0
+    f1 = []
+    total_f1 = 0
     for i in range(population.size):
-        total += (i + 1 + population.size) / population.size
+        f1i = (population.size - (i + 1)) / population.size
+        total_f1 += f1i
+        f1.append(f1i)
+    total = 0
+    for fi in f1:
+        total += fi/total_f1
         sums.append(total)
-    return select_population(population, sums, size)
+    return select_population(new_population, sums, size)
 
 
 def select_population(population, sums, size):
-    selected = set()
+    selected = []
     while len(selected) < size:
-        p = random.uniform(0, sums[population.size])
-        for i in range(population.size):
+        p = random.uniform(0, sums[len(population)])
+        for i in range(len(population)):
             if sums[i] < p <= sums[i + 1]:
-                selected.add(population.population[i])
-    return list(selected)
+                selected.append(population[i])
+    return selected
 
 
 def tournament_selection(population, size):
-    selected = set()
+    selected = []
     while len(selected) < size:
         u = random.uniform(0.5, 1)
         r = random.uniform(0, 1)
@@ -65,12 +69,12 @@ def tournament_selection(population, size):
         if r < u:
             first_winner = couples[0].get_max_fitness(couples[1])
             second_winner = couples[2].get_max_fitness(couples[3])
-            selected.add(first_winner.get_max_fitness(second_winner))
+            selected.append(first_winner.get_max_fitness(second_winner))
         else:
             first_winner = couples[0].get_min_fitness(couples[1])
             second_winner = couples[2].get_min_fitness(couples[3])
-            selected.add(first_winner.get_min_fitness(second_winner))
-    return list(selected)
+            selected.append(first_winner.get_min_fitness(second_winner))
+    return selected
 
 
 def boltzmann_selection(population, t, t0, tc, k, size):
@@ -79,9 +83,9 @@ def boltzmann_selection(population, t, t0, tc, k, size):
     temp = get_temperature(t, t0, tc, k)
     boltzmann_sum = boltzmann_get_sum(population, temp)
     for individual in population.population:
-        total += math.exp(individual.fitness/temp)/boltzmann_sum
+        total += (1 - math.exp(individual.fitness/temp)/boltzmann_sum)
         sums.append(total)
-    return select_population(population, sums, size)
+    return select_population(population.population, sums, size)
 
 
 def get_temperature(t, t0, tc, k):

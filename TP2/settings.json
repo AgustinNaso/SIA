@@ -1,8 +1,8 @@
 {
-  "selection": "3",
+  "selection": "5",
   "crossbreed": "0",
-  "size": "6",
-  "generations": "20",
+  "size": "121",
+  "generations": "500",
   "t0": "1",
   "tc": "1",
   "k": "10",

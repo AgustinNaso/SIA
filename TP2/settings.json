@@ -5,6 +5,5 @@
   "generations": "500",
   "t0": "1",
   "tc": "1",
-  "k": "10",
-  "stop_criteria": "20"
+  "k": "10"
 }

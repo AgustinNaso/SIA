@@ -21,7 +21,6 @@ generations = int(jsonObject['generations'])
 t0 = int(jsonObject['t0'])
 tc = int(jsonObject['tc'])
 k = int(jsonObject['k'])
-stop_criteria = int(jsonObject['stop_criteria'])
 
 selections = np.array([elite_selection, truncate_selection, roulette_wheel_selection,
                        rank_selection, tournament_selection, boltzmann_selection])
@@ -33,7 +32,6 @@ def main_algorithm():
     for i in range(population_size):
         population.population.append(Individual(np.random.uniform(low=-30, high=30, size=11)))
     min_fitness = population.min_fitness()
-    count = stop_criteria
     for i in range(generations):
         children = []
         while len(children) < population_size:
@@ -54,10 +52,6 @@ def main_algorithm():
         else:
             population.population = selections[selection](population, population_size)
         population.size = population_size
-        # if population.min_fitness() == min_fitness:
-        #     count -= 1
-        #     if count < 0:
-        #         return min_fitness
         min_fitness = population.min_fitness()
         print(str(i) + " " + str(min_fitness))
     return min_fitness

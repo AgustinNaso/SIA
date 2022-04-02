@@ -11,7 +11,7 @@ class Population:
         return min(self.population, key=attrgetter('fitness')).fitness
 
     def fitness_sum(self):
-        return float(sum(individual.fitness for individual in self.population))
+        return float(sum((1 / (1 + individual.fitness)) for individual in self.population))
 
     def sort(self):
         new_population = self.population.copy()

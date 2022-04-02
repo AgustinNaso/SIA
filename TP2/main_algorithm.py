@@ -54,10 +54,10 @@ def main_algorithm():
         else:
             population.population = selections[selection](population, population_size)
         population.size = population_size
-        if population.min_fitness() == min_fitness:
-            count -= 1
-            if count < 0:
-                return min_fitness
+        # if population.min_fitness() == min_fitness:
+        #     count -= 1
+        #     if count < 0:
+        #         return min_fitness
         min_fitness = population.min_fitness()
         print(str(i) + " " + str(min_fitness))
     return min_fitness

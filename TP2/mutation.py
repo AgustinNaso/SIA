@@ -7,8 +7,8 @@ with open("settings.json") as jsonFile:
     jsonObject = json.load(jsonFile)
     jsonFile.close()
 
-INTERVAL_BOUND: Final = jsonObject['mutation_bound']
-MUTATION_PROBABILITY: Final = jsonObject['mutation_rate']
+INTERVAL_BOUND: Final = int(jsonObject['mutation_bound'])
+MUTATION_PROBABILITY: Final = float(jsonObject['mutation_rate'])
 
 
 # mutation: given an individual, each gen of his chromosome has a probability p of getting his allele modified with

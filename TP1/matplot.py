@@ -19,6 +19,7 @@ def shuffle():
         new_table = random.choice(new_table.next_moves())
     return new_table
 
+
 # game settings
 with open("settings.json") as jsonFile:
     jsonObject = json.load(jsonFile)
@@ -30,6 +31,7 @@ depth = int(jsonObject['max_depth'])
 axis = np.array(["Costo", "Profundidad", "Nodos Expandidos", "Nodos Frontera", "Tiempo (ms)"])
 titles = np.array(["Costo", "Profundidad", "Nodos Expandidos", "Nodos Frontera", "Tiempo"])
 
+
 def f(n):
     return n.depth + heuristic(n)
 
@@ -39,6 +41,7 @@ def autolabel(rects):
         h = rect.get_height()
         plt.text(rect.get_x() + rect.get_width() / 2., 1.05 * h, '%d' % int(h),
                  ha='center', va='bottom')
+
 
 # Tests
 # costo, profundidad, nodos expandidos, frontera, tiempo
@@ -159,10 +162,6 @@ else:
         plt.xlabel("Métodos de Búsqueda")
         plt.ylabel(axis[i])
         plt.title("Comparación en base a: " + titles[i])
-
-
-
-
 
         autolabel(bar1)
         autolabel(bar2)

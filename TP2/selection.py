@@ -1,5 +1,9 @@
 import random
 import math
+from typing import Final
+
+BOLTZMANN: Final = 5
+
 
 
 def elite_selection(population, size):

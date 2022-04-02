@@ -71,13 +71,13 @@ def tournament_selection(population, size):
         r = random.uniform(0, 1)
         couples = random.sample(population.population, 4)
         if r < u:
-            first_winner = couples[0].get_max_fitness(couples[1])
-            second_winner = couples[2].get_max_fitness(couples[3])
-            selected.append(first_winner.get_max_fitness(second_winner))
+            first_winner = couples[0].get_best_fitness(couples[1])
+            second_winner = couples[2].get_best_fitness(couples[3])
+            selected.append(first_winner.get_best_fitness(second_winner))
         else:
-            first_winner = couples[0].get_min_fitness(couples[1])
-            second_winner = couples[2].get_min_fitness(couples[3])
-            selected.append(first_winner.get_min_fitness(second_winner))
+            first_winner = couples[0].get_worst_fitness(couples[1])
+            second_winner = couples[2].get_worst_fitness(couples[3])
+            selected.append(first_winner.get_worst_fitness(second_winner))
     return selected
 
 

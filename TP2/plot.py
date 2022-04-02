@@ -2,36 +2,43 @@ from typing import Final
 
 import numpy as np
 
-from TP2.selection import BOLTZMANN
+from main_algorithm import BOLTZMANN
 from main_algorithm import main_algorithm
 import matplotlib.pyplot as plt
 
-selection = 0
 selection_name = ["Elite", "Truncate", "Roulette Wheel", "Rank", "Tournament", "Boltzmann"]
 SELECTION_SIZE: Final = 6
-crossbreed = 1
 crossbreed_name = ["Simple", "Multiple", "Uniform"]
 CROSSBREED_SIZE: Final = 3
-population_size = 500
+population_size = 100
 generations = 500
-t0 = 1
-tc = 1
-k = 10
-stop_criteria = 100
 
-for i in range(SELECTION_SIZE):
-    selection = i
-    for j in range(CROSSBREED_SIZE):
-        crossbreed = j
-        if selection == BOLTZMANN:
-            t0 = 4
-            tc = 8
-            k = 15
-        ans = main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k, stop_criteria)
-        y = ans[1]
-        x = np.arange(1, generations + 1)
-        plt.plot(x, y)
-        plt.xlabel("Iteración")
-        plt.ylabel("Error")
-        plt.title(selection_name[i] + "+" + crossbreed_name[j])
-        plt.show()
+
+def plot(selection, crossbreed):
+    ans = main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k)
+    y = ans[1]
+    x = np.arange(1, generations + 1)
+    plt.plot(x, y)
+    plt.xlabel("Iteración")
+    plt.ylabel("Error")
+    plt.title(selection_name[selection] + " + " + crossbreed_name[crossbreed] + " + " + "Mutacion Alta")
+    plt.show()
+    y_2 = y[400:500]
+    x_2 = x[400:500]
+    plt.plot(x_2, y_2)
+    plt.title("Zoom")
+    plt.show()
+
+
+for selection in range(SELECTION_SIZE - 1):
+    for crossbreed in range(CROSSBREED_SIZE):
+        plot(selection, crossbreed)
+
+# Graficos boltzmann variando  temperaturas y k
+for i in range(3):
+    selection = BOLTZMANN
+    t0 = 2 * (i + 1)
+    tc = 1 * (i + 1)
+    k = 0.5 * (i + 1)
+    for crossbreed in range(CROSSBREED_SIZE):
+        plot(selection, crossbreed)

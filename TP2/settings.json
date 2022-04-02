@@ -1,12 +1,10 @@
 {
   "selection": "4",
   "crossbreed": "0",
-  "selection": "2",
-  "crossbreed": "2",
   "size": "121",
   "generations": "500",
-  "mutation_bound": "1",
-  "mutation_rate": "0.1",
+  "mutation_bound": "2",
+  "mutation_rate": "0.3",
   "t0": "1",
   "tc": "1",
   "k": "10"

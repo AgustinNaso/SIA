@@ -17,7 +17,7 @@ stop_criteria = int(jsonObject['stop_criteria'])
 
 
 def main():
-    print(main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k, stop_criteria))
+    print(main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k))
     print(np.random.randn(10))
     print("Hello World!")
 

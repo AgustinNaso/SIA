@@ -27,7 +27,7 @@ selections = np.array([elite_selection, truncate_selection, roulette_wheel_selec
 crossbreed_methods = np.array([simple_crossbreed, multiple_crossbreed, uniform_crossbreed])
 
 
-def main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k, stop_criteria):
+def main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k):
     # Initializing and populating
     population = Population(population_size)
     for i in range(population_size):

@@ -33,7 +33,7 @@ def roulette_wheel_selection(population, size):
     sums = [0]
     total = 0
     for individual in population.population:
-        total += (1 - individual.fitness / fitness_sum)
+        total += (1 / (1 + individual.fitness)) / fitness_sum
         sums.append(total)
     return select_population(population.population, sums, size)
 
@@ -57,7 +57,7 @@ def rank_selection(population, size):
 def select_population(population, sums, size):
     selected = []
     while len(selected) < size:
-        p = random.uniform(0, sums[len(population)])
+        p = random.uniform(0, 1)
         for i in range(len(population)):
             if sums[i] < p <= sums[i + 1]:
                 selected.append(population[i])
@@ -87,7 +87,7 @@ def boltzmann_selection(population, t, t0, tc, k, size):
     temp = get_temperature(t, t0, tc, k)
     boltzmann_sum = boltzmann_get_sum(population, temp)
     for individual in population.population:
-        total += (1 - math.exp(individual.fitness/temp)/boltzmann_sum)
+        total += math.exp((1 / (1 + individual.fitness))/temp)/boltzmann_sum
         sums.append(total)
     return select_population(population.population, sums, size)
 
@@ -99,16 +99,16 @@ def get_temperature(t, t0, tc, k):
 def boltzmann_get_sum(population, temp):
     total = 0
     for individual in population.population:
-        total += math.exp(individual.fitness/temp)
+        total += math.exp((1 / (1 + individual.fitness))/temp)
     return total
 
 
 # test_population = Population(10)
 # for i in range(test_population.size):
-#     individual = Individual(np.random.randn(11))
+#     individual = Individual(np.random.uniform(low=-30, high=30, size=11))
 #     test_population.population.append(individual)
 # test_population.print_fitness()
-# new_population = tournament_selection(test_population, 5)
+# new_population = roulette_wheel_selection(test_population, 5)
 # print("----------")
 # for individual in new_population:
 #     print(individual.fitness)

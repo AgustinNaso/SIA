@@ -13,6 +13,12 @@ CROSSBREED_SIZE: Final = 3
 population_size = 100
 generations = 500
 
+i = 2
+
+t0 = 2 * (i + 1)
+tc = 1 * (i + 1)
+k = 0.5 * (i + 1)
+
 
 def plot(selection, crossbreed):
     ans = main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k)
@@ -23,8 +29,12 @@ def plot(selection, crossbreed):
     plt.ylabel("Error")
     plt.title(selection_name[selection] + " + " + crossbreed_name[crossbreed] + " + " + "Mutacion Alta")
     plt.show()
-    y_2 = y[400:500]
-    x_2 = x[400:500]
+    first = 500
+    for i in range(len(y)):
+        if y[i] == 0:
+            first = i
+    y_2 = y[first-100:first]
+    x_2 = x[first-100:first]
     plt.plot(x_2, y_2)
     plt.title("Zoom")
     plt.show()

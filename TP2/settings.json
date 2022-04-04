@@ -4,7 +4,7 @@
   "size": "121",
   "generations": "500",
   "mutation_bound": "1",
-  "mutation_rate": "0.05",
+  "mutation_rate": "0.1",
   "t0": "1",
   "tc": "1",
   "k": "10"

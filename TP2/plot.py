@@ -12,7 +12,9 @@ crossbreed_name = ["Simple", "Multiple", "Uniform"]
 CROSSBREED_SIZE: Final = 3
 population_size = 100
 generations = 500
-
+t0 = 2
+tc = 1
+k = 0.5
 
 def plot(selection, crossbreed):
     ans = main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k)
@@ -21,12 +23,14 @@ def plot(selection, crossbreed):
     plt.plot(x, y)
     plt.xlabel("Iteración")
     plt.ylabel("Error")
-    plt.title(selection_name[selection] + " + " + crossbreed_name[crossbreed] + " + " + "Mutacion Alta")
+    plt.title(selection_name[selection] + " + " + crossbreed_name[crossbreed] + " + " + "Mutación Alta")
     plt.show()
     y_2 = y[400:500]
     x_2 = x[400:500]
     plt.plot(x_2, y_2)
-    plt.title("Zoom")
+    plt.title(f"Observacion Ampliada\n {selection_name[selection]} + {crossbreed_name[crossbreed]} + Mutación Alta")
+    plt.xlabel("Iteración")
+    plt.ylabel("Error")
     plt.show()
 
 

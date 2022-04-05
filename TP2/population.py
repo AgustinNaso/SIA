@@ -8,7 +8,10 @@ class Population:
         self.generation = 0
 
     def min_fitness(self):
-        return min(self.population, key=attrgetter('fitness')).fitness
+        indiv = min(self.population, key=attrgetter('fitness'))
+        if indiv.fitness == 0.0:
+            print(indiv)
+        return indiv.fitness
 
     def fitness_sum(self):
         return float(sum((1 / (1 + individual.fitness)) for individual in self.population))

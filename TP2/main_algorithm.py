@@ -5,7 +5,7 @@ import numpy as np
 from individual import Individual
 from population import Population
 from selection import elite_selection, truncate_selection, roulette_wheel_selection, \
-    rank_selection, tournament_selection, boltzmann_selection, BOLTZMANN
+    rank_selection, tournament_selection, boltzmann_selection
 from crossbreed import simple_crossbreed, multiple_crossbreed, uniform_crossbreed
 from mutation import mutation
 
@@ -25,11 +25,11 @@ crossbreed_methods = np.array([simple_crossbreed, multiple_crossbreed, uniform_c
 
 
 def main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k, mutation_type,
-                   initial_population=False):
+                   initial_population=None):
     best_gen = [1, 1]
     # Initializing and populating
     population = Population(population_size)
-    if not initial_population:
+    if initial_population is None:
         for i in range(population_size):
             population.population.append(Individual(np.random.uniform(low=-30, high=30, size=11)))
     else:
@@ -64,5 +64,4 @@ def main_algorithm(selection, crossbreed, population_size, generations, t0, tc, 
         if min_fitness < best_gen[1]:
             best_gen[0] = i
             best_gen[1] = min_fitness
-    print(f'Tipo: {selection_name[selection]} + {crossbreed_name[crossbreed]} + Mutacion :{mutation_name[mutation_type]} + {best_gen[0]}:{best_gen[1]}')
     return [min_fitness, population_fitness]

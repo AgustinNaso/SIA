@@ -101,14 +101,3 @@ def boltzmann_get_sum(population, temp):
     for individual in population.population:
         total += math.exp((1 / (1 + individual.fitness))/temp)
     return total
-
-
-# test_population = Population(10)
-# for i in range(test_population.size):
-#     individual = Individual(np.random.uniform(low=-30, high=30, size=11))
-#     test_population.population.append(individual)
-# test_population.print_fitness()
-# new_population = roulette_wheel_selection(test_population, 5)
-# print("----------")
-# for individual in new_population:
-#     print(individual.fitness)

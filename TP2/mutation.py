@@ -17,8 +17,8 @@ MUTATION_PROBABILITY: Final = float(jsonObject['mutation_rate'])
 mutations = [[0.15, 2], [0.1, 1], [0.05, 1]]
 
 
-def mutation(individual, i):
-    mutation_values = mutations[i]
+def mutation(individual, mutation_values):
+    # mutation_values = mutations[i]
     for i in range(GENES_QTY):
         if random.random() <= mutation_values[0]:
             individual.gen[i] += random.uniform(-mutation_values[1], mutation_values[1])

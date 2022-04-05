@@ -1,7 +1,7 @@
 {
-  "selection": "4",
+  "selection": "5",
   "crossbreed": "0",
-  "size": "121",
+  "size": "50",
   "generations": "500",
   "mutation_bound": "1",
   "mutation_rate": "0.1",

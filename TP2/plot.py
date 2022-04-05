@@ -22,16 +22,16 @@ save_path = "C:/Users/agus_/Desktop/SIA CHARTS/P150/Mutacion Baja/"
 extension = ".png"
 color = ['red', 'blue', 'green']
 
-
 starting_pop = Population(population_size)
 for i in range(population_size):
     starting_pop.population.append(Individual(np.random.uniform(low=-30, high=30, size=11)))
 
 
-def plot(selection, temperature=-1):
+def plot(selection, mutation_type, starting_population, temperature=-1):
     x = np.arange(1, generations + 1)
-    for crossbreed in range(CROSSBREED_SIZE):
-        ans = main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k, starting_pop)
+    for crossbreed in range(1):
+        ans = main_algorithm(selection, crossbreed, population_size, generations, t0, tc, k, mutation_type,
+                             starting_population)
         y = ans[1]
         plt.plot(x, y, color=color[crossbreed])
         plt.xlabel("Iteración")
@@ -59,8 +59,11 @@ def plot(selection, temperature=-1):
     # plt.show()
 
 
-for selection in range(1):
-    plot(2)
+for mutation in range(3):
+    for selection in range(SELECTION_SIZE - 1):
+        starting_pop_copy = starting_pop.population.copy()
+        plot(selection, mutation, starting_pop_copy)
+
 #
 # # Graficos boltzmann variando  temperaturas y k
 # for i in range(3):

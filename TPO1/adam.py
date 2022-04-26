@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 
 
-
+import time
+start_time = time.time()
 x = xi
 X = tf.convert_to_tensor(x[0:1].astype("float32"))
 y = zeta
@@ -35,6 +36,7 @@ for i in range(len(y)):
 
 a = accuracy_score(pred, test)
 print('Accuracy is:', a * 100)
+print("Time = ", time.time() - start_time)
 
 # La idea es que el validatio data sea otro data set
 # history = model.fit(X, y, validation_data=(X, y), epochs=100, batch_size=64)

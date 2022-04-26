@@ -16,8 +16,8 @@ class Perceptron(ABC):
         i = 0
         error = 1
         p = len(self.training_set)
-        self.error_min = p * 2
-        w = np.zeros(len(self.training_set[0]))
+        self.error_min = float('inf')
+        w = np.zeros(len(self.training_set[0]), dtype=float)
         while error > 0 and i < epoch:
             i_x = np.random.randint(1, p)
             excitation = np.inner(self.training_set[i_x], w)

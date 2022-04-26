@@ -7,7 +7,7 @@ expected_output = np.array([-1, -1, -1, 1])
 # training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
 # expected_output = np.array([1, 1, -1, -1])
 learning_rate = 0.1
-epoch = 1000
+epoch = 10000
 perceptron = SimplePerceptron(training_set, expected_output, learning_rate)
 perceptron.train(epoch)
 results = perceptron.get_results(np.array([[1, 1]]))

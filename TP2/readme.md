@@ -17,7 +17,7 @@ pip install -r requirements.txt
 ## Cómo Correr
 Utilizando python se debera ejecutar el main.py.
 ```bash
-python3 main.py
+python3 conjugateGradient.py
 ```
 
 ## Archivo de Configuración:

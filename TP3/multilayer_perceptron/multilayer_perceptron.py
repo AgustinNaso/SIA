@@ -5,6 +5,7 @@ import constants
 
 class MultilayerPerceptron:
     adaptive_rate = False
+    error_limit = 0.01
 
     def __init__(self, training_set, expected_output, learning_rate, learning_type=constants.INCREMENTAL,
                  learning_rate_params=None, momentum=False):
@@ -14,7 +15,6 @@ class MultilayerPerceptron:
         self.learning_type = learning_type
         self.layers = []
         self.error_min = None
-        self.w_min = None
         self.momentum = momentum
         if learning_rate_params:
             self.adaptive_rate = True
@@ -58,13 +58,15 @@ class MultilayerPerceptron:
             error *= 0.5
             if error < self.error_min:
                 self.error_min = error
+            if error < self.error_limit:
+                break
 
     def calculate_error(self, expected_output):
         m = len(self.layers)
-        neurons = self.layers[m-1].neurons
+        neurons = self.layers[m - 1].neurons
         aux_sum = 0
         for i in range(len(neurons)):
-            aux_sum += (expected_output[i] - neurons[i].activation)**2
+            aux_sum += (expected_output[i] - neurons[i].activation) ** 2
         return aux_sum
 
     def backpropagation(self, expected_output):

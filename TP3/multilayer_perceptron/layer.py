@@ -1,5 +1,6 @@
 from neuron import Neuron
 import TP3.constants as constants
+import numpy as np
 
 
 class Layer:
@@ -18,10 +19,7 @@ class Layer:
             self.neurons.append(Neuron(None, None, training_set[i], False))
 
     def get_neurons_activation(self):
-        activations = []
-        for neuron in self.neurons:
-            activations.append(neuron.activation)
-        return activations
+        return np.array(list(map(lambda neuron: neuron.activation, self.neurons)))
 
     def propagate(self, prev_layer):
         for neuron in self.neurons:

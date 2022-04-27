@@ -5,6 +5,8 @@ import constants
 class Neuron:
     excitation = 0
     activation = 0
+    sigma = None
+    delta = 0
 
     def __init__(self, prev_layer_neurons, g, activation, has_weights=True):
         self.activation = activation
@@ -19,5 +21,12 @@ class Neuron:
     def activate(self, prev_layer_activations):
         self.activation = self.g(self.excite(prev_layer_activations))
         return self.activation
+
+    def update_weights(self, learning_rate, prev_layer_activations, momentum):
+        delta_weights = (learning_rate * self.sigma) * prev_layer_activations
+        if momentum:
+            delta_weights += 0.8 * self.delta
+        self.weights += delta_weights
+        self.delta = delta_weights
 
     # def error(self):

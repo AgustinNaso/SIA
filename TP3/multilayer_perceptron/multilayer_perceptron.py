@@ -4,8 +4,8 @@ import constants
 
 
 class MultilayerPerceptron:
-    def __init__(self, training_set, expected_output, learning_rate, learning_type=constants.INCREMENTAL, momentum=None,
-                 learning_rate_params=None):
+    def __init__(self, training_set, expected_output, learning_rate, learning_type=constants.INCREMENTAL,
+                 learning_rate_params=None, momentum=False):
         self.training_set = np.array(list(map(lambda t: np.append(t, [1]), training_set)))
         self.expected_output = expected_output
         self.learning_rate = learning_rate
@@ -13,8 +13,7 @@ class MultilayerPerceptron:
         self.layers = []
         self.error_min = None
         self.w_min = None
-        if momentum:
-            self.momentum = momentum
+        self.momentum = momentum
         if learning_rate_params:
             self.learning_rate_inc = learning_rate_params[0]
             self.learning_rate_dec = learning_rate_params[1]
@@ -40,6 +39,28 @@ class MultilayerPerceptron:
 
                 for i in range(1, m):
                     self.layers[i].propagate()
+
+    def backpropagate(self, expected_output):
+        m = len(self.layers)
+        for i in range(m - 1, 0, -1):
+            layer = self.layers[i]
+            for j in range(len(layer.neurons)):
+                if i == m - 1:
+                    layer[j].sigma = layer[j].excitation * (expected_output[i] - layer[j].activation)
+                else:
+                    upper_layer_neurons = self.layers[i + 1]
+                    aux_sum = 0
+                    for neuron in upper_layer_neurons:
+                        aux_sum += neuron.weights[j] * neuron.sigma
+                    layer[j].sigma = layer[j].excitation * aux_sum
+
+    def update_weights(self):
+        m = len(self.layers)
+        for i in range(1, m):
+            neurons = self.layers[i]
+            prev_neurons_activations = self.layers[i-1].get_neurons_activation()
+            for neuron in neurons:
+                neuron.update_weights(self.learning_rate, prev_neurons_activations, self.momentum)
 
     def add(self, neurons, g, layer):
         if layer == constants.FIRST:

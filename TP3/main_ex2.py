@@ -16,9 +16,11 @@ def import_data(file):
 
 training_set = import_data('data/ex2_training_set')
 expected_output = import_data('data/ex2_expected_output')
-learning_rate = 0.07
+learning_rate = 0.1
 iterations = 1000
 perceptron = LinearPerceptron(training_set, expected_output, learning_rate)
+non_linear = NonLinearPerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
-print(perceptron.get_results(np.array([[4.4793, -4.0765, 4.4558], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.883]],
+non_linear.train(iterations)
+print(non_linear.get_results(np.array([[4.4793, -4.0765, 4.4558], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.883]],
                                 dtype=float)))

@@ -3,6 +3,11 @@ import numpy as np
 from perceptron.linear_perceptron import LinearPerceptron
 from perceptron.non_linear_perceptron import NonLinearPerceptron
 
+def normalize(output):
+    min_expected = min(output)
+    max_expected = max(output)
+    return list(map(lambda x: (x - min_expected)/(max_expected - min_expected), output))
+
 
 def import_data(file):
     csv_file = open(file, 'r')
@@ -14,13 +19,20 @@ def import_data(file):
     return data
 
 
-training_set = import_data('data/ex2_training_set')
-expected_output = import_data('data/ex2_expected_output')
-learning_rate = 0.1
-iterations = 1000
-perceptron = LinearPerceptron(training_set, expected_output, learning_rate)
-non_linear = NonLinearPerceptron(training_set, expected_output, learning_rate)
+inputs = import_data('data/ex2_training_set')
+outputs = normalize(np.array(import_data('data/ex2_expected_output'), dtype=float))
+learning_rate = 0.02
+training_set = inputs[:180]
+test_set = np.array(inputs[180:], dtype=float)
+expected_output = outputs[:180]
+test_outputs = np.array(outputs[180:], dtype=float)
+iterations = 10000
+perceptron = NonLinearPerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
-non_linear.train(iterations)
-print(non_linear.get_results(np.array([[4.4793, -4.0765, 4.4558], [-4.1793, -4.9218, 1.7664], [-3.9429, -0.7689, 4.883]],
-                                dtype=float)))
+
+results = np.array(perceptron.get_results(test_set), dtype=float)
+print('Expected      Result')
+
+for i in range(results.size):
+    print(f'{test_outputs[i]}    {results[i]}')
+

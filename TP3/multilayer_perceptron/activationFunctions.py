@@ -11,6 +11,6 @@ class Activation:
 
     @staticmethod
     def sigmoid_dx(x):
-        if -700 < x < 700:
+        if -355 < x < 355: # se hace 0 despues de este valor
             return np.exp(x) / np.power(np.exp(x) + 1, 2)
         return 0

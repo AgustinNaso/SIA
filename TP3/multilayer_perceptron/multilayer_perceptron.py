@@ -1,4 +1,5 @@
 import numpy as np
+from layer import Layer
 
 INCREMENTAL = "incremental"
 BATCH = "batch"
@@ -39,8 +40,8 @@ class MultilayerPerceptron:
 
                 # self.layers[len(self.layers) - 1]
 
-    # def add(self, neurons, is_entry=False):
-    #     self.layers.append(Layer(neurons, is_entry))
+    def add(self, neurons, is_entry=False):
+        self.layers.append(Layer(neurons, is_entry))
 
     def adapt_learning_rate(self, delta_error, k):
         if delta_error < 0:

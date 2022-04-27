@@ -2,27 +2,21 @@ import numpy as np
 
 
 class Neuron:
+    excitation = 0
+    activation = 0
 
-    exitationValue = 0
-    activationValue = 0
-
-    def __init__(self, lastLayerNeurons, g):
-        self.wi = np.zeros(lastLayerNeurons)
+    def __init__(self, prev_layer_neurons, g, activation, has_weights=True):
+        self.activation = activation
         self.g = g
+        if has_weights:
+            self.weights = np.random.randint(-1, 1, prev_layer_neurons, dtype=float)
 
+    def excite(self, prev_layer_activations):
+        self.excitation = np.inner(self.weights, prev_layer_activations)
+        return self.excitation
 
-    def exitate(self, prevLayer):
-        sum = 0
-        for j in range(len(self.wi)):
-            sum = self.wi[j] * prevLayer[j]
-        self.exitationValue = sum
-        return sum
-
-    def activate(self):
-        self.activationValue = self.g(self.exitationValue)
-        return self.activationValue
-
+    def activate(self, prev_layer_activations):
+        self.activation = self.g(self.excite(prev_layer_activations))
+        return self.activation
 
     # def error(self):
-
-

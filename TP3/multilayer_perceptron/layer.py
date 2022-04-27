@@ -1,5 +1,5 @@
 from neuron import Neuron
-import constants
+import TP3.constants as constants
 
 
 class Layer:

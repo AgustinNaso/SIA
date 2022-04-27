@@ -1,12 +1,13 @@
 from neuron import Neuron
+import constants
 
 
 class Layer:
 
-    def __init__(self, neurons, g, prev_layer_neurons, is_first=False, is_last=False):
+    def __init__(self, neurons, g, prev_layer_neurons, layer):
         self.neurons = []
-        if not is_first:
-            if not is_last:
+        if layer > constants.FIRST:
+            if layer != constants.LAST:
                 self.neurons.append(Neuron(None, g, 1, False))
             for i in range(neurons):
                 self.neurons.append(Neuron(prev_layer_neurons, g, 0))

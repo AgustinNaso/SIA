@@ -1,12 +1,10 @@
 import numpy as np
 from layer import Layer
-
-INCREMENTAL = "incremental"
-BATCH = "batch"
+import constants
 
 
 class MultilayerPerceptron:
-    def __init__(self, training_set, expected_output, learning_rate, learning_type=INCREMENTAL, momentum=None,
+    def __init__(self, training_set, expected_output, learning_rate, learning_type=constants.INCREMENTAL, momentum=None,
                  learning_rate_params=None):
         self.training_set = np.array(list(map(lambda t: np.append(t, [1]), training_set)))
         self.expected_output = expected_output
@@ -40,15 +38,12 @@ class MultilayerPerceptron:
 
                 # for i in range(1, m):
 
-    def add(self, neurons, g, is_first=False, is_last=False):
-        if is_first:
-            self.layers.append(Layer(neurons, None, None, is_first))
+    def add(self, neurons, g, layer):
+        if layer == constants.FIRST:
+            self.layers.append(Layer(neurons, None, None, constants.FIRST))
         else:
             prev_layer_neurons = len(self.layers[len(self.layers) - 1].neurons)
-            if is_last:
-                self.layers.append(Layer(neurons, g, prev_layer_neurons, is_first, is_last))
-            else:
-                self.layers.append(Layer(neurons, g, prev_layer_neurons))
+            self.layers.append(Layer(neurons, g, prev_layer_neurons, layer))
 
     def adapt_learning_rate(self, delta_error, k):
         if delta_error < 0:

@@ -24,7 +24,7 @@ def recall(confussion_matrix, matrix_dim, element_position):
 def f1_score(confussion_matrix, matrix_dim, element_position):
     precisionResult = precision(confussion_matrix, matrix_dim, element_position)
     recallResult = recall(confussion_matrix, matrix_dim, element_position)
-    return 2*precisionResult*recallResult/(precision + recall)
+    return 2*precisionResult*recallResult/(precisionResult + recallResult)
 
 
 

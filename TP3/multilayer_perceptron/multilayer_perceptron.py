@@ -38,10 +38,17 @@ class MultilayerPerceptron:
                 np.delete(aux_training_set, i_x, axis=0)
                 np.delete(aux_expected_output, i_x, axis=0)
 
-                # self.layers[len(self.layers) - 1]
+                # for i in range(1, m):
 
-    def add(self, neurons, is_entry=False):
-        self.layers.append(Layer(neurons, is_entry))
+    def add(self, neurons, g, is_first=False, is_last=False):
+        if is_first:
+            self.layers.append(Layer(neurons, None, None, is_first))
+        else:
+            prev_layer_neurons = len(self.layers[len(self.layers) - 1].neurons)
+            if is_last:
+                self.layers.append(Layer(neurons, g, prev_layer_neurons, is_first, is_last))
+            else:
+                self.layers.append(Layer(neurons, g, prev_layer_neurons))
 
     def adapt_learning_rate(self, delta_error, k):
         if delta_error < 0:

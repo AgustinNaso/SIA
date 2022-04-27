@@ -3,12 +3,9 @@ from neuron import Neuron
 
 class Layer:
 
-    def __init__(self, neurons, g, prev_layer_neurons, is_first=False, training_set=None, is_last=False):
+    def __init__(self, neurons, g, prev_layer_neurons, is_first=False, is_last=False):
         self.neurons = []
-        if is_first:
-            for i in range(len(training_set)):
-                self.neurons.append(Neuron(None, g, training_set[i], False))
-        else:
+        if not is_first:
             if not is_last:
                 self.neurons.append(Neuron(None, g, 1, False))
             for i in range(neurons):
@@ -16,6 +13,10 @@ class Layer:
 
     def __str__(self):
         return self.neurons
+
+    def set_activations(self, training_set):
+        for i in range(len(training_set)):
+            self.neurons.append(Neuron(None, None, training_set[i], False))
 
     def get_neurons_activation(self):
         activations = []

@@ -5,7 +5,7 @@ import numpy as np
 class NonLinearPerceptron(Perceptron):
 
     def __init__(self, training_set, expected_output, learning_rate):
-        super().__init__(training_set, expected_output, learning_rate)
+        super().__init__(training_set, self.normalize(expected_output), learning_rate)
 
     def activation(self, excitation):
         return np.tanh(excitation)
@@ -19,3 +19,8 @@ class NonLinearPerceptron(Perceptron):
 
     def activation_derivative(self, excitation):
         return 1 - np.tanh(excitation)**2
+
+    def normalize(self, output):
+        min_expected = min(self.expected_output)
+        max_expected = max(self.expected_output)
+        return list(map(lambda x: (x - min_expected)/(max_expected - min_expected), output))

@@ -7,8 +7,6 @@ class Layer:
     def __init__(self, neurons, g, prev_layer_neurons, layer):
         self.neurons = []
         if layer > constants.FIRST:
-            if layer != constants.LAST:
-                self.neurons.append(Neuron(None, g, 1, False))
             for i in range(neurons):
                 self.neurons.append(Neuron(prev_layer_neurons, g, 0))
 

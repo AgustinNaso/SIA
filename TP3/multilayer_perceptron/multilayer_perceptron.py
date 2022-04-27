@@ -36,7 +36,10 @@ class MultilayerPerceptron:
                 np.delete(aux_training_set, i_x, axis=0)
                 np.delete(aux_expected_output, i_x, axis=0)
 
-                # for i in range(1, m):
+                self.layers[0].set_activations(training_set)
+
+                for i in range(1, m):
+                    self.layers[i].propagate()
 
     def add(self, neurons, g, layer):
         if layer == constants.FIRST:

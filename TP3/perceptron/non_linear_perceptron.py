@@ -5,7 +5,8 @@ import numpy as np
 class NonLinearPerceptron(Perceptron):
 
     def __init__(self, training_set, expected_output, learning_rate):
-        super().__init__(training_set, self.normalize(expected_output), learning_rate)
+        self.expected_output = self.normalize(expected_output)
+        super().__init__(training_set, self.expected_output, learning_rate)
 
     def activation(self, excitation):
         return np.tanh(excitation)

@@ -40,7 +40,7 @@ class MultilayerPerceptron:
                 for i in range(1, m):
                     self.layers[i].propagate()
 
-    def backpropagate(self, expected_output):
+    def backpropagation(self, expected_output):
         m = len(self.layers)
         for i in range(m - 1, 0, -1):
             layer = self.layers[i]

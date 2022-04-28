@@ -1,5 +1,5 @@
-INCREMENTAL = "incremental"
-BATCH = "batch"
 BIAS = 1
 FIRST = 0
 LAST = 2
+SINGLE = 1
+MULTIPLE = 2

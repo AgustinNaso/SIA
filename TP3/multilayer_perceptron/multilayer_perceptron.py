@@ -1,11 +1,13 @@
 import numpy as np
-from layer import Layer
-import constants
+from TP3.multilayer_perceptron.layer import Layer
+from TP3.constants import *
+from TP3.multilayer_perceptron.activation_functions import Activation
 
 
 class MultilayerPerceptron:
     adaptive_rate = False
     error_limit = 0.01
+    prev_layer_neurons = 0
 
     def __init__(self, training_set, expected_output, learning_rate, batch_size, learning_rate_params=None, momentum=False):
         self.training_set = training_set
@@ -25,7 +27,6 @@ class MultilayerPerceptron:
         error = 1
         prev_error = None
         self.error_min = float('inf')
-        m = len(self.layers)
         k = 0
         aux_batch = self.batch_size
         for epoch in range(epochs):
@@ -39,9 +40,7 @@ class MultilayerPerceptron:
                 np.delete(aux_training_set, i_x, axis=0)
                 np.delete(aux_expected_output, i_x, axis=0)
 
-                self.layers[0].set_activations(training_set)
-                for i in range(1, m):
-                    self.layers[i].propagate()
+                self.propagate(training_set)
 
                 self.backpropagation(expected_output)
 
@@ -63,6 +62,13 @@ class MultilayerPerceptron:
             if error < self.error_limit:
                 break
 
+    def propagate(self, training_set):
+        m = len(self.layers)
+        self.layers[0].set_activations(training_set)
+        for i in range(1, m):
+            prev_layer = self.layers[i-1]
+            self.layers[i].propagate(prev_layer)
+
     def calculate_error(self, expected_output):
         m = len(self.layers)
         neurons = self.layers[m - 1].neurons
@@ -74,16 +80,18 @@ class MultilayerPerceptron:
     def backpropagation(self, expected_output):
         m = len(self.layers)
         for i in range(m - 1, 0, -1):
-            layer = self.layers[i]
-            for j in range(len(layer.neurons)):
+            print(len(self.layers[i].neurons))
+            neurons = self.layers[i].neurons
+            for j in range(len(neurons)):
+                print(len(neurons))
                 if i == m - 1:
-                    layer[j].sigma = layer[j].excitation * (expected_output[i] - layer[j].activation)
+                    neurons[j].sigma = Activation.tanh_dx(neurons[j].excitation) * (expected_output[i] - neurons[j].activation)
                 else:
-                    upper_layer_neurons = self.layers[i + 1]
+                    upper_layer_neurons = self.layers[i + 1].neurons
                     aux_sum = 0
                     for neuron in upper_layer_neurons:
                         aux_sum += neuron.weights[j] * neuron.sigma
-                    layer[j].sigma = layer[j].excitation * aux_sum
+                    neurons[j].sigma = Activation.tanh_dx(neurons[j].excitation) * aux_sum
 
     def update_weights(self, batch_size):
         m = len(self.layers)
@@ -93,12 +101,12 @@ class MultilayerPerceptron:
             for neuron in neurons:
                 neuron.update_weights(self.learning_rate, prev_neurons_activations, self.momentum, batch_size)
 
-    def add(self, neurons, g, layer):
-        if layer == constants.FIRST:
-            self.layers.append(Layer(neurons, None, None, constants.FIRST))
+    def add(self, neurons, layer):
+        if layer == FIRST:
+            self.layers.append(Layer(neurons, None, FIRST))
         else:
-            prev_layer_neurons = len(self.layers[len(self.layers) - 1].neurons)
-            self.layers.append(Layer(neurons, g, prev_layer_neurons, layer))
+            self.layers.append(Layer(neurons, self.prev_layer_neurons, layer))
+        self.prev_layer_neurons = neurons
 
     def adapt_learning_rate(self, delta_error, k):
         if delta_error < 0:
@@ -116,3 +124,10 @@ class MultilayerPerceptron:
         else:
             k = 0
         return k
+
+    def test_input(self, test_set):
+        output = []
+        for i in range(len(test_set)):
+            self.propagate(test_set[i])
+            output.append([neuron.activation for neuron in self.layers[len(self.layers) - 1].neurons])
+        return output

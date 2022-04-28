@@ -1,5 +1,6 @@
 import numpy as np
-import constants
+from TP3.constants import *
+from TP3.multilayer_perceptron.activation_functions import Activation
 
 
 class Neuron:
@@ -8,18 +9,18 @@ class Neuron:
     sigma = None
     delta = 0
 
-    def __init__(self, prev_layer_neurons, g, activation, has_weights=True):
+    def __init__(self, prev_layer_neurons, activation, has_weights=True):
         self.activation = activation
-        self.g = g
         if has_weights:
-            self.weights = np.random.randint(-1, 1, prev_layer_neurons, dtype=float)
+            self.weights = np.random.uniform(-1, 1, prev_layer_neurons)
+            print(self.weights)
 
     def excite(self, prev_layer_activations):
-        self.excitation = np.inner(self.weights, prev_layer_activations) + constants.BIAS
+        self.excitation = np.inner(self.weights, prev_layer_activations) + BIAS
         return self.excitation
 
     def activate(self, prev_layer_activations):
-        self.activation = self.g(self.excite(prev_layer_activations))
+        self.activation = Activation.tanh(self.excite(prev_layer_activations))
         return self.activation
 
     def update_weights(self, learning_rate, prev_layer_activations, momentum, batch_size):

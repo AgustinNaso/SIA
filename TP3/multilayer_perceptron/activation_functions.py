@@ -15,3 +15,11 @@ class Activation:
         if -355 < x < 355:
             return np.exp(x) / np.power(np.exp(x) + 1, 2)
         return 0
+
+    @staticmethod
+    def tanh(excitation):
+        return np.tanh(excitation)
+
+    @staticmethod
+    def tanh_dx(excitation):
+        return 1 - np.tanh(excitation) ** 2

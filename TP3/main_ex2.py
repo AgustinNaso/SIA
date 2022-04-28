@@ -3,10 +3,11 @@ import numpy as np
 from perceptron.linear_perceptron import LinearPerceptron
 from perceptron.non_linear_perceptron import NonLinearPerceptron
 
+
 def normalize(output):
     min_expected = min(output)
     max_expected = max(output)
-    return list(map(lambda x: (x - min_expected)/(max_expected - min_expected), output))
+    return list(map(lambda x: (x - min_expected) / (max_expected - min_expected), output))
 
 
 def import_data(file):
@@ -35,4 +36,3 @@ print('Expected      Result')
 
 for i in range(results.size):
     print(f'{test_outputs[i]}    {results[i]}')
-

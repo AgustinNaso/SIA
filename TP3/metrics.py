@@ -1,46 +1,38 @@
 import numpy as np
 
-def accuracy (confussion_matrix, matrix_dim, element_position):
-    rightAnswers = confussion_matrix[element_position][element_position];
-    wrongAnwsers = 0
+
+def accuracy(confussion_matrix, matrix_dim, element_position):
+    right_ans = confussion_matrix[element_position][element_position];
+    wrong_ans = 0
     for i in range(matrix_dim):
         for j in range(matrix_dim):
-            if i != element_position and j!= element_position:
-                wrongAnwsers+= confussion_matrix[i][j]
-    return rightAnswers/wrongAnwsers
+            if i != element_position and j != element_position:
+                wrong_ans += confussion_matrix[i][j]
+    return right_ans / wrong_ans
 
-def precision(confussion_matrix, matrix_dim, element_position):        
-    truePositives = confussion_matrix[element_position][element_position]
-    totalPositives = 0
+
+def precision(confusion_matrix, matrix_dim, element_position):
+    true_positives = confusion_matrix[element_position][element_position]
+    total_positives = 0
     for j in range(matrix_dim):
-        totalPositives+= matrix_dim[element_position][j]
-    return truePositives/totalPositives
-    
-def recall(confussion_matrix, matrix_dim, element_position):
-    truePositives = confussion_matrix[element_position][element_position]
-    realPositives = 0
-    for i in range(matrix_dim):
-        realPositives+= confussion_matrix[i][element_position]
-    return truePositives/realPositives
+        total_positives += matrix_dim[element_position][j]
+    return true_positives / total_positives
 
-def f1_score(confussion_matrix, matrix_dim, element_position):
-    precisionResult = precision(confussion_matrix, matrix_dim, element_position)
-    recallResult = recall(confussion_matrix, matrix_dim, element_position)
-    return 2*precisionResult*recallResult/(precisionResult + recallResult)
+
+def recall(confusion_matrix, matrix_dim, element_position):
+    true_positives = confusion_matrix[element_position][element_position]
+    real_positives = 0
+    for i in range(matrix_dim):
+        real_positives += confusion_matrix[i][element_position]
+    return true_positives / real_positives
+
+
+def f1_score(confusion_matrix, matrix_dim, element_position):
+    precision_value = precision(confusion_matrix, matrix_dim, element_position)
+    recall_value = recall(confusion_matrix, matrix_dim, element_position)
+    return 2 * precision_value * recall_value / (precision_value + recall_value)
+
 
 def getMetrics(results, expected, input, matrix_dim):
     confussion_matrix = np.zeros(shape=(matrix_dim, matrix_dim))
     # corro x cantidad de veces para armar la matriz
-    
-
-
-
-
-
-    
-
-
-
-
-
-

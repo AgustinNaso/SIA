@@ -45,7 +45,7 @@ class Perceptron(ABC):
         return results
 
     def getPointOverlineResult(self, weights, x):
-        return - (weights[1] / weights[2]) * x - constants.BIAS / weights[2]
+        return -(weights[0] / weights[1]) * x - weights[2] / weights[1]
 
     @abstractmethod
     def activation(self, excitation):

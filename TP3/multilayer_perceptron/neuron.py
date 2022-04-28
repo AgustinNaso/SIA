@@ -22,11 +22,12 @@ class Neuron:
         self.activation = self.g(self.excite(prev_layer_activations))
         return self.activation
 
-    def update_weights(self, learning_rate, prev_layer_activations, momentum):
+    def update_weights(self, learning_rate, prev_layer_activations, momentum, batch_size):
         delta_weights = (learning_rate * self.sigma) * prev_layer_activations
-        if momentum:
-            delta_weights += 0.8 * self.delta
-        self.weights += delta_weights
-        self.delta = delta_weights
-
-    # def error(self):
+        if batch_size > 0:
+            self.delta += delta_weights
+        else:
+            if momentum:
+                delta_weights += 0.8 * self.delta
+            self.weights += delta_weights
+            self.delta = delta_weights

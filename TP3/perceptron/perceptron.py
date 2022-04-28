@@ -19,7 +19,7 @@ class Perceptron(ABC):
         p = len(self.training_set)
         self.error_min = float('inf')
         w = np.zeros(len(self.training_set[0]), dtype=float)
-        while error > 0 and i < iterations:
+        while error > 0.001 and i < iterations:
             i_x = np.random.randint(1, p)
             excitation = np.inner(self.training_set[i_x], w) + constants.BIAS
             activation = self.activation(excitation)
@@ -29,6 +29,8 @@ class Perceptron(ABC):
                 self.error_min = error
                 self.w_min = w
             i += 1
+        print("Minimum error: " + self.error_min)
+        print("Minimum weight: " + self.w_min)
 
     def get_results(self, test_input):
         results = []

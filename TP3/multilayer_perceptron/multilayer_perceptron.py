@@ -7,12 +7,11 @@ class MultilayerPerceptron:
     adaptive_rate = False
     error_limit = 0.01
 
-    def __init__(self, training_set, expected_output, learning_rate, learning_type=constants.INCREMENTAL,
-                 learning_rate_params=None, momentum=False):
+    def __init__(self, training_set, expected_output, learning_rate, batch_size, learning_rate_params=None, momentum=False):
         self.training_set = training_set
         self.expected_output = expected_output
         self.learning_rate = learning_rate
-        self.learning_type = learning_type
+        self.batch_size = batch_size
         self.layers = []
         self.error_min = None
         self.momentum = momentum
@@ -28,6 +27,7 @@ class MultilayerPerceptron:
         self.error_min = float('inf')
         m = len(self.layers)
         k = 0
+        aux_batch = self.batch_size
         for epoch in range(epochs):
             aux_training_set = self.training_set
             aux_expected_output = self.expected_output
@@ -45,8 +45,10 @@ class MultilayerPerceptron:
 
                 self.backpropagation(expected_output)
 
-                if self.learning_type == constants.INCREMENTAL:
-                    self.update_weights()
+                aux_batch -= 1
+                self.update_weights(aux_batch)
+                if aux_batch == 0:
+                    aux_batch = self.batch_size
 
                 aux_error = self.calculate_error(expected_output)
                 error += aux_error
@@ -83,13 +85,13 @@ class MultilayerPerceptron:
                         aux_sum += neuron.weights[j] * neuron.sigma
                     layer[j].sigma = layer[j].excitation * aux_sum
 
-    def update_weights(self):
+    def update_weights(self, batch_size):
         m = len(self.layers)
         for i in range(1, m):
             neurons = self.layers[i]
             prev_neurons_activations = self.layers[i - 1].get_neurons_activation()
             for neuron in neurons:
-                neuron.update_weights(self.learning_rate, prev_neurons_activations, self.momentum)
+                neuron.update_weights(self.learning_rate, prev_neurons_activations, self.momentum, batch_size)
 
     def add(self, neurons, g, layer):
         if layer == constants.FIRST:

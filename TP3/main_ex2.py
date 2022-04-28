@@ -2,6 +2,7 @@ import csv
 import numpy as np
 from perceptron.linear_perceptron import LinearPerceptron
 from perceptron.non_linear_perceptron import NonLinearPerceptron
+from metrics import get_results, get_metrics
 
 
 def normalize(output):
@@ -23,7 +24,6 @@ def import_data(file):
 inputs = import_data('data/ex2_training_set')
 outputs = normalize(np.array(import_data('data/ex2_expected_output'), dtype=float))
 # outputs = np.array(import_data('data/ex2_expected_output'), dtype=float)
-print(outputs)
 learning_rate = 0.02
 training_set = inputs[:180]
 test_set = np.array(inputs[180:], dtype=float)
@@ -34,8 +34,8 @@ perceptron = NonLinearPerceptron(training_set, expected_output, learning_rate)
 # perceptron = LinearPerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
 
-results = np.array(perceptron.test_input(test_set), dtype=float)
+raw_results = np.array(perceptron.test_input(test_set), dtype=float)
 print('Expected      Result')
 
-for i in range(results.size):
-    print(f'{test_outputs[i]}    {results[i]}')
+results = get_results(raw_results, test_outputs, criteria= lambda x,y: np.abs(x - y) < 0.01)
+get_metrics(results)

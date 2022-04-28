@@ -1,6 +1,8 @@
+import time
 from abc import ABC, abstractmethod
 import numpy as np
-
+import constants
+import matplotlib.pyplot as plt
 
 class Perceptron(ABC):
 
@@ -31,6 +33,10 @@ class Perceptron(ABC):
         print("Minimum error: " + str(self.error_min))
         print("Minimum weight: " + str(self.w_min))
 
+
+    def plot(self):
+        print(self.training_set)
+
     def get_results(self, test_input):
         real_input = np.array(list(map(lambda t: np.append(t, [1]), test_input)))
         results = []
@@ -38,6 +44,9 @@ class Perceptron(ABC):
             excitation = np.inner(real_input[i], self.w_min)
             results.append(self.activation(excitation))
         return results
+
+    def getPointOverlineResult(self, weights, x):
+        return - (weights[1] / weights[2]) * x - constants.BIAS / weights[2]
 
     @abstractmethod
     def activation(self, excitation):

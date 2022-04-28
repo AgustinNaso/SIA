@@ -10,6 +10,6 @@ learning_rate = 0.1
 iterations = 1000
 perceptron = SimplePerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
-results = perceptron.get_results(np.array([[1, 1]]))
+results = perceptron.test_input(np.array([[1, 1]]))
 for i in results:
     print(i)

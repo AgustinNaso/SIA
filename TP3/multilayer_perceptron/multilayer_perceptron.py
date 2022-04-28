@@ -39,9 +39,7 @@ class MultilayerPerceptron:
                 np.delete(aux_training_set, i_x, axis=0)
                 np.delete(aux_expected_output, i_x, axis=0)
 
-                self.layers[0].set_activations(training_set)
-                for i in range(1, m):
-                    self.layers[i].propagate()
+                self.propagate(training_set)
 
                 self.backpropagation(expected_output)
 
@@ -62,6 +60,12 @@ class MultilayerPerceptron:
                 self.error_min = error
             if error < self.error_limit:
                 break
+
+    def propagate(self, training_set):
+        m = len(self.layers)
+        self.layers[0].set_activations(training_set)
+        for i in range(1, m):
+            self.layers[i].propagate()
 
     def calculate_error(self, expected_output):
         m = len(self.layers)
@@ -116,3 +120,10 @@ class MultilayerPerceptron:
         else:
             k = 0
         return k
+
+    def test_input(self, test_set):
+        output = []
+        for i in range(len(test_set)):
+            self.propagate(test_set[i])
+            output.append([neuron.activation for neuron in self.layers[len(self.layers) - 1].neurons])
+        return output

@@ -1,5 +1,7 @@
 import csv
 import constants
+import numpy as np
+from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 
 def import_data(file, data_type):
@@ -16,5 +18,12 @@ def import_data(file, data_type):
 
 
 inputs = import_data('data/ex3_training_set', constants.MULTIPLE)
-outputs = import_data('data/ex3_expected_output', constants.SINGLE)
+outputs = np.array(import_data('data/ex3_expected_output', constants.SINGLE), dtype=float)
 print(outputs)
+learning_rate = 0.02
+training_set = inputs[:60]
+test_set = np.array(inputs[60:], dtype=float)
+expected_output = outputs[:60]
+test_outputs = np.array(outputs[60:], dtype=float)
+perceptron = MultilayerPerceptron(training_set, expected_output, learning_rate, 1)
+perceptron.train(100)

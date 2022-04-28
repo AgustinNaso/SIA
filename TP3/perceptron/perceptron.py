@@ -5,7 +5,7 @@ import numpy as np
 class Perceptron(ABC):
 
     def __init__(self, training_set, expected_output, learning_rate):
-        self.training_set = np.array(list(map(lambda t: np.append(t, [1]), training_set)))
+        self.training_set = np.array(list(map(lambda t: np.append(t, [1]), training_set)), dtype=float)
         self.expected_output = expected_output
         self.learning_rate = learning_rate
         self.error_min = None
@@ -31,10 +31,10 @@ class Perceptron(ABC):
         print("Minimum error: " + str(self.error_min))
         print("Minimum weight: " + str(self.w_min))
 
-    def get_results(self, test_input):
-        real_input = np.array(list(map(lambda t: np.append(t, [1]), test_input)))
+    def test_input(self, test_set):
+        real_input = np.array(list(map(lambda t: np.append(t, [1]), test_set)), dtype=float)
         results = []
-        for i in range(len(test_input)):
+        for i in range(len(test_set)):
             excitation = np.inner(real_input[i], self.w_min)
             results.append(self.activation(excitation))
         return results

@@ -37,8 +37,8 @@ class MultilayerPerceptron:
                 training_set = aux_training_set[i_x]
                 expected_output = aux_expected_output[i_x]
 
-                np.delete(aux_training_set, i_x, axis=0)
-                np.delete(aux_expected_output, i_x, axis=0)
+                aux_training_set = np.delete(aux_training_set, i_x, axis=0)
+                aux_expected_output = np.delete(aux_expected_output, i_x, axis=0)
 
                 self.propagate(training_set)
 
@@ -60,7 +60,9 @@ class MultilayerPerceptron:
             if error < self.error_min:
                 self.error_min = error
             if error < self.error_limit:
+                print("Error " + str(error))
                 break
+        print("Error " + str(error))
 
     def propagate(self, training_set):
         m = len(self.layers)
@@ -74,18 +76,16 @@ class MultilayerPerceptron:
         neurons = self.layers[m - 1].neurons
         aux_sum = 0
         for i in range(len(neurons)):
-            aux_sum += (expected_output[i] - neurons[i].activation) ** 2
+            aux_sum += (expected_output[0] - neurons[i].activation) ** 2
         return aux_sum
 
     def backpropagation(self, expected_output):
         m = len(self.layers)
         for i in range(m - 1, 0, -1):
-            print(len(self.layers[i].neurons))
             neurons = self.layers[i].neurons
             for j in range(len(neurons)):
-                print(len(neurons))
                 if i == m - 1:
-                    neurons[j].sigma = Activation.tanh_dx(neurons[j].excitation) * (expected_output[i] - neurons[j].activation)
+                    neurons[j].sigma = Activation.tanh_dx(neurons[j].excitation) * (expected_output - neurons[j].activation)
                 else:
                     upper_layer_neurons = self.layers[i + 1].neurons
                     aux_sum = 0
@@ -96,7 +96,7 @@ class MultilayerPerceptron:
     def update_weights(self, batch_size):
         m = len(self.layers)
         for i in range(1, m):
-            neurons = self.layers[i]
+            neurons = self.layers[i].neurons
             prev_neurons_activations = self.layers[i - 1].get_neurons_activation()
             for neuron in neurons:
                 neuron.update_weights(self.learning_rate, prev_neurons_activations, self.momentum, batch_size)

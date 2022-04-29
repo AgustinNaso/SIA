@@ -19,8 +19,8 @@ class Perceptron(ABC):
         error = 1
         p = len(self.training_set)
         self.error_min = float('inf')
-        w = np.zeros(len(self.training_set[0]), dtype=float)
-        while error > 0.001 and i < iterations:
+        w = np.ones(len(self.training_set[0]), dtype=float)
+        while error > 0 and i < iterations:
             i_x = np.random.randint(1, p)
             excitation = np.inner(self.training_set[i_x], w)
             activation = self.activation(excitation)
@@ -45,7 +45,7 @@ class Perceptron(ABC):
         return results
 
     def getPointOverlineResult(self, weights, x):
-        return -(weights[0] / weights[1]) * x - weights[2] / weights[1]
+        return - (weights[1] * x/ weights[2]) -weights[0]/weights[2] + 1.2
 
     @abstractmethod
     def activation(self, excitation):

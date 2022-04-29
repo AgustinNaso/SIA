@@ -9,9 +9,9 @@ class Neuron:
     sigma = None
     delta = 0
 
-    def __init__(self, prev_layer_neurons, activation, has_weights=True):
+    def __init__(self, prev_layer_neurons, activation, layer):
         self.activation = activation
-        if has_weights:
+        if layer > FIRST:
             self.weights = np.random.uniform(-1, 1, prev_layer_neurons)
 
     def excite(self, prev_layer_activations):

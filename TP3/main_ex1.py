@@ -11,9 +11,9 @@ learning_rate = 0.08
 iterations = 10000
 perceptron = SimplePerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
-y1 = perceptron.getPointOverlineResult(perceptron.w_min, -1)
+y1 = perceptron.get_point_overline_result(perceptron.w_min, -1)
 point1 = np.array([-1, y1])
-y2 = perceptron.getPointOverlineResult(perceptron.w_min, 1)
+y2 = perceptron.get_point_overline_result(perceptron.w_min, 1)
 point2 = np.array([1, y2])
 
 x_values = [point1[0], point2[0]]

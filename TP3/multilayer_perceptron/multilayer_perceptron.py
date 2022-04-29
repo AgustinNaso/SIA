@@ -6,11 +6,13 @@ from TP3.multilayer_perceptron.activation_functions import Activation
 
 class MultilayerPerceptron:
     adaptive_rate = False
-    error_limit = 0.01
+    error_limit = 0.001
     prev_layer_neurons = 0
 
-    def __init__(self, training_set, expected_output, learning_rate, batch_size, learning_rate_params=None, momentum=False):
+    def __init__(self, training_set, expected_output, learning_rate, batch_size=1, learning_rate_params=None, momentum=False):
+        # Training set example: [[1, 1], [-1, 1], [1, -1]]
         self.training_set = training_set
+        # Expected output example: [[0, 0], [0, 1], [1, 0]]
         self.expected_output = expected_output
         self.learning_rate = learning_rate
         self.batch_size = batch_size
@@ -41,7 +43,6 @@ class MultilayerPerceptron:
                 aux_expected_output = np.delete(aux_expected_output, i_x, axis=0)
 
                 self.propagate(training_set)
-
                 self.backpropagation(expected_output)
 
                 aux_batch -= 1
@@ -61,7 +62,7 @@ class MultilayerPerceptron:
                 self.error_min = error
             if error < self.error_limit:
                 print("Error " + str(error))
-                break
+                return
         print("Error " + str(error))
 
     def propagate(self, training_set):
@@ -76,7 +77,7 @@ class MultilayerPerceptron:
         neurons = self.layers[m - 1].neurons
         aux_sum = 0
         for i in range(len(neurons)):
-            aux_sum += (expected_output[0] - neurons[i].activation) ** 2
+            aux_sum += (expected_output[i] - neurons[i].activation) ** 2
         return aux_sum
 
     def backpropagation(self, expected_output):
@@ -85,7 +86,8 @@ class MultilayerPerceptron:
             neurons = self.layers[i].neurons
             for j in range(len(neurons)):
                 if i == m - 1:
-                    neurons[j].sigma = Activation.tanh_dx(neurons[j].excitation) * (expected_output - neurons[j].activation)
+                    neurons[j].sigma = Activation.tanh_dx(neurons[j].excitation) * \
+                                       (expected_output[j] - neurons[j].activation)
                 else:
                     upper_layer_neurons = self.layers[i + 1].neurons
                     aux_sum = 0
@@ -102,10 +104,7 @@ class MultilayerPerceptron:
                 neuron.update_weights(self.learning_rate, prev_neurons_activations, self.momentum, batch_size)
 
     def add(self, neurons, layer):
-        if layer == FIRST:
-            self.layers.append(Layer(neurons, None, FIRST))
-        else:
-            self.layers.append(Layer(neurons, self.prev_layer_neurons, layer))
+        self.layers.append(Layer(neurons, self.prev_layer_neurons, layer))
         self.prev_layer_neurons = neurons
 
     def adapt_learning_rate(self, delta_error, k):

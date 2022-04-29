@@ -1,9 +1,16 @@
+import random
+from TP3.perceptron.linear_perceptron import LinearPerceptron
+from TP3.perceptron.non_linear_perceptron import NonLinearPerceptron
+from TP3.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 import numpy as np
+from constants import *
+
 
 def accuracy(results):
     right_answers = results[0]
     wrong_answers = results[1]
-    return right_answers/(right_answers + wrong_answers)
+    return right_answers / (right_answers + wrong_answers)
+
 
 # def accuracy(confusion_matrix, matrix_dim, element_position):
 #     right_ans = confusion_matrix[element_position][element_position];
@@ -36,6 +43,50 @@ def accuracy(results):
 #     recall_value = recall(confusion_matrix, matrix_dim, element_position)
 #     return 2 * precision_value * recall_value / (precision_value + recall_value)
 
+def cross_validation(k, training_set, expected_output, perceptron_type, amount, learning_rate, batch_size=1,
+                     learning_rate_params=None, momentum=False):
+    if not (len(training_set) % k == 0):
+        print("Choose another partition size")
+        exit()
+
+    all_indexes = list(range(len(training_set)))
+    random.shuffle(all_indexes)
+    split_indexes = np.array_split(np.array(all_indexes), k)
+
+    best_result = float('inf')
+    best_network = None
+    best_training_set = None
+    best_indexes = None
+
+    for indexes in split_indexes:
+        training_set_idx = set(all_indexes) - set(indexes)
+
+        sub_training_set = [training_set[i] for i in training_set_idx]
+        sub_expected_output = [expected_output[i] for i in training_set_idx]
+        test_set = [training_set[i] for i in indexes]
+        test_output = [expected_output[i] for i in indexes]
+
+        if perceptron_type == LINEAR:
+            perceptron = LinearPerceptron(sub_training_set, sub_expected_output, learning_rate)
+        elif perceptron_type == NON_LINEAR:
+            perceptron = NonLinearPerceptron(sub_training_set, sub_expected_output, learning_rate)
+        else:
+            perceptron = MultilayerPerceptron(sub_training_set, sub_expected_output, learning_rate, batch_size,
+                                              learning_rate_params, momentum)
+
+        perceptron.train(amount)
+
+        results = perceptron.test_input(test_set)
+        get_results(results, test_output, criteria=lambda x, y: np.abs(x - y) < 0.01)
+
+        if accuracy(results) < best_result:
+            best_result = accuracy(results)
+            best_network = perceptron
+            best_training_set = sub_training_set
+            best_indexes = indexes
+
+    return best_result, best_network, best_training_set, best_indexes
+
 
 # Ejercicio 1 - XOR: 1 -1
 # Ejercicio 2 - par/impar: par = 1, impar = -1
@@ -55,6 +106,7 @@ def get_confusion_matrix(classes, real_output, expected_output):
                 matrix[0][1] += 1
     return matrix
 
+
 def get_results(real_output, expected_output, criteria=None):
     results = np.zeros(2)
     for i in range(real_output.size):
@@ -63,12 +115,13 @@ def get_results(real_output, expected_output, criteria=None):
         else:
             right_answer = real_output[i] == expected_output[i]
         if right_answer:
-            results[0]+=1
+            results[0] += 1
         else:
-            results[1]+=1
+            results[1] += 1
     return results
+
 
 def get_metrics(results):
     print(f'Aciertos: {results[0]}')
     print(f'Errores: {results[1]}')
-    print(f'accuracy: {accuracy(results)}')
+    print(f'Accuracy: {accuracy(results)}')

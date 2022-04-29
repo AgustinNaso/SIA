@@ -1,8 +1,12 @@
 import time
 from abc import ABC, abstractmethod
 import numpy as np
-import constants
 import matplotlib.pyplot as plt
+
+
+def get_point_overline_result(weights, x):
+    return -(weights[0] / weights[1]) * x - weights[2] / weights[1]
+
 
 class Perceptron(ABC):
 
@@ -24,7 +28,8 @@ class Perceptron(ABC):
             i_x = np.random.randint(1, p)
             excitation = np.inner(self.training_set[i_x], w)
             activation = self.activation(excitation)
-            w += self.learning_rate * (self.expected_output[i_x] - activation) * self.training_set[i_x] * self.activation_derivative(excitation)
+            w += self.learning_rate * (self.expected_output[i_x] - activation) * self.training_set[
+                i_x] * self.activation_derivative(excitation)
             error = self.error(w)
             if error < self.error_min:
                 self.error_min = error
@@ -43,9 +48,6 @@ class Perceptron(ABC):
             excitation = np.inner(real_input[i], self.w_min)
             results.append(self.activation(excitation))
         return results
-
-    def getPointOverlineResult(self, weights, x):
-        return -(weights[0] / weights[1]) * x - weights[2] / weights[1]
 
     @abstractmethod
     def activation(self, excitation):

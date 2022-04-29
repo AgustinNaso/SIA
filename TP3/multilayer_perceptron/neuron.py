@@ -13,7 +13,6 @@ class Neuron:
         self.activation = activation
         if has_weights:
             self.weights = np.random.uniform(-1, 1, prev_layer_neurons)
-            print(self.weights)
 
     def excite(self, prev_layer_activations):
         self.excitation = np.inner(self.weights, prev_layer_activations) + BIAS

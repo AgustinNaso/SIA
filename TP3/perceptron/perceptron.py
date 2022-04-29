@@ -4,10 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def get_point_overline_result(weights, x):
-    return -(weights[0] / weights[1]) * x - weights[2] / weights[1]
-
-
 class Perceptron(ABC):
 
     def __init__(self, training_set, expected_output, learning_rate):

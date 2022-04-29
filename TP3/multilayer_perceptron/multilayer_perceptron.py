@@ -9,7 +9,8 @@ class MultilayerPerceptron:
     error_limit = 0.001
     prev_layer_neurons = 0
 
-    def __init__(self, training_set, expected_output, learning_rate, batch_size=1, learning_rate_params=None, momentum=False):
+    def __init__(self, training_set, expected_output, learning_rate, learning_rate_params=None,
+                 batch_size=1, momentum=False):
         # Training set example: [[1, 1], [-1, 1], [1, -1]]
         self.training_set = training_set
         # Expected output example: [[0, 0], [0, 1], [1, 0]]

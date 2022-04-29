@@ -23,8 +23,8 @@ class Perceptron(ABC):
         error = 1
         p = len(self.training_set)
         self.error_min = float('inf')
-        w = np.zeros(len(self.training_set[0]), dtype=float)
-        while error > 0.001 and i < iterations:
+        w = np.ones(len(self.training_set[0]), dtype=float)
+        while error > 0 and i < iterations:
             i_x = np.random.randint(1, p)
             excitation = np.inner(self.training_set[i_x], w)
             activation = self.activation(excitation)

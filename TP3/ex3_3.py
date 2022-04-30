@@ -12,15 +12,8 @@ def ex3(learning_rate, epochs, layers):
     training_set = np.array(inputs)
     expected_output = np.array(outputs)
 
-    learning_rate = learning_rate
-    epochs = epochs
-    perceptron = MultilayerPerceptron(training_set, expected_output, learning_rate)
-    perceptron.add(35, FIRST)
-    for i in range(len(layers)):
-        perceptron.add(layers[i], MIDDLE)
-    perceptron.add(10, LAST)
-    perceptron.train(epochs)
-
+    perceptron = ex3_utils.create_multilayer_perceptron_and_train(training_set, expected_output, learning_rate, epochs,
+                                                                  layers)
     training_set = create_noise(training_set)
     results = np.array(perceptron.test_input(training_set), dtype=float)
     print('Expected   Result')

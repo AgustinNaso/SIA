@@ -3,8 +3,6 @@ import numpy as np
 from perceptron.linear_perceptron import LinearPerceptron
 from perceptron.non_linear_perceptron import NonLinearPerceptron
 from metrics import get_results, get_metrics
-import matplotlib.pyplot as plt
-
 
 
 def normalize(output):
@@ -31,26 +29,12 @@ training_set = inputs[:180]
 test_set = np.array(inputs[180:], dtype=float)
 expected_output = outputs[:180]
 test_outputs = np.array(outputs[180:], dtype=float)
-iterations = 7500
-perceptron = LinearPerceptron(training_set, expected_output, learning_rate)
+iterations = 10000
+perceptron = NonLinearPerceptron(training_set, expected_output, learning_rate)
 # perceptron = LinearPerceptron(training_set, expected_output, learning_rate)
-errors = perceptron.train(iterations)
-
-# raw_results = np.array(perceptron.test_input(test_set), dtype=float)
-
-# results = get_results(raw_results, test_outputs, criteria=lambda x, y: np.abs(x - y) < 0.01)
-# get_metrics(results)
-# perceptron = NonLinearPerceptron(training_set, expected_output, learning_rate)
-# errors = perceptron.train(iterations)
-x= np.linspace(0, iterations, iterations)
-plt.plot(x,errors)
-plt.title(f'Error vs Iteracion con η = {learning_rate}')
-plt.xlabel('Iteracion')
-plt.ylabel('Error')
-plt.show()
+perceptron.train(iterations)
 
 raw_results = np.array(perceptron.test_input(test_set), dtype=float)
 
 results = get_results(raw_results, test_outputs, criteria=lambda x, y: np.abs(x - y) < 0.01)
 get_metrics(results)
-

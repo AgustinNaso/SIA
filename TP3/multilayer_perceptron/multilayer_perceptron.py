@@ -1,7 +1,7 @@
 import numpy as np
-from multilayer_perceptron.layer import Layer
-from constants import *
-from multilayer_perceptron.activation_functions import Activation
+from TP3.multilayer_perceptron.layer import Layer
+from TP3.constants import *
+from TP3.multilayer_perceptron.activation_functions import Activation
 
 
 class MultilayerPerceptron:

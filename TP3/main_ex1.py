@@ -2,6 +2,11 @@ import numpy as np
 from perceptron.simple_perceptron import SimplePerceptron
 import matplotlib.pyplot as plt
 
+
+def get_point_overline_result(weights, x):
+    return -(weights[0] / weights[1]) * x - weights[2] / weights[1]
+
+
 DOT_SIZE = 15
 # training_set = np.array([[-1, 1], [1, 1], [-1, -1]])
 # expected_output = np.array([-1, 1, -1])

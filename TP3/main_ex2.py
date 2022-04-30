@@ -35,7 +35,6 @@ perceptron = NonLinearPerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
 
 raw_results = np.array(perceptron.test_input(test_set), dtype=float)
-print('Expected      Result')
 
-results = get_results(raw_results, test_outputs, criteria= lambda x,y: np.abs(x - y) < 0.01)
+results = get_results(raw_results, test_outputs, criteria=lambda x, y: np.abs(x - y) < 0.01)
 get_metrics(results)

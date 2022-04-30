@@ -12,7 +12,7 @@ class SimplePerceptron(Perceptron):
 
     def error(self, w):
         error = 0
-        for i in range(len(self.training_set)):
+        for i in range(len(self.training_set)) :
             exitation = np.inner(self.training_set[i], w)
             output = self.activation(exitation)
             error += (self.expected_output[i] - output)**2

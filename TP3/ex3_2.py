@@ -17,4 +17,4 @@ def ex2(learning_rate, epochs, layers):
     print('Expected      Result')
 
     for i in range(results.size):
-        print(f'{np.round(expected_output[i])[0]}\t    {np.abs(np.round(results[i])[0])}')
+        print(f'{np.round(expected_output[i])[0]}\t \t\t   {np.abs(np.round(results[i])[0])}')

@@ -13,9 +13,9 @@ exercise = int(jsonObject["exercise"])
 exerciseFile = str(jsonObject["config_file"][exercise])
 
 if exercise == 0:
-    ex1(0.01, 100, [2, 2, 2])
+    ex1(0.1, 1000, [4])
 elif exercise == 1:
-    ex2(0.1, 1000, [9, 6, 2])
+    ex2(0.1, 1000, [9, 6])
 else:
     ex3(0.005, 5000, [10, 10])
 

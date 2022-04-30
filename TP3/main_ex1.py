@@ -8,31 +8,27 @@ def get_point_overline_result(weights, x):
 
 
 DOT_SIZE = 15
-# training_set = np.array([[-1, 1], [1, -1], [-1, -1]])
-# expected_output = np.array([-1, -1, -1])
+# training_set = np.array([[-1, 1], [1, 1], [-1, -1]])
+# expected_output = np.array([-1, 1, -1])
 training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
-expected_output = np.array([-1, -1, -1, 1])
-learning_rate = 0.00001
-iterations = 1000
+expected_output = np.array([1, 1, -1, -1])
+learning_rate = 0.01
+iterations = 10000
 perceptron = SimplePerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
-y1 = get_point_overline_result(perceptron.w_min, -1.2)
-point1 = np.array([-1.2, y1])
-y2 = get_point_overline_result(perceptron.w_min, 1.2)
-point2 = np.array([1.2, y2])
-
-perceptron.plot()
-
-x_values = [point1[0], point2[0]]
-y_values = [point1[1], point2[1]]
-plt.plot(x_values, y_values)
-plt.plot(-1, -1, 'o', c='black', markersize=DOT_SIZE)
-plt.plot(-1, 1, 'o', c='black', markersize=DOT_SIZE)
-plt.plot(1, -1, 'o', c='black', markersize=DOT_SIZE)
-plt.plot(1, 1, 'go', markersize=DOT_SIZE)
-plt.ylim(-1.5, 1.5)
-
-plt.show()
+# w = perceptron.w_min
+# x = np.linspace(-2, 2, 100)
+# y = -(w[0]*x/w[1]) - w[2]/w[1] 
+# plt.title(f'Variacion de vector w con η = {learning_rate}, iteracion= {x}')
+# plt.xlabel('ξ_1')
+# plt.ylabel('ξ_2')
+# plt.plot(x, y, label='line', linewidth=2)
+# plt.plot(-1,-1, 'o', c='black', markersize=DOT_SIZE)
+# plt.plot(-1,1, 'go' , markersize=DOT_SIZE)
+# plt.plot(1,-1, 'go' , markersize=DOT_SIZE)
+# plt.plot(1,1, 'o', markersize=DOT_SIZE)
+# plt.ylim(-2,2)
+# plt.show()
 
 results = perceptron.test_input(np.array([[1, 1]]))
 for i in results:

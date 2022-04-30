@@ -2,6 +2,7 @@ import time
 from abc import ABC, abstractmethod
 import numpy as np
 import matplotlib.pyplot as plt
+DOT_SIZE = 5
 
 
 class Perceptron(ABC):
@@ -19,9 +20,10 @@ class Perceptron(ABC):
         error = 1
         p = len(self.training_set)
         self.error_min = float('inf')
-        w = np.ones(len(self.training_set[0]), dtype=float)
+        w = np.array([1., 1., 1.], dtype=float)
         while error > 0 and i < iterations:
-            i_x = np.random.randint(1, p)
+            i_x = np.random.randint(0, p - 1)
+            print(f' ix: {i_x}')
             excitation = np.inner(self.training_set[i_x], w)
             activation = self.activation(excitation)
             w += self.learning_rate * (self.expected_output[i_x] - activation) * self.training_set[
@@ -31,8 +33,24 @@ class Perceptron(ABC):
                 self.error_min = error
                 self.w_min = w
             i += 1
-        print("Minimum error: " + str(self.error_min))
-        print("Minimum weight: " + str(self.w_min))
+            print("Minimum error: " + str(self.error_min))
+            print("Minimum weight: " + str(self.w_min))
+            print(i)
+        w = self.w_min
+        x = np.linspace(-2, 2, 100)
+        y = -(w[0]*x/w[1]) - w[2]/w[1] 
+        plt.title(f'Variacion de vector w con η = {self.learning_rate}, iteracion= {i}')
+        plt.xlabel('ξ_1')
+        plt.ylabel('ξ_2')
+        plt.plot(x, y, label='line', linewidth=2)
+        plt.plot(-1,-1, 'o', c='black', markersize=DOT_SIZE)
+        plt.plot(-1,1, 'go', markersize=DOT_SIZE)
+        plt.plot(1,-1, 'go', markersize=DOT_SIZE)
+        plt.plot(1,1, 'o', c='black', markersize=DOT_SIZE)
+        plt.ylim(-2,2)
+        plt.savefig(f'plots/{i}')
+        plt.clf()
+           
 
     def plot(self):
         print(self.training_set)

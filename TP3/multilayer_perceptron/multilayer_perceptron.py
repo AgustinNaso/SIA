@@ -61,6 +61,7 @@ class MultilayerPerceptron:
             error *= 0.5
             if error < self.error_min:
                 self.error_min = error
+                # print(error)
             if error < self.error_limit:
                 print("Error " + str(error))
                 return

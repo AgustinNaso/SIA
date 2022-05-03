@@ -15,41 +15,44 @@ class Perceptron(ABC):
         self.w_min = None
 
     # Training algorithm
-    def train(self, iterations):
+    def train(self, epochs):
         i = 0
         error = 1
         p = len(self.training_set)
         self.error_min = float('inf')
-        w = np.array([1., 1., 1.], dtype=float)
-        while error > 0 and i < iterations:
-            i_x = np.random.randint(0, p - 1)
-            print(f' ix: {i_x}')
-            excitation = np.inner(self.training_set[i_x], w)
-            activation = self.activation(excitation)
-            w += self.learning_rate * (self.expected_output[i_x] - activation) * self.training_set[
-                i_x] * self.activation_derivative(excitation)
-            error = self.error(w)
-            if error < self.error_min:
-                self.error_min = error
-                self.w_min = w
+        w = np.random.rand(len(self.training_set[0]))
+        print(w)
+        positions = np.arange(0, len(self.training_set))
+        print(positions)
+        while error > 0 and i < epochs:
+            np.random.shuffle(positions)
+            for i_x in positions:
+                print(f' ix: {i_x}')
+                excitation = np.inner(self.training_set[i_x], w)
+                activation = self.activation(excitation)
+                w += self.learning_rate * (self.expected_output[i_x] - activation) * self.training_set[i_x] * self.activation_derivative(excitation)
+                print(w)
+                error = self.error(w)
+                if error < self.error_min:
+                    self.error_min = error
+                    self.w_min = w
             i += 1
             print("Minimum error: " + str(self.error_min))
             print("Minimum weight: " + str(self.w_min))
-            print(i)
-        w = self.w_min
-        x = np.linspace(-2, 2, 100)
-        y = -(w[0]*x/w[1]) - w[2]/w[1] 
-        plt.title(f'Variacion de vector w con η = {self.learning_rate}, iteracion= {i}')
-        plt.xlabel('ξ_1')
-        plt.ylabel('ξ_2')
-        plt.plot(x, y, label='line', linewidth=2)
-        plt.plot(-1,-1, 'o', c='black', markersize=DOT_SIZE)
-        plt.plot(-1,1, 'go', markersize=DOT_SIZE)
-        plt.plot(1,-1, 'go', markersize=DOT_SIZE)
-        plt.plot(1,1, 'o', c='black', markersize=DOT_SIZE)
-        plt.ylim(-2,2)
-        plt.savefig(f'plots/{i}')
-        plt.clf()
+            w = self.w_min
+            x = np.linspace(-2, 2, 100)
+            y = -(w[0]*x/w[1]) - w[2]/w[1] 
+            plt.title(f'Variacion de vector w con η = {self.learning_rate}, epoca= {i}')
+            plt.xlabel('ξ_1')
+            plt.ylabel('ξ_2')
+            plt.plot(x, y, label='line', linewidth=2)
+            plt.plot(-1,-1, 'o', c='black', markersize=DOT_SIZE)
+            plt.plot(-1,1, 'go', markersize=DOT_SIZE)
+            plt.plot(1,-1, 'go', markersize=DOT_SIZE)
+            plt.plot(1,1, 'o', c='black', markersize=DOT_SIZE)
+            plt.ylim(-2,2)
+            plt.savefig(f'plots/{i}')
+            plt.clf()
            
 
     def plot(self):

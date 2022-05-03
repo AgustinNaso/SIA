@@ -1,7 +1,7 @@
 import numpy as np
 
 import ex3_utils
-from TP3.constants import FIRST, MIDDLE, LAST
+from constants import FIRST, MIDDLE, LAST
 from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 

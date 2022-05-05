@@ -14,6 +14,23 @@ def ex3(learning_rate, epochs, layers):
 
     perceptron = ex3_utils.create_multilayer_perceptron_and_train(training_set, expected_output, learning_rate, epochs,
                                                                   layers)
+
+    test_set = ex3_utils.import_data('data/ex3_3_test_set', 7)
+    outputs = np.array(ex3_utils.import_data('data/ex3_3_test_expected', 1), dtype=float)
+
+    test_set = np.array(test_set)
+    # print(test_set)
+    # print(outputs)
+
+    results = np.array(perceptron.test_input(test_set), dtype=float)
+    print("distinct draw set")
+    print('Expected   Result')
+
+    for i in range(len(results)):
+        print(f'{get_max_index(expected_output[i])}          {get_max_index(results[i])}')
+
+    print("noisy set")
+
     training_set = create_noise(training_set)
     results = np.array(perceptron.test_input(training_set), dtype=float)
     print('Expected   Result')
@@ -42,7 +59,7 @@ def create_noise(test_set):
 
 def noise(number):
     probability = np.random.rand(1)[0]
-    if probability < 0.02:
+    if probability < 0.1:
         if number == 1:
             return 0
         else:

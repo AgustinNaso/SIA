@@ -1,0 +1,5 @@
+{
+    "learning_rate": 0.1,
+    "epochs": 100,
+    "hiddenLayers": [9, 6]
+}

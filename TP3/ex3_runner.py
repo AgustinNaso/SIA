@@ -12,12 +12,21 @@ with open("ex3_config.json") as jsonFile:
 exercise = int(jsonObject["exercise"])
 exerciseFile = str(jsonObject["config_file"][exercise])
 
+with open(exerciseFile) as jsonFile:
+    configJsonObject = json.load(jsonFile)
+    jsonFile.close()
+
+learning_rate = configJsonObject["learning_rate"]
+epochs = configJsonObject["epochs"]
+hiddenLayers = np.array(configJsonObject["hiddenLayers"])
+
+
 if exercise == 0:
-    ex1(0.1, 1000, [4])
+    ex1(learning_rate, epochs, hiddenLayers)
 elif exercise == 1:
-    ex2(0.1, 1000, [9, 6])
+    ex2(learning_rate, epochs, hiddenLayers)
 else:
-    ex3(0.005, 5000, [10, 10])
+    ex3(learning_rate, epochs, hiddenLayers)
 
 # print(exerciseFile)
 

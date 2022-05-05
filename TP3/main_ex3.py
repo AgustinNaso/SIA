@@ -1,5 +1,5 @@
 import csv
-from TP3.constants import *
+from constants import *
 import numpy as np
 from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 

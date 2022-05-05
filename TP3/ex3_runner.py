@@ -1,9 +1,9 @@
 import json
 import numpy as np
 
-from TP3.ex3_1 import ex1
-from TP3.ex3_2 import ex2
-from TP3.ex3_3 import ex3
+from ex3_1 import ex1
+from ex3_2 import ex2
+from ex3_3 import ex3
 
 with open("ex3_config.json") as jsonFile:
     jsonObject = json.load(jsonFile)

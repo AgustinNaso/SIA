@@ -1,5 +1,5 @@
-from TP3.multilayer_perceptron.neuron import Neuron
-from TP3.constants import *
+from multilayer_perceptron.neuron import Neuron
+from constants import *
 import numpy as np
 
 

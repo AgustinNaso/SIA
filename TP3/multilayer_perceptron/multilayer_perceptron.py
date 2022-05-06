@@ -1,8 +1,7 @@
-from unittest import result
 import numpy as np
-from multilayer_perceptron.layer import Layer
-from constants import *
-from multilayer_perceptron.activation_functions import Activation
+from TP3.multilayer_perceptron.layer import Layer
+from TP3.constants import *
+from TP3.multilayer_perceptron.activation_functions import Activation
 
 
 class MultilayerPerceptron:
@@ -28,7 +27,6 @@ class MultilayerPerceptron:
             self.learning_rate_k = learning_rate_params[2]
 
     def train(self, epochs):
-        results  = np.zeros(epochs)
         error = 1
         prev_error = None
         self.error_min = float('inf')
@@ -59,8 +57,7 @@ class MultilayerPerceptron:
                 if self.adaptive_rate and prev_error:
                     k = self.adapt_learning_rate(error - prev_error, k)
                 prev_error = aux_error
-            
-            results[epoch] = self.test_input(self.training_set)
+
             error *= 0.5
             if error < self.error_min:
                 self.error_min = error
@@ -69,7 +66,6 @@ class MultilayerPerceptron:
                 print("Error " + str(error))
                 return
         print("Error " + str(error))
-        return results
 
     def propagate(self, training_set):
         m = len(self.layers)

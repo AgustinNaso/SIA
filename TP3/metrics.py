@@ -1,7 +1,7 @@
 import random
-from perceptron.linear_perceptron import LinearPerceptron
-from perceptron.non_linear_perceptron import NonLinearPerceptron
-from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
+from TP3.perceptron.linear_perceptron import LinearPerceptron
+from TP3.perceptron.non_linear_perceptron import NonLinearPerceptron
+from TP3.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 import numpy as np
 from constants import *
 

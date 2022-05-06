@@ -1,8 +1,8 @@
 import csv
 import numpy as np
 
-from constants import FIRST, LAST, MIDDLE
-from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
+from TP3.constants import FIRST, LAST, MIDDLE
+from TP3.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 
 def normalize(output):
@@ -39,5 +39,5 @@ def create_multilayer_perceptron_and_train(training_set, expected_output, learni
     for i in range(len(layers)):
         perceptron.add(layers[i], MIDDLE)
     perceptron.add(len(expected_output[0]), LAST)
-    results = perceptron.train(epochs)
-    return perceptron, results
+    perceptron.train(epochs)
+    return perceptron

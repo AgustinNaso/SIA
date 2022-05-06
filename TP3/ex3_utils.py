@@ -1,8 +1,8 @@
 import csv
 import numpy as np
 
-from TP3.constants import FIRST, LAST, MIDDLE
-from TP3.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
+from constants import FIRST, LAST, MIDDLE
+from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 
 def normalize(output):

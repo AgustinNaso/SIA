@@ -1,9 +1,10 @@
 import random
-from perceptron.linear_perceptron import LinearPerceptron
-from perceptron.non_linear_perceptron import NonLinearPerceptron
-from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
+from TP3.perceptron.linear_perceptron import LinearPerceptron
+from TP3.perceptron.non_linear_perceptron import NonLinearPerceptron
+from TP3.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 import numpy as np
 from constants import *
+import matplotlib.pyplot as plt
 
 
 def accuracy(results):
@@ -57,6 +58,9 @@ def cross_validation(k, training_set, expected_output, perceptron_type, amount, 
     best_network = None
     best_training_set = None
     best_indexes = None
+    best_test_set = None
+    best_output = None
+    best_test_output = None
 
     for indexes in split_indexes:
         training_set_idx = set(all_indexes) - set(indexes)
@@ -68,24 +72,26 @@ def cross_validation(k, training_set, expected_output, perceptron_type, amount, 
 
         if perceptron_type == LINEAR:
             perceptron = LinearPerceptron(sub_training_set, sub_expected_output, learning_rate)
-        elif perceptron_type == NON_LINEAR:
-            perceptron = NonLinearPerceptron(sub_training_set, sub_expected_output, learning_rate)
+        # elif perceptron_type == NON_LINEAR:
         else:
-            perceptron = MultilayerPerceptron(sub_training_set, sub_expected_output, learning_rate, batch_size,
-                                              learning_rate_params, momentum)
+            perceptron = NonLinearPerceptron(sub_training_set, sub_expected_output, learning_rate)
+        # else:
+        #     perceptron = MultilayerPerceptron(sub_training_set, sub_expected_output, learning_rate, batch_size,
+        #                                       learning_rate_params, momentum)
 
         perceptron.train(amount)
 
-        results = perceptron.test_input(test_set)
-        get_results(results, test_output, criteria=lambda x, y: np.abs(x - y) < 0.01)
+        res = perceptron.test_input(test_set)
+        acc = accuracy(get_results(res, test_output, criteria=lambda x, y: np.abs(x - y) < 0.1))
 
-        if accuracy(results) < best_result:
-            best_result = accuracy(results)
-            best_network = perceptron
+        if acc < best_result:
+            best_result = acc
             best_training_set = sub_training_set
-            best_indexes = indexes
+            best_output = sub_expected_output
+            best_test_set = test_set
+            best_test_output = test_output
 
-    return best_result, best_network, best_training_set, best_indexes
+    return best_training_set, best_output, best_test_set, best_test_output
 
 
 # Ejercicio 1 - XOR: 1 -1
@@ -109,7 +115,7 @@ def get_confusion_matrix(classes, real_output, expected_output):
 
 def get_results(real_output, expected_output, criteria=None):
     results = np.zeros(2)
-    for i in range(real_output.size):
+    for i in range(len(real_output)):
         if criteria is not None:
             right_answer = criteria(real_output[i], expected_output[i])
         else:

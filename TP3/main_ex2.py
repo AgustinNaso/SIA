@@ -1,8 +1,9 @@
 import csv
 import numpy as np
-from perceptron.linear_perceptron import LinearPerceptron
-from perceptron.non_linear_perceptron import NonLinearPerceptron
-from metrics import get_results, get_metrics
+from TP3.perceptron.linear_perceptron import LinearPerceptron
+from metrics import get_results, cross_validation, accuracy
+from constants import *
+import matplotlib.pyplot as plt
 
 
 def normalize(output):
@@ -22,19 +23,49 @@ def import_data(file):
 
 
 inputs = import_data('data/ex2_training_set')
-outputs = normalize(np.array(import_data('data/ex2_expected_output'), dtype=float))
-# outputs = np.array(import_data('data/ex2_expected_output'), dtype=float)
-learning_rate = 0.02
-training_set = inputs[:180]
-test_set = np.array(inputs[180:], dtype=float)
-expected_output = outputs[:180]
-test_outputs = np.array(outputs[180:], dtype=float)
-iterations = 10000
-perceptron = NonLinearPerceptron(training_set, expected_output, learning_rate)
-# perceptron = LinearPerceptron(training_set, expected_output, learning_rate)
-perceptron.train(iterations)
+outputs = np.array(import_data('data/ex2_expected_output'), dtype=float)
+norm_outputs = normalize(np.array(import_data('data/ex2_expected_output'), dtype=float))
+learning_rates = [0.005, 0.01, 0.5]
+epochs = [100, 500, 1000]
+k_folds = [10, 20, 40]
 
-raw_results = np.array(perceptron.test_input(test_set), dtype=float)
+for e in epochs:
+    for lr in learning_rates:
+        for k in k_folds:
+            best_training_set, best_output, best_test_set, best_test_output = cross_validation(k, inputs, outputs,
+                                                                                               LINEAR, e, lr)
 
-results = get_results(raw_results, test_outputs, criteria=lambda x, y: np.abs(x - y) < 0.01)
-get_metrics(results)
+            perceptron = LinearPerceptron(best_training_set, best_output, lr)
+            perceptron.train(e, best_test_set)
+
+            train_accuracies = []
+            test_accuracies = []
+            for r, s in zip(perceptron.results_train, perceptron.results):
+                train_accuracies.append(accuracy(get_results(r, best_output, criteria=lambda x, y: np.abs(x - y) < 0.01)))
+                test_accuracies.append(accuracy(get_results(s, best_test_output, criteria=lambda x, y: np.abs(x - y) < 0.01)))
+
+            print(train_accuracies)
+            print(test_accuracies)
+
+            x = np.linspace(1, e, e)
+            y1 = train_accuracies
+            y2 = test_accuracies
+            plt.title(f'Variation of accuracy with η = {lr}, epoch = {e} y k = {k}')
+            plt.xlabel('Epochs')
+            plt.ylabel('Accuracy')
+            plt.plot(x, y1, 'o', color='#ffc0cb')
+            plt.plot(x, y2, 'o', color='#c3e6fc')
+            plt.legend(["Train set", "Test set"], loc="upper right")
+            plt.show()
+            plt.clf()
+
+            x = np.linspace(1, e, e)
+            y = perceptron.errors
+            plt.title(f'Variation of error con η = {lr}, epoch = {e} y k = {k}')
+            plt.xlabel('Epochs')
+            plt.ylabel('Error')
+            plt.plot(x, y, label='line', linewidth=2, color='#ffc0cb')
+            plt.savefig(f'plots/errors/{lr}-{k}-{e}.png')
+            plt.clf()
+
+# perceptron.train(iterations)

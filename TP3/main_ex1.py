@@ -13,7 +13,7 @@ DOT_SIZE = 15
 training_set = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
 expected_output = np.array([1, 1, -1, -1])
 learning_rate = 0.01
-iterations = 1000
+iterations = 10000
 perceptron = SimplePerceptron(training_set, expected_output, learning_rate)
 perceptron.train(iterations)
 # w = perceptron.w_min

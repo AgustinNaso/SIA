@@ -39,5 +39,5 @@ def create_multilayer_perceptron_and_train(training_set, expected_output, learni
     for i in range(len(layers)):
         perceptron.add(layers[i], MIDDLE)
     perceptron.add(len(expected_output[0]), LAST)
-    results = perceptron.train(epochs)
-    return perceptron, results
+    perceptron.train(epochs)
+    return perceptron

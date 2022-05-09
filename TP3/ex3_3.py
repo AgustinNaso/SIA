@@ -1,8 +1,6 @@
 import numpy as np
 
 import ex3_utils
-from constants import FIRST, MIDDLE, LAST
-from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 
 def ex3(learning_rate, epochs, layers):
@@ -19,8 +17,6 @@ def ex3(learning_rate, epochs, layers):
     outputs = np.array(ex3_utils.import_data('data/ex3_3_test_expected', 1), dtype=float)
 
     test_set = np.array(test_set)
-    # print(test_set)
-    # print(outputs)
 
     results = np.array(perceptron.test_input(test_set), dtype=float)
     print("distinct draw set")

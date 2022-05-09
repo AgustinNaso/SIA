@@ -28,8 +28,6 @@ elif exercise == 1:
 else:
     ex3(learning_rate, epochs, hiddenLayers)
 
-# print(exerciseFile)
-
 
 # import the data
 # create the model based on the data entry and the config.json

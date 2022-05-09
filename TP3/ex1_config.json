@@ -1,0 +1,5 @@
+{
+  "problem": "xor",
+  "learning_rate": 0.01,
+  "iterations": 1000
+}

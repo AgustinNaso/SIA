@@ -1,0 +1,7 @@
+{
+  "perceptron": "linear",
+  "learning_rate": 0.01,
+  "epochs": 10,
+  "test_set_start": 10,
+  "test_set_end": 30
+}

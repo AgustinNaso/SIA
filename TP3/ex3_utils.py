@@ -33,8 +33,8 @@ def import_data(file, quantity):
     return data
 
 
-def create_multilayer_perceptron_and_train(training_set, expected_output, learning_rate, epochs, layers):
-    perceptron = MultilayerPerceptron(training_set, expected_output, learning_rate)
+def create_multilayer_perceptron_and_train(training_set, expected_output, learning_rate, epochs, layers, batch_size, momentum=False, adaptive_params=None):
+    perceptron = MultilayerPerceptron(training_set, expected_output, learning_rate, adaptive_params, batch_size, momentum)
     perceptron.add(len(training_set[0]), FIRST)
     for i in range(len(layers)):
         perceptron.add(layers[i], MIDDLE)

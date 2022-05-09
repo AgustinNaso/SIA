@@ -3,7 +3,7 @@ import numpy as np
 import ex3_utils
 
 
-def ex3(learning_rate, epochs, layers):
+def ex3(learning_rate, epochs, layers, batch_size, momentum=False, adaptive_params=None):
     inputs = ex3_utils.import_data('data/ex3_23_training_set', 7)
     outputs = np.array(ex3_utils.import_data('data/ex3_3_expected_output', 1), dtype=float)
 
@@ -11,7 +11,7 @@ def ex3(learning_rate, epochs, layers):
     expected_output = np.array(outputs)
 
     perceptron = ex3_utils.create_multilayer_perceptron_and_train(training_set, expected_output, learning_rate, epochs,
-                                                                  layers)
+                                                                  layers, batch_size, momentum, adaptive_params)
 
     test_set = ex3_utils.import_data('data/ex3_3_test_set', 7)
     outputs = np.array(ex3_utils.import_data('data/ex3_3_test_expected', 1), dtype=float)

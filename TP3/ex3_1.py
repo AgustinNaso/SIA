@@ -5,7 +5,7 @@ from constants import FIRST, MIDDLE, LAST
 from multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 
-def ex1(learning_rate, epochs, layers):
+def ex1(learning_rate, epochs, layers, batch_size, momentum=False, adaptive_params=None):
     inputs = ex3_utils.import_data('data/ex3_1_training_set',1)
     outputs = ex3_utils.normalize(np.array(ex3_utils.import_data('data/ex3_1_expected_output',1), dtype=float))
 
@@ -13,7 +13,7 @@ def ex1(learning_rate, epochs, layers):
     expected_output = np.array(outputs)
 
     perceptron = ex3_utils.create_multilayer_perceptron_and_train(training_set, expected_output, learning_rate, epochs,
-                                                                  layers)
+                                                                  layers, batch_size, momentum, adaptive_params)
     # test_set = np.array([[1, 1], [-1, 1]], dtype=float)
     # test_outputs = np.array([[1], [-1]], dtype=float)
 

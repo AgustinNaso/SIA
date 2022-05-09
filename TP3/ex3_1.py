@@ -21,5 +21,5 @@ def ex1(learning_rate, epochs, layers, batch_size, momentum=False, adaptive_para
     print('Expected      Result')
 
     for i in range(results.size):
-        print(f'{expected_output[i]}    {results[i]}')
+        print(f'{expected_output[i][0]}\t\t{results[i][0]}')
 

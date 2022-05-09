@@ -1,8 +1,8 @@
 import csv
 import numpy as np
 import json
-from TP3.perceptron.linear_perceptron import LinearPerceptron
-from TP3.perceptron.non_linear_perceptron import NonLinearPerceptron
+from perceptron.linear_perceptron import LinearPerceptron
+from perceptron.non_linear_perceptron import NonLinearPerceptron
 from constants import *
 
 

@@ -50,7 +50,8 @@ sus parametros:
   "test_set_end": 30
 }
 ```
-La variable perceptron puede variar entre "linear" y "non linear".<br>
+La variable perceptron puede variar entre "linear" y "non linear". <br>
+test_set_start y test_set_end marcan el index del principio y el final del test set sobre el training set<br>.
 Luego se ejecuta el archivo ex2.py.
 ```shell
 python3 ex2.py

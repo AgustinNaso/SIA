@@ -30,7 +30,7 @@ if adaptive_eta == 1:
     adaptive_inc = int(configJsonObject["adaptive_inc"])
     adaptive_dec = int(configJsonObject["adaptive_dec"])
     adaptive_params = [adaptive_inc, adaptive_dec, adaptive_k]
-    
+
 if momentum == 1:
     set_momentum = True
 

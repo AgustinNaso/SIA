@@ -15,8 +15,8 @@ class Hopfield:
         np.fill_diagonal(self.weights, 0)
         print(self.weights)
 
-    def train(self, loud_patten, iterations):
-        state = np.array(loud_patten)
+    def train(self, noisy_pattern, iterations):
+        state = np.array(noisy_pattern)
         prev_state = np.zeros((self.dimension,))
         energies = [self.energy(state)]
         print_state(state)

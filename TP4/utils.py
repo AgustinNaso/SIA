@@ -13,7 +13,7 @@ def import_data(file):
         aux[-1] = aux[-1].split('\'')[0]
         aux = np.array(aux).astype(float)
         data.append(aux)
-        countries.append(str(row).split(',')[0] )
+        countries.append(str(row).split(',')[0])
     return countries, data
 
 def standarize(inputs):

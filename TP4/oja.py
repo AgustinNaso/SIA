@@ -1,6 +1,6 @@
 import numpy as np
 from utils import import_data, standarize, get_headers
-from TPO2.main import  get_pca_first_components
+from pca import get_pca_first_components
 
 # eta = 0.02
 INITIAL_VALUE = 2

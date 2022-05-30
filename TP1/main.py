@@ -19,7 +19,7 @@ def show_solution(ans_node):
         stack.append(ans_node)
         ans_node = ans_node.parent
     while stack:
-        stack.pop().print_state()
+        stack.print_state()
         print('\n')
 
 def shuffle():

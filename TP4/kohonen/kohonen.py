@@ -9,6 +9,25 @@ def get_distance(vector_1, vector_2):
     return np.sqrt(total_sum)
 
 
+def get_mean_distance_of_neighbors(x, y, neurons):
+    curr_neuron_weight = neurons[x][y].weights
+    dist = 0
+    size = 0
+    if y + 1 < len(neurons):
+        dist += get_distance(curr_neuron_weight, neurons[x][y + 1].weights)
+        size += 1
+    if y > 0:
+        size += 1
+        dist += get_distance(curr_neuron_weight, neurons[x][y - 1].weights)
+    if x > 0:
+        size += 1
+        dist += get_distance(curr_neuron_weight, neurons[x - 1][y].weights)
+    if x + 1 < len(neurons):
+        size += 1
+        dist += get_distance(curr_neuron_weight, neurons[x + 1][y].weights)
+    return dist / size
+
+
 class Kohonen:
     def __init__(self, training_set, dimension, radius, learning_rate):
         self.training_set = np.array(training_set, dtype=float)
@@ -31,16 +50,20 @@ class Kohonen:
             np.random.shuffle(positions)
             radius = self.radius
             learning_rate = self.learning_rate
+            iteration = 2
             for i_x in positions:
                 chosen_xp = self.training_set[i_x]
                 best_neuron, x, y = self.get_best_neuron(chosen_xp)
                 self.update_weights_with_kohonen_rule(best_neuron, x, y, chosen_xp)
-                activations[x][y] += 1
+                if i == epochs - 1:
+                    activations[x][y] += 1
+                    print(f'x: {x} y: {y} : c_i: {i_x}')
                 self.radius = 1 if self.radius == 1 else self.radius - 1
-                self.learning_rate = (1 / (1 + i))
+                self.learning_rate = 1 / iteration
+                iteration += 1
             self.radius = radius
             self.learning_rate = learning_rate
-        return activations
+        return activations, self.neurons
 
     def update_weights_with_kohonen_rule(self, best_neuron, x, y, chosen_xp):
         for i in range(self.dimension):

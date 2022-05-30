@@ -1,13 +1,13 @@
 import numpy as np
 from utils import import_data, standarize, get_headers
-
+from TPO2.main import  get_pca_first_components
 
 # eta = 0.02
-
+INITIAL_VALUE = 2
 
 class LinearPerceptron:
     def __init__(self, data, learning_rate):
-        self.standard_inputs, self.eta, self.w = data, learning_rate, np.copy(standard_inputs[0])
+        self.standard_inputs, self.eta, self.w = data, learning_rate, np.copy(standard_inputs[INITIAL_VALUE])
 
     def train(self, epochs):
         for i in range(epochs):
@@ -35,21 +35,28 @@ def get_mean(x, countries):
         print("----------------------------")
     return x
 
+def printComparationWithPCA(oja, pca, countries):
+    print("oja\t\t\t\tpca\t\t\tdifference\t\tcountries")
+    maxdiff = abs(oja[0] - pca[0])
+    for z in range(len(countries)):
+        if maxdiff < abs(oja[z] - pca[z]):
+            maxdiff = abs(oja[z] - pca[z])
+        if oja[z] > 0:
+            print(f' {oja[z]:.5f}\t\t {pca[z]:.5f}\t\t{abs(oja[z] - pca[z]):.5f}\t\t{countries[z]} ')
+        else:
+            print(f'{oja[z]:.5f}\t\t{pca[z]:.5f}\t\t{abs(oja[z] - pca[z]):.5f}\t\t{countries[z]} ')
+    print("max error: " + str(maxdiff))
 
 countries, inputs = import_data("europe.csv")
 headers = get_headers("europe.csv")
 standard_inputs = standarize(inputs)
 
-# for i in range(1000):
-# eta = 0.0877
-eta = 0.01
+eta = 0.0001
 perceptron = LinearPerceptron(standard_inputs, eta)
 w = perceptron.train(1000)
 
 first_component = []
 for i in range(len(countries)):
-# for i in range(1):
-#     if perceptron.output(standard_inputs[i]) < 0:
-#     print("eta: " + str(eta))
-    first_component.append([countries[i], perceptron.output(standard_inputs[i])])
-    print(countries[i][2:] + "    " + str(perceptron.output(standard_inputs[i])))
+    first_component.append(perceptron.output(standard_inputs[i]))
+
+printComparationWithPCA(first_component, get_pca_first_components(), countries)

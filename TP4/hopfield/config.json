@@ -1,0 +1,7 @@
+{
+  "letters": ["A", "E", "J", "K"],
+  "letter_to_modify": "A",
+  "probability": 0.5,
+  "iterations": 100,
+  "conserve_pattern": "True"
+}

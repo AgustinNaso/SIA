@@ -1,8 +1,9 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def print_state(state):
-    print("State: \n")
+    print("State: ")
     print(state)
 
 
@@ -13,14 +14,13 @@ class Hopfield:
         self.dimension = len(self.network_patterns[0])
         self.weights = np.dot(np.transpose(self.network_patterns), self.network_patterns) / self.dimension
         np.fill_diagonal(self.weights, 0)
-        print(self.weights)
 
     def train(self, noisy_pattern, iterations):
         state = np.array(noisy_pattern)
         prev_state = np.zeros((self.dimension,))
         energies = [self.energy(state)]
         print_state(state)
-        print(f"Energy: {energies[-1]}")
+        print(f"Energy: {energies[-1]}\n")
         i = 0
 
         while i < iterations and not np.array_equal(prev_state, state):
@@ -28,9 +28,18 @@ class Hopfield:
             state = self.activate(prev_state)
             energies.append(self.energy(state))
             print_state(state)
-            print(f"Energy: {energies[-1]}")
+            print(f"Energy: {energies[-1]}\n")
             i += 1
-        print(f"Iterations: {i}")
+
+        new_list = range(0, i+1)
+        plt.title("Energy levels per iteration")
+        plt.plot([i for i in range(len(energies))], energies)
+        plt.ylabel('Energy level')
+        plt.xlabel('Iterations')
+        plt.xticks(new_list)
+        plt.show()
+
+        print(f"Iterations: {i}\n")
         for pattern in self.network_patterns:
             if np.array_equal(pattern, state):
                 return True, state
@@ -55,9 +64,3 @@ class Hopfield:
                 result += self.weights[i][j] * state[i] * state[j]
         return -0.5 * result
 
-
-# arr = [[1, 1, -1, -1], [-1, -1, 1, 1]]
-# hopfield = Hopfield(arr)
-# found, pattern = hopfield.train([1, -1, -1, -1], 10)
-# print(f"Result: {found}")
-# print(f"Final state: {pattern}")

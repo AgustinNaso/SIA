@@ -40,7 +40,7 @@ def get_network_patterns(letters):
     return network_patterns
 
 
-def get_noisy_pattern(network_patterns, letter, probability):
+def get_noisy_pattern(network_patterns, letter, probability, conserve_pattern):
     if letter == -1:
         aux_idx = np.random.randint(0, len(network_patterns))
         noisy_pattern = network_patterns[aux_idx].copy()
@@ -50,10 +50,12 @@ def get_noisy_pattern(network_patterns, letter, probability):
     count = 0
     for i in range(len(noisy_pattern)):
         if probability >= np.random.uniform(0, 1):
-            count += 1
             if noisy_pattern[i] == 1:
-                noisy_pattern[i] = -1
+                if not conserve_pattern:
+                    noisy_pattern[i] = -1
+                    count += 1
             else:
                 noisy_pattern[i] = 1
+                count += 1
     print(f"Bits modified: {count}")
     return noisy_pattern

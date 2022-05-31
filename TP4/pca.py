@@ -24,3 +24,6 @@ principalComponents = model.fit_transform(x)
 
 def get_pca_first_components():
     return principalComponents[:, 0]
+
+def get_pca_first_component():
+    return model.components_[0]

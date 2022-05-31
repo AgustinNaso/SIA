@@ -2,6 +2,7 @@ import numpy as np
 import csv
 from sklearn.preprocessing import StandardScaler
 from TP4.hopfield.letters import get_letter
+import re
 
 
 def import_data(file):
@@ -29,6 +30,9 @@ def get_headers(file):
     headers = csv_reader.__next__()
     aux = str(headers).split(',')[1:]
     aux[-1] = aux[-1].split('\'')[0]
+    regex = re.compile('[^a-zA-Z]')
+    for i in range(len(aux)):
+        aux[i] = regex.sub('', aux[i])
     return aux
 
 

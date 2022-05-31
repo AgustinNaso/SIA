@@ -4,7 +4,9 @@ import matplotlib.pyplot as plt
 
 def print_state(state):
     print("State: ")
-    print(state)
+    for i in range(5):
+        print(str(state[0 + i * 5]) + ' ' + str(state[1 + i * 5]) + ' ' + str(state[2 + i * 5]) + ' ' + str(
+            state[3 + i * 5]) + ' ' + str(state[4 + i * 5]))
 
 
 class Hopfield:
@@ -63,4 +65,3 @@ class Hopfield:
             for j in range(self.dimension):
                 result += self.weights[i][j] * state[i] * state[j]
         return -0.5 * result
-

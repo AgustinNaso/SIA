@@ -1,5 +1,4 @@
 import matplotlib
-import numpy as np
 
 from TP4.kohonen.kohonen import Kohonen, get_mean_distance_of_neighbors
 from TP4.utils import *
@@ -8,11 +7,11 @@ import matplotlib.pyplot as plt
 KOHONEN_DIM = 4
 KOHONEN_RADIUS = KOHONEN_DIM
 KOHONEN_ETA = 0.5
-KOHONEN_EPOCHS = 500*28
+KOHONEN_EPOCHS = 500 * 28
 
 
 def main():
-    countries, inputs = import_data("europe.csv")
+    countries, inputs = import_data("../TP4/europe.csv")
     standard_inputs = standarize(inputs)
     kohonen = Kohonen(standard_inputs, KOHONEN_DIM, KOHONEN_RADIUS, KOHONEN_ETA)
     kohonen.initialize_weights()
@@ -39,6 +38,7 @@ def main():
     ax.yaxis.set_major_locator(plt.NullLocator())  # remove y axis ticks
     ax.xaxis.set_major_locator(plt.NullLocator())  # remove x axis ticks
     plt.show()
+
 
 if __name__ == "__main__":
     main()

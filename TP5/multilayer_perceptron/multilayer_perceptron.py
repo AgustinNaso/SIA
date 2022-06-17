@@ -1,6 +1,6 @@
 import numpy as np
-from layer import Layer
-from activation_functions import Activation
+from TP5.multilayer_perceptron.layer import Layer
+from TP5.multilayer_perceptron.activation_functions import Activation
 
 
 class MultilayerPerceptron:
@@ -33,6 +33,8 @@ class MultilayerPerceptron:
         aux_batch = self.batch_size
 
         for epoch in range(epochs):
+            if epoch % 100 == 0:
+                print("epoch n: "+str(epoch))
             aux_training_set = self.training_set
             aux_expected_output = self.expected_output
             while len(aux_training_set) > 0:

@@ -1,4 +1,4 @@
-from neuron import Neuron
+from TP5.multilayer_perceptron.neuron import Neuron
 import numpy as np
 
 

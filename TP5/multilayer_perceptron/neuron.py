@@ -1,6 +1,6 @@
 import numpy as np
-from constants import *
-from activation_functions import Activation
+from TP5.multilayer_perceptron.constants import *
+from TP5.multilayer_perceptron.activation_functions import Activation
 
 
 class Neuron:

@@ -2,8 +2,7 @@ import json
 import numpy as np
 from TP5.resources.fonts import font_1, font_2, font_3
 from TP5.helpers.mlp_helper import create_multilayer_perceptron_and_train
-from TP5.helpers.font_helper import to_bits
-
+from TP5.helpers.font_helper import to_bits, add_noise
 
 with open("config.json") as jsonFile:
     jsonObject = json.load(jsonFile)
@@ -19,6 +18,7 @@ set_momentum = False
 adaptive_params = None
 fonts = jsonObject["fonts"]
 noise_factor = jsonObject["noise_factor"]
+noise_coverage = jsonObject["noise_coverage"]
 
 if adaptive_eta == 1:
     adaptive_k = int(jsonObject["adaptive_k"])
@@ -36,6 +36,6 @@ elif fonts == 2:
 else:
     expected_output = to_bits(font_3)
 
-
+noisy_set = add_noise(expected_output, noise_coverage, noise_factor)
 
 # perceptron = create_multilayer_perceptron_and_train()

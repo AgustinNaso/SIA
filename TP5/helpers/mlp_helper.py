@@ -2,6 +2,7 @@ import numpy as np
 from TP5.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 from TP5.multilayer_perceptron.constants import *
 
+
 def create_multilayer_perceptron_and_train(training_set: np.ndarray, expected_output: np.ndarray, learning_rate: float,
                                            epochs: int, layers: np.ndarray, batch_size: int,
                                            momentum=False, adaptive_params=None) -> MultilayerPerceptron:
@@ -14,19 +15,3 @@ def create_multilayer_perceptron_and_train(training_set: np.ndarray, expected_ou
     perceptron.add(len(expected_output[0]), LAST)
     perceptron.train(epochs)
     return perceptron
-
-def to_bits(fonts: np.ndarray) -> np.ndarray:
-    results = []
-    for encoded_character in fonts:
-        results.append(to_bin_array(encoded_character))
-    return np.array(results)
-
-
-def to_bin_array(encoded_character: np.ndarray) -> np.ndarray:
-    bin_array = np.zeros((7, 5), dtype=int)
-    for row in range(0, 7):
-        current_row = encoded_character[row]
-        for col in range(0, 5):
-            bin_array[row][4 - col] = current_row & 1
-            current_row >>= 1
-    return bin_array

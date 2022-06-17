@@ -72,7 +72,7 @@ class MultilayerPerceptron:
                 break
         print("Error " + str(error))
         plt.title("Error per epoch")
-        plt.plot([i for i in range(len(epochs))], errors)
+        plt.plot([i for i in range(epochs)], errors)
         plt.ylabel('Error')
         plt.xlabel('Epoch')
         plt.show()

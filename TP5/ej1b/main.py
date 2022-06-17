@@ -1,7 +1,8 @@
 import json
 import numpy as np
 from TP5.resources.fonts import font_1, font_2, font_3
-from TP5.utils import to_bits
+from TP5.helpers.mlp_helper import create_multilayer_perceptron_and_train
+from TP5.helpers.font_helper import to_bits
 
 
 with open("config.json") as jsonFile:
@@ -17,6 +18,7 @@ adaptive_eta = jsonObject["adaptive_eta"]
 set_momentum = False
 adaptive_params = None
 fonts = jsonObject["fonts"]
+noise_factor = jsonObject["noise_factor"]
 
 if adaptive_eta == 1:
     adaptive_k = int(jsonObject["adaptive_k"])
@@ -35,3 +37,5 @@ else:
     expected_output = to_bits(font_3)
 
 
+
+# perceptron = create_multilayer_perceptron_and_train()

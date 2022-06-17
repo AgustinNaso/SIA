@@ -8,5 +8,6 @@
     "adaptive_k": 2,
     "adaptive_inc": 0.5,
     "adaptive_dec": 0.01,
-    "fonts": 1
+    "fonts": 2,
+    "noise_factor": 0.5
 }

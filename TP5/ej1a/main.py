@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from TP5.resources.fonts import font_1
 from TP5.helpers.font_helper import to_bin_array, print_letter
-from TP5.utils import create_multilayer_perceptron_and_train
+from TP5.helpers.mlp_helper import create_multilayer_perceptron_and_train
 
 nested_set = np.array(list(map(to_bin_array, font_1)))
 sets = np.array(list(map(np.concatenate, nested_set)))

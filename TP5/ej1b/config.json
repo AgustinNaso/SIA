@@ -9,5 +9,6 @@
     "adaptive_inc": 0.5,
     "adaptive_dec": 0.01,
     "fonts": 2,
-    "noise_factor": 0.5
+    "noise_factor": 0.5,
+    "noise_coverage": 1
 }

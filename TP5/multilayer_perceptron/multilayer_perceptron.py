@@ -1,6 +1,7 @@
 import numpy as np
-from layer import Layer
-from activation_functions import Activation
+from TP5.multilayer_perceptron.layer import Layer
+from TP5.multilayer_perceptron.activation_functions import Activation
+import matplotlib.pyplot as plt
 
 
 class MultilayerPerceptron:
@@ -31,6 +32,7 @@ class MultilayerPerceptron:
         self.error_min = float('inf')
         k = 0
         aux_batch = self.batch_size
+        errors = []
 
         for epoch in range(epochs):
             aux_training_set = self.training_set
@@ -59,14 +61,19 @@ class MultilayerPerceptron:
                 prev_error = aux_error
 
             error *= 0.5
+            errors.append(error)
 
             if error < self.error_min:
                 self.error_min = error
 
             if error < self.error_limit:
-                print("Error " + str(error))
-                return
+                break
         print("Error " + str(error))
+        plt.title("Error per epoch")
+        plt.plot([i for i in range(len(epochs))], errors)
+        plt.ylabel('Error')
+        plt.xlabel('Epoch')
+        plt.show()
 
     def propagate(self, training_set):
         m = len(self.layers)

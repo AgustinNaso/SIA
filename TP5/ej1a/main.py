@@ -43,14 +43,10 @@ for i in range(len(decs)):
 outputs = perceptron.test_input(sets)
 monochromatic_cmap = plt.get_cmap('binary')
 
-plot_points(np.array(midPoints))
-plot_points(concept_vector(midPoints[17], midPoints[20], 10))
+plot_points(np.array(midPoints), np.array(font_1_header))
+plot_points(concept_vector(midPoints[17], midPoints[20], 10), np.array([font_1_header[17], "", "", "", "", "", "", "",  "",
+                                                                        font_1_header[20]]))
 
-# for i in range(len(outputs)):
-#     print(sets[i])
-#     print(outputs[i])
-#     print_letter(sets[i])
-#     print_letter(outputs[i])
 heatmap(
         round_array(sets[17]),
         linewidths=0.2,

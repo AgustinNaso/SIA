@@ -42,3 +42,25 @@ def plot_comparison(noisy_set: np.ndarray, expected_output: np.ndarray, mlp: Mul
     plt.suptitle(f"Epochs: {epochs} - Learning Rate: {learning_rate}", fontsize=25)
 
     plt.show()
+
+def plot_comparison_no_noise(outputs: np.ndarray, expected_output: np.ndarray, epochs: int, learning_rate: float):
+    images = []
+
+    for i in range(expected_output.shape[0]):
+        images.append(expected_output[i].reshape((7, 5)))
+
+    for j in range(outputs.shape[0]):
+        images.append(outputs[j].reshape((7, 5)))
+
+    fig, axes = plt.subplots(2, outputs.shape[0], figsize=(7, 5))
+    for p, ax in enumerate(axes.flat):
+        ax.set_yticklabels([])
+        ax.set_xticklabels([])
+        ax.imshow(images[p])
+
+    axes[0, 15].set_title("Expected Output", fontsize=20)
+    axes[1, 15].set_title("Output", fontsize=20)
+
+    plt.suptitle(f"Epochs: {epochs} - Learning Rate: {learning_rate}", fontsize=25)
+
+    plt.show()

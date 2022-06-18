@@ -1,11 +1,9 @@
 import numpy as np
 import random
-from TP5.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 import matplotlib.pyplot as plt
 
 
-def plot_comparison(noisy_set: np.ndarray, expected_output: np.ndarray, mlp: MultilayerPerceptron,
-                    epochs: int, learning_rate: float):
+def plot_comparison(noisy_set: np.ndarray, expected_output: np.ndarray, mlp, epochs: int, learning_rate: float):
     images = []
 
     for i in range(expected_output.shape[0]):

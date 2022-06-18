@@ -84,6 +84,34 @@ class MultilayerPerceptron:
             prev_layer = self.layers[i-1]
             self.layers[i].propagate(prev_layer)
 
+    def enc(self, training_value):
+        m = int(len(self.layers) / 2)
+        self.layers[0].set_activations(training_value)
+        for i in range(1, m+1):
+            prev_layer = self.layers[i - 1]
+            self.layers[i].propagate(prev_layer)
+        return np.copy(self.layers[m].get_neurons_activation())
+
+    def enc_bulk(self, training_set):
+        answer = []
+        for i in training_set:
+            answer.append(self.enc(i))
+        return answer
+
+    def dec(self, training_value):
+        m = int(len(self.layers) / 2)
+        self.layers[m].set_activations(training_value)
+        for i in range(m + 1, len(self.layers)):
+            prev_layer = self.layers[i - 1]
+            self.layers[i].propagate(prev_layer)
+        return np.copy(self.layers[len(self.layers)-1].get_neurons_activation())
+
+    def dec_bulk(self, training_set):
+        answer = []
+        for i in training_set:
+            answer.append(self.dec(i))
+        return answer
+
     def calculate_error(self, expected_output):
         m = len(self.layers)
         neurons = self.layers[m - 1].neurons

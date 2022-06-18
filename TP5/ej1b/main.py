@@ -3,6 +3,8 @@ import numpy as np
 from TP5.resources.fonts import font_1, font_2, font_3
 from TP5.helpers.mlp_helper import create_multilayer_perceptron_and_train
 from TP5.helpers.font_helper import to_bits, add_noise
+from TP5.helpers.plot_helpers import plot_comparison
+
 
 with open("config.json") as jsonFile:
     jsonObject = json.load(jsonFile)
@@ -10,7 +12,7 @@ with open("config.json") as jsonFile:
 
 learning_rate = jsonObject["learning_rate"]
 epochs = jsonObject["epochs"]
-hiddenLayers = np.array(jsonObject["hiddenLayers"])
+hidden_layers = np.array(jsonObject["hidden_layers"])
 batch_size = jsonObject["batch_size"]
 momentum = jsonObject["momentum"]
 adaptive_eta = jsonObject["adaptive_eta"]
@@ -38,4 +40,11 @@ else:
 
 noisy_set = add_noise(expected_output, noise_coverage, noise_factor)
 
-# perceptron = create_multilayer_perceptron_and_train()
+perceptron = create_multilayer_perceptron_and_train(noisy_set, expected_output, learning_rate,
+                                                    epochs, hidden_layers, batch_size, noise_coverage=noise_coverage,
+                                                    noise_factor=noise_factor)
+
+plot_comparison(noisy_set, expected_output, perceptron, epochs, learning_rate)
+
+# plt.imshow(noisy[20], cmap=plt.get_cmap('gray'))
+# plt.show()

@@ -26,7 +26,7 @@ class MultilayerPerceptron:
             self.learning_rate_dec = learning_rate_params[1]
             self.learning_rate_k = learning_rate_params[2]
 
-    def train(self, epochs, noise_coverage=None, noise_factor=None):
+    def train(self, epochs, noise_factor=None):
         error = 1
         prev_error = None
         self.error_min = float('inf')
@@ -37,8 +37,8 @@ class MultilayerPerceptron:
         for epoch in range(epochs):
             if epoch % 100 == 0:
                 print("epoch n: " + str(epoch))
-            if noise_coverage and epoch > 1:
-                aux_training_set = add_noise(self.training_set, noise_coverage, noise_factor)
+            if noise_factor:
+                aux_training_set = add_noise(self.training_set, noise_factor)
             else:
                 aux_training_set = self.training_set
             aux_expected_output = self.expected_output
@@ -72,14 +72,7 @@ class MultilayerPerceptron:
                 self.error_min = error
 
             if error < self.error_limit:
-                break
-        # print("Error " + str(error))
-        # print("Min error " + str(self.error_min))
-        # plt.title("Error per epoch")
-        # plt.plot([i for i in range(epochs)], errors)
-        # plt.ylabel('Error')
-        # plt.xlabel('Epoch')
-        # plt.show()
+                return
 
     def propagate(self, training_set):
         m = len(self.layers)

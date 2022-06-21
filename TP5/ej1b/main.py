@@ -3,8 +3,8 @@ import numpy as np
 from TP5.resources.fonts import font_1, font_2, font_3
 from TP5.helpers.mlp_helper import create_multilayer_perceptron_and_train
 from TP5.helpers.font_helper import to_bits, add_noise
-from TP5.helpers.plot_helpers import plot_comparison
-
+from TP5.helpers.plot_helper import plot_comparison
+import matplotlib.pyplot as plt
 
 with open("config.json") as jsonFile:
     jsonObject = json.load(jsonFile)
@@ -20,7 +20,6 @@ set_momentum = False
 adaptive_params = None
 fonts = jsonObject["fonts"]
 noise_factor = jsonObject["noise_factor"]
-noise_coverage = jsonObject["noise_coverage"]
 
 if adaptive_eta == 1:
     adaptive_k = int(jsonObject["adaptive_k"])
@@ -38,13 +37,8 @@ elif fonts == 2:
 else:
     expected_output = to_bits(font_3)
 
-noisy_set = add_noise(expected_output, noise_coverage, noise_factor)
+perceptron = create_multilayer_perceptron_and_train(expected_output, expected_output, learning_rate,
+                                                    epochs, hidden_layers, batch_size, noise_factor=noise_factor)
 
-perceptron = create_multilayer_perceptron_and_train(noisy_set, expected_output, learning_rate,
-                                                    epochs, hidden_layers, batch_size, noise_coverage=noise_coverage,
-                                                    noise_factor=noise_factor)
-
-plot_comparison(noisy_set, expected_output, perceptron, epochs, learning_rate)
-
-# plt.imshow(noisy[20], cmap=plt.get_cmap('gray'))
-# plt.show()
+noise_set = add_noise(expected_output, noise_factor)
+plot_comparison(noise_set, expected_output, perceptron, epochs, learning_rate)

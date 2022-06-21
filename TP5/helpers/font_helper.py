@@ -2,12 +2,14 @@ import numpy as np
 import random
 
 
-def add_noise(images: np.ndarray, noise_coverage: float, noise_factor: float) -> np.ndarray:
+def add_noise(images: np.ndarray, noise_factor: float) -> np.ndarray:
     noisy_set = np.empty((np.size(images, 0), np.size(images, 1)))
     for i in range(images.shape[0]):
-        noisy_set[i] = np.array([images[i][j] + random.uniform(0, noise_factor) * (1 if images[i][j] <= 0 else -1)
-                                 if random.uniform(0, 1) < noise_coverage else images[i][j]
-                                 for j in range(0, images.shape[1])])
+        noisy_set[i] = np.zeros(np.size(images, 1))
+        for j in range(images.shape[1]):
+            noisy_set[i][j] = images[i][j]
+            if random.uniform(0, 1) < noise_factor:
+                noisy_set[i][j] = 0 if images[i][j] == 1 else 1
     return noisy_set
 
 

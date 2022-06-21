@@ -2,7 +2,7 @@ from seaborn import heatmap
 import matplotlib.pyplot as plt
 import numpy as np
 
-from TP5.helpers.plot_helpers import plot_points
+from TP5.helpers.plot_helper import plot_points
 from TP5.resources.fonts import font_1, font_1_header
 from TP5.helpers.font_helper import to_bin_array, print_letter
 from TP5.helpers.mlp_helper import create_multilayer_perceptron_and_train

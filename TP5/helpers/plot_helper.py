@@ -24,7 +24,7 @@ def plot_comparison(noisy_set: np.ndarray, expected_output: np.ndarray, mlp: Mul
     predicted = np.array(mlp.test_input(noisy_set))
 
     error = (np.average((predicted - expected_output) ** 2)) / len(predicted)
-    print(error)
+    print("Mean square error: " + str(error))
 
     for k in range(predicted.shape[0]):
         images.append(predicted[k].reshape((7, 5)))

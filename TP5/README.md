@@ -40,18 +40,14 @@ y ejecutar
 ### Ejercicio 2
 ```json
 {
-    "learning_rate": 0.0005,
-    "epochs": 15000,
-    "hidden_layers": [20, 15, 20],
-    "batch_size": 1,
-    "momentum": 1,
-    "adaptive_eta": 0,
-    "adaptive_k": 2,
-    "adaptive_inc": 0.5,
-    "adaptive_dec": 0.01,
-    "fonts": 1,
-    "noise_factor": 0.5,
-    "noise_coverage": 0.5
+    "data_folder": "../data",
+    "saves_folder": "saves",
+    "images_folder": "legos",
+    "images_shape": {
+        "width": 60,
+        "height": 80
+    },
+    "epochs": 5000
 }
 ```
 

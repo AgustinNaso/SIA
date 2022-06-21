@@ -1,0 +1,10 @@
+{
+    "data_folder": "../data",
+    "saves_folder": "saves",
+    "images_folder": "legos",
+    "images_shape": {
+        "width": 60,
+        "height": 80
+    },
+    "epochs": 5000
+}

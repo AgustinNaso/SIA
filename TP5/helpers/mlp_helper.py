@@ -18,3 +18,17 @@ def create_multilayer_perceptron_and_train(training_set: np.ndarray, expected_ou
     else:
         perceptron.train(epochs)
     return perceptron
+
+def round_array(array):
+    for idx in range(len(array)):
+        array[idx] = 1 if array[idx] > 0.7 else 0
+    return np.array(array).reshape(7, 5)
+
+
+def concept_vector(point1, point2, point_amount):
+    delta_0 = point2[0] - point1[0]
+    delta_1 = point2[1] - point1[1]
+    vector = []
+    for i in range(point_amount):
+        vector.append([point1[0] + delta_0 * (i / point_amount), point1[1] + delta_1 * (i / point_amount)])
+    return np.array(vector)

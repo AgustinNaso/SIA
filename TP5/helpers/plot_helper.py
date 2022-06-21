@@ -3,12 +3,14 @@ import numpy as np
 from TP5.multilayer_perceptron.multilayer_perceptron import MultilayerPerceptron
 
 
-def plot_points(array, labels):
+def plot_points(array, labels, savePath=""):
     x, y = zip(*array)
     plt.scatter(x, y)
     for i, text in enumerate(labels):
         plt.annotate(text, (x[i], y[i]))
-    plt.show()
+    # plt.show()
+    # if savePath != "":
+    plt.savefig(savePath)
 
 
 def plot_comparison(noisy_set: np.ndarray, expected_output: np.ndarray, mlp: MultilayerPerceptron,
@@ -42,3 +44,27 @@ def plot_comparison(noisy_set: np.ndarray, expected_output: np.ndarray, mlp: Mul
     plt.suptitle(f"Epochs: {epochs} - Learning Rate: {learning_rate}", fontsize=25)
 
     plt.show()
+
+def plot_comparison_no_noise(outputs: np.ndarray, expected_output: np.ndarray, epochs: int, learning_rate: float, reshape= (7, 5), savePath=""):
+    images = []
+
+    for i in range(expected_output.shape[0]):
+        images.append(expected_output[i].reshape(reshape))
+
+    for j in range(outputs.shape[0]):
+        images.append(outputs[j].reshape(reshape))
+
+    fig, axes = plt.subplots(2, outputs.shape[0], figsize=reshape)
+    for p, ax in enumerate(axes.flat):
+        ax.set_yticklabels([])
+        ax.set_xticklabels([])
+        ax.imshow(images[p])
+
+    axes[0, 15].set_title("Expected Output", fontsize=20)
+    axes[1, 15].set_title("Output", fontsize=20)
+
+    plt.suptitle(f"Epochs: {epochs} - Learning Rate: {learning_rate}", fontsize=25)
+
+    # plt.show()
+    # if savePath != "":
+    plt.savefig(savePath)

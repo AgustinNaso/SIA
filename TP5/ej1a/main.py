@@ -12,32 +12,33 @@ nested_set = np.array(list(map(to_bin_array, font_1)))
 sets = np.array(list(map(np.concatenate, nested_set)))
 layers = np.array([20, 10, 2, 10, 20])
 learning_rate = 0.0005
-epoch: int = 5000
+epoch: int = 25000
 
-saveFolderPath = "/Users/gastondeschant/facultad/SIA-image-tp5/"
-testPath = "ej1a-config-20-10-2/"
+saveFolderPath = "/Users/agus_/Desktop/graficos/"
+testPath = "test/"
 
 perceptron = create_multilayer_perceptron_and_train(sets, sets, learning_rate, epoch, layers, 100, momentum=True)
 monochromatic_cmap = plt.get_cmap('binary')
 
-# step = 5000
-# for i in range(5):
-midPoints = perceptron.enc_bulk(sets)
-outputs = perceptron.test_input(sets)
-#
-plot_comparison_no_noise(np.array(outputs), sets, epoch, learning_rate,savePath= saveFolderPath+testPath+f"Compare-e{epoch}lr{learning_rate}.png")
-plot_points(np.array(midPoints), np.array(font_1_header),savePath= saveFolderPath+testPath+f"LS-e{epoch}lr{learning_rate}.png")
-#     epoch += 5000
+# step = 1
+# for i in range(1):
+#     midPoints = perceptron.enc_bulk(sets)
+#     outputs = perceptron.test_input(sets)
+#     # plot_comparison_no_noise(np.array(outputs), sets, epoch, learning_rate,savePath= saveFolderPath+testPath+f"Compare-e{epoch}lr{learning_rate}.png")
+#     # plt.clf()
+#     # plot_points(np.array(midPoints), np.array(font_1_header),savePath= saveFolderPath+testPath+f"LS-e{epoch}lr{learning_rate}.png")
+#     epoch += step
 #     perceptron.train(epochs=step)
 
 midPoints = perceptron.enc_bulk(sets)
 outputs = perceptron.test_input(sets)
 
-plot_comparison_no_noise(np.array(outputs), sets, epoch, learning_rate,
-                         savePath=saveFolderPath + testPath + f"Compare-e{epoch}lr{learning_rate}.png")
-plot_points(np.array(midPoints), np.array(font_1_header),
-            savePath=saveFolderPath + testPath + f"LS-e{epoch}lr{learning_rate}.png")
+# plot_comparison_no_noise(np.array(outputs), sets, epoch, learning_rate,
+#                          savePath=saveFolderPath + testPath + f"Compare-e{epoch}lr{learning_rate}.png")
+# plot_points(np.array(midPoints), np.array(font_1_header),
+#             savePath=saveFolderPath + testPath + f"LS-e{epoch}lr{learning_rate}.png")
 
+#Ejercicio d
 from_font = 3
 to_font = 21
 
@@ -54,7 +55,9 @@ heatmap(
     cmap=monochromatic_cmap,
     linecolor='k')
 plt.title(f"{name_vector[0]} real")
-plt.show()
+plt.savefig(saveFolderPath + testPath + f"sharp e{epoch}lr{learning_rate}.png")
+plt.clf()
+
 heatmap(
     round_array(sets[to_font]),
     linewidths=0.2,
@@ -63,7 +66,8 @@ heatmap(
     cmap=monochromatic_cmap,
     linecolor='k')
 plt.title(f"{name_vector[len(name_vector)-1]} real")
-plt.show()
+plt.savefig(saveFolderPath + testPath + f"5 e{epoch}lr{learning_rate}.png")
+plt.clf()
 
 c_vector = perceptron.dec_bulk(concept_vector(midPoints[from_font], midPoints[to_font], 10))
 
@@ -75,6 +79,8 @@ for i in range(len(c_vector)):
         square=True,
         cmap=monochromatic_cmap,
         linecolor='k')
-    plt.title(f"{i} real")
-    plt.show()
+    plt.title(f"punto nro: {i}")
+    plt.savefig(saveFolderPath + testPath + f"{i}punto.png")
+    plt.clf()
+
 
